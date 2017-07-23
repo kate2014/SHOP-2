@@ -1,0 +1,61 @@
+package com.shop.controller.backgoods;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxProductNotify;
+import com.shop.service.backgoods.GoodsMessageService;
+import com.shop.service.backstage.UtilsService;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/gmessage")
+public class GoodsMessageController {
+	@Resource
+	private GoodsMessageService gms;
+	@Resource
+	private UtilsService us;
+	@RequestMapping("/gselect")
+	public String selectAll(Integer page,Integer size,Model model){
+		if(page==null){page=1;}
+		if(size==null){size=5;}
+		Map<String,Object> map=new HashMap<>();
+		map.put("index",(page-1)*size);
+		map.put("size",size);
+		List<XxProductNotify> list=gms.getAll(map);
+		Page<XxProductNotify> pages=new Page<XxProductNotify>();
+		pages.setPage(page);
+		pages.setSize(size);
+		int num=gms.selectcount();
+		pages.setTotal(num);
+		pages.setRows(list);
+		model.addAttribute("page",pages);
+		return "backstage/goods/goodsmessage";
+	}
+	@RequestMapping("/del")
+	public @ResponseBody Page<XxProductNotify> delmessage(String str,Page<XxProductNotify> pages){
+		System.out.println(str);
+		us.deleteByUpdate(str,XxProductNotify.class,"id");
+		Page<XxProductNotify> page=new Page<XxProductNotify>();
+		Map<String,Object> map=new HashMap<>();
+		map.put("index",0);
+		map.put("size",pages.getSize());
+		List<XxProductNotify> list=gms.getAll(map);
+		page.setPage(1);
+		page.setSize(pages.getSize());
+		int num=gms.selectcount();
+		page.setTotal(num);
+		page.setRows(list);
+		return page;
+	}
+
+}

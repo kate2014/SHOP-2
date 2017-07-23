@@ -1,0 +1,37 @@
+package com.shop.dao;
+
+import com.shop.entity.XxCartItem;
+import com.shop.entity.XxCartItemExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface XxCartItemMapper {
+    int countByExample(XxCartItemExample example);
+
+    int deleteByExample(XxCartItemExample example);
+
+    int deleteByPrimaryKey(Long id);
+
+    int insert(XxCartItem record);
+
+    int insertSelective(XxCartItem record);
+
+    List<XxCartItem> selectByExample(XxCartItemExample example);
+
+    XxCartItem selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") XxCartItem record, @Param("example") XxCartItemExample example);
+
+    int updateByExample(@Param("record") XxCartItem record, @Param("example") XxCartItemExample example);
+
+    int updateByPrimaryKeySelective(XxCartItem record);
+
+    int updateByPrimaryKey(XxCartItem record);
+    
+    /**
+     * 根据购物车id查询购物车项
+     * @param id
+     * @return
+     */
+    List<XxCartItem> findCartItemsByCartId(Long id);
+}

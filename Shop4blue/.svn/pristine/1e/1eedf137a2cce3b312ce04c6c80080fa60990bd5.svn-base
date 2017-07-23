@@ -1,0 +1,16 @@
+package com.shop.service.websevice;
+
+import java.util.List;
+
+import com.shop.entity.XxMemberFavoriteProductKey;
+import com.shop.entity.XxProduct;
+
+public interface WebGoodsCollectService {
+
+	Long[] getId(Long userid);
+
+	List<XxProduct> getProduct(Long[] id);
+
+	void del(XxMemberFavoriteProductKey xx);
+
+}

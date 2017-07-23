@@ -1,0 +1,140 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>${xxBrand.name } - Powered By SHOP++</title>
+	<meta name="author" content="SHOP++ Team" />
+	<meta name="copyright" content="SHOP++" />
+		<meta name="keywords" content="梵希蔓" />
+		<meta name="description" content="梵希蔓" />
+<link href="${pageContext.request.contextPath }/resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath }/resources/shop/css/product.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath }/resources/shop/css/brand.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/shop/js/common.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $productSearchForm = $("#productSearchForm");
+	var $keyword = $("#productSearchForm input");
+	var defaultKeyword = "商品搜索";
+	
+	var username = getCookie("username");
+	if (username != null) {
+		$headerUsername.text("您好, " + username).show();
+		$headerLogout.show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+	}
+	
+	$keyword.focus(function() {
+		if ($keyword.val() == defaultKeyword) {
+			$keyword.val("");
+		}
+	});
+	
+	$keyword.blur(function() {
+		if ($keyword.val() == "") {
+			$keyword.val(defaultKeyword);
+		}
+	});
+	
+	$productSearchForm.submit(function() {
+		if ($.trim($keyword.val()) == "" || $keyword.val() == defaultKeyword) {
+			return false;
+		}
+	});
+
+});
+</script>
+<%@include file="header.jsp" %>
+<div class="container brandContent">
+		<div class="span6">
+		
+		<%@include file="shoplist.jsp" %>
+			
+			<div class="hotProduct">
+				<div class="title">热销商品</div>
+				<ul>
+					<%-- <c:foreach>
+						<li>
+							<a href="/shopxx/product/content/201705/298.html" title="尚都比拉2013夏装新款淑女装 春款森女系 碎花修身短袖蕾丝连衣裙">尚都比拉2013夏装新款淑女装 春款</a>
+									<div>
+										<div>评分: </div>
+										<div class="score8"></div>
+										<div>4.0</div>
+									</div>
+								<div>销售价: <strong>￥289.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>	
+					</c:foreach> --%>
+							<!-- <li>
+								<a href="/shopxx/product/content/201705/300.html" title="尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底裙子 春款">尚都比拉女装2013夏装新款蕾丝连</a>
+								<div>销售价: <strong>￥298.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+							<li>
+								<a href="/shopxx/product/content/201705/298.html" title="尚都比拉2013夏装新款淑女装 春款森女系 碎花修身短袖蕾丝连衣裙">尚都比拉2013夏装新款淑女装 春款</a>
+									<div>
+										<div>评分: </div>
+										<div class="score8"></div>
+										<div>4.0</div>
+									</div>
+								<div>销售价: <strong>￥289.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li> -->
+							
+							<li class="last">
+								<a href="/shopxx/product/content/201705/285.html" title="尚都比拉2013夏装新款 春款修身淑女装 雪纺短袖假两件套连衣裙子">尚都比拉2013夏装新款 春款修身淑</a>
+									<div>
+										<div>评分: </div>
+										<div class="score10"></div>
+										<div>5.0</div>
+									</div>
+								<div>销售价: <strong>￥269.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+				</ul>
+			</div>
+			
+			
+			
+		</div>
+		<div class="span18 last">
+			<div class="path">
+				<ul>
+					<li>
+						<a href="/shopxx/">首页</a>
+					</li>
+					<li>
+						<a href="/shopxx/brand/list/1.jhtml">品牌</a>
+					</li>
+				</ul>
+			</div>
+			<div class="top">
+					<img src="http://storage.shopxx.net/demo-image/3.0/brand/vimly.gif" alt="${xxBrand.name }" />
+				<strong>${xxBrand.name }</strong>
+			</div>
+			<div class="introduction">
+				<div class="title">
+					<strong>介绍</strong>
+					<span>&nbsp;</span>
+				</div>
+				${xxBrand.introduction }
+				<img src="${xxBrand.logo }" width="100px" height="80px" />
+			</div>
+		</div>
+	</div>
+<%@include file="footer.jsp" %>
+</body>
+</html>

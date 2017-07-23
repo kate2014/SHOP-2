@@ -1,0 +1,29 @@
+package com.shop.controller.backstage;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/user")
+public class User4BackController {
+	@RequestMapping("member")
+	public String  member(){
+		return "backstage/user/member";
+	}
+    @RequestMapping("membermanage")
+	public String membermanage(){
+		return "backstage/user/membermanage";
+	}
+    @RequestMapping("membermanageadd")
+	public String membermanageadd(){
+		return "backstage/user/membermanageadd";
+	}
+    @RequestMapping("membermanageedit")
+	public String membermanageedit(){
+		return "backstage/user/membermanageedit";
+	}
+    @RequestMapping("membermanagefind")
+	public String membermanagefind(){
+		return "backstage/user/membermanagefind";
+	}
+}

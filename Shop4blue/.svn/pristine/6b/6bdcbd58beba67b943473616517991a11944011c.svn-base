@@ -1,0 +1,52 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxBrandMapper;
+import com.shop.entity.XxBrand;
+
+@Service
+public class GoodsBrandServiceImpl implements GoodsBrandService {
+
+	@Autowired
+	XxBrandMapper xbm;
+
+	@Override
+	public List<XxBrand> selAllbrand(Integer page, Integer rows) {
+		List<XxBrand> list=xbm.selectAllBrand((page-1)*rows,rows);
+		return list;
+	}
+
+	@Override
+	public int selectNum() {
+		
+		return xbm.selectNum();
+	}
+
+	@Override
+	public void addBrand(XxBrand xb) {
+		xbm.insert(xb);
+		
+	}
+
+	@Override
+	public void delByIds(int[] ids) {
+		xbm.delByIds(ids);
+		
+	}
+
+	@Override
+	public XxBrand selById(long id) {
+		XxBrand xb=xbm.selectByPrimaryKey(id);
+		return xb;
+	}
+
+	@Override
+	public void updateById(XxBrand xb) {
+		xbm.updateByPrimaryKey(xb);
+		
+	}
+}

@@ -1,0 +1,24 @@
+package com.shop.controller.backmember;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.shop.entity.XxAdmin;
+import com.shop.entity.XxParameterGroup;
+import com.shop.service.backstage.UtilsService;
+
+@Controller
+@RequestMapping("/")
+public class TestController {
+
+	@Autowired
+	UtilsService us;
+	@RequestMapping("/utils")
+	public String test(){
+		String ids="100,200";
+		us.deleteByIds(ids, XxParameterGroup.class, "id");
+		us.deleteByUpdate(ids, XxParameterGroup.class, "id");
+		return "";
+	}
+}

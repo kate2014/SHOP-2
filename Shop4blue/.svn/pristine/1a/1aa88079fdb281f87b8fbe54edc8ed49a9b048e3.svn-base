@@ -1,0 +1,53 @@
+package com.shop.service.websevice;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxProductCategoryMapper;
+import com.shop.dao.XxProductMapper;
+import com.shop.entity.XxProduct;
+import com.shop.entity.XxProductCategory;
+import com.shop.entity.XxProductCategoryExample;
+import com.shop.entity.XxProductExample;
+
+@Service
+public class ShopContentServiceImpl implements ShopContentService{
+
+	/**
+	 *  获得商品信息页面的大标签
+	 */
+	@Autowired
+	private XxProductCategoryMapper xxProductCategoryMapper;
+	@Autowired
+	private XxProductMapper xxProductMapper;
+	
+	@Override
+	public XxProductCategory bigTagName(Long id) {
+		return  xxProductMapper.selectById(id);
+	}
+	/**
+	 * 小标签
+	 */
+	@Override
+	public List<XxProductCategory> smallTagName(Long id) {
+		XxProductExample xpe=new XxProductExample();
+		xpe.createCriteria().andIdEqualTo(id);
+		List<XxProduct> list=xxProductMapper.selectByExample(xpe);
+		
+		XxProductCategoryExample xpce=new XxProductCategoryExample();
+		xpce.createCriteria().andIdEqualTo(list.get(0).getProductCategory());
+		return xxProductCategoryMapper.selectByExample(xpce);
+	}
+	
+	
+	/**
+	 * 商品信息
+	 */
+	@Override
+	public XxProduct productContent(Long id) {
+		return xxProductMapper.selectByPrimaryKey(id);
+	}
+	
+}

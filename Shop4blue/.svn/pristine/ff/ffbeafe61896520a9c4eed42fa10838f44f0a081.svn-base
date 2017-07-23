@@ -1,0 +1,40 @@
+package com.shop.controller.webcontroller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxProduct;
+import com.shop.service.websevice.ShopService;
+
+@Controller
+@RequestMapping("/sortShop")
+public class ShopController {
+
+	/**
+	 * 此controller仅处理各种方式的查询 
+	 */
+	
+	
+	@Autowired
+	private ShopService shopservice;
+//	@RequestMapping("/sort")
+//	public String sort(String sort,String type,Model model){
+//		List<XxProduct> listShop=shopservice.selectShopBySort(sort,type);
+//		model.addAttribute("listShop",listShop);
+//		return null;
+//	}
+	@RequestMapping("/sort")
+	public @ResponseBody List<XxProduct> sortShop(String str,String type){
+		System.out.println(str+","+type);
+		List<XxProduct> listShop=shopservice.selectShopBySort(str,type);
+		for(XxProduct xp:listShop){
+			System.out.println(xp);
+		}
+		return listShop;
+		
+	}
+}

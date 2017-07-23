@@ -1,0 +1,24 @@
+package com.shop.dao;
+
+import com.shop.entity.XxAttributeOption;
+import com.shop.entity.XxAttributeOptionExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface XxAttributeOptionMapper {
+    int countByExample(XxAttributeOptionExample example);
+
+    int deleteByExample(XxAttributeOptionExample example);
+
+    int insert(XxAttributeOption record);
+
+    int insertSelective(XxAttributeOption record);
+
+    List<XxAttributeOption> selectByExample(XxAttributeOptionExample example);
+
+    int updateByExampleSelective(@Param("record") XxAttributeOption record, @Param("example") XxAttributeOptionExample example);
+
+    int updateByExample(@Param("record") XxAttributeOption record, @Param("example") XxAttributeOptionExample example);
+    
+    int deleteByAttribute(Long attribute);
+}

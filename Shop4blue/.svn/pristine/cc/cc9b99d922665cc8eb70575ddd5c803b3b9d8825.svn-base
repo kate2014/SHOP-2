@@ -1,0 +1,73 @@
+package com.shop.service.backorder;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxDeliveryCenterMapper;
+import com.shop.dao.XxDeliveryTemplateMapper;
+import com.shop.dao.XxOrderItemMapper;
+import com.shop.dao.XxOrderMapper;
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryCenterExample;
+import com.shop.entity.XxDeliveryTemplate;
+import com.shop.entity.XxDeliveryTemplateExample;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderExample;
+import com.shop.entity.XxOrderItem;
+
+@Service
+public class Order4ManageServiceImpl implements Order4ManageService {
+	@Autowired
+	XxOrderMapper orderMapper;
+	@Autowired
+	XxOrderItemMapper orderItemMapper;
+	@Autowired
+	XxDeliveryTemplateMapper deliveryTemplateMapper;
+	@Autowired
+	XxDeliveryCenterMapper deliveryCenterMapper;
+
+	@Override
+	public List<XxOrder> selectAll(int start,int size) {
+		return orderMapper.findAll(start,size);
+	}
+
+	@Override
+	public int totalNum() {
+		return orderMapper.countByExample(new XxOrderExample());
+	}
+
+	@Override
+	public XxOrder selectById(Long id) {
+		return orderMapper.findById(id);
+	}
+
+	@Override
+	public List<XxOrderItem> selectByOrderId(Long id) {
+		return orderItemMapper.findByOrderId(id);
+	}
+
+	@Override
+	public List<XxDeliveryTemplate> selectAllTemplate() {
+		return deliveryTemplateMapper.selectByExampleWithBLOBs(new XxDeliveryTemplateExample());
+	}
+
+	@Override
+	public List<XxDeliveryCenter> selectAllCenter() {
+		return deliveryCenterMapper.selectByExample(new XxDeliveryCenterExample());
+	}
+
+	@Override
+	public XxDeliveryTemplate selectTemplateById(Long id) {
+		return deliveryTemplateMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public XxDeliveryCenter selectCenterById(Long id) {
+		return deliveryCenterMapper.selectByPrimaryKey(id);
+	}
+	
+	
+
+}

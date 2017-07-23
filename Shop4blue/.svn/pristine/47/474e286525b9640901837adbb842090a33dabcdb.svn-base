@@ -1,0 +1,124 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>编辑咨询 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/input.js"></script>
+<link href="${pageContext.request.contextPath}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+$().ready(function() {
+
+	var $delete = $("#inputForm a.delete");
+
+	
+	// 删除
+	$delete.click(function() {
+		var $this = $(this);
+		$.dialog({
+			type: "warn",
+			content: "您确定要删除吗？",
+			onOk: function() {
+				$.ajax({
+					url: "delete_reply.jhtml",
+					type: "POST",
+					data: {id: $this.attr("val")},
+					dataType: "json",
+					cache: false,
+					success: function(message) {
+						$.message(message);
+						if (message.type == "success") {
+							$this.closest("tr").remove();
+						}
+					}
+				});
+			}
+		});
+		return false;
+	});
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="">首页</a> &raquo; 编辑咨询
+	</div>
+	<form id="inputForm" action="${pageContext.request.contextPath}/consult?flag=editShow&page=1&rows=${rows }" method="post">
+		<input type="hidden" name="id" value="${map.id }" />
+		<table class="input">
+			<tr>
+				<th>
+					商品:
+				</th>
+				<td colspan="3">
+					<a href="" target="_blank">${map.full_name }</a>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					会员:
+				</th>
+				<td colspan="3">
+						<a href="${pageContext.request.contextPath}/getmember?id=${map.member}">${map.username }</a>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					内容:
+				</th>
+				<td colspan="3">
+					${map.content }
+				</td>
+			</tr>
+			<tr>
+				<th>
+					IP:
+				</th>
+				<td colspan="3">
+					${map.ip }
+				</td>
+			</tr>
+			<c:forEach items="${reply }" var="r" varStatus="i">
+			  <tr>
+			  <c:if test="${ i.index==0}">
+			    <th> 回复：</th>
+			  </c:if>
+			    <c:if test="${ i.index!=0}">
+			    <th>  </th>
+			  </c:if>
+			    <td>${r.content }</td>
+			    <td><fmt:formatDate value="${r.create_date }" pattern="yyyy-MM-dd"/></td>
+			    <td><a href="replyDel?id=${r.id }&cid=${r.for_consultation}">删除</a></td>
+			  </tr>
+			  </c:forEach>
+			
+			<tr>
+				<th>
+					是否显示:
+				</th>
+				<td colspan="3">
+					<input type="checkbox" name="isShow" value="true" ${map.is_show?"checked":"" } />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td colspan="3">
+					<input type="submit" class="button" value="确&nbsp;&nbsp;定" />
+					<input type="button" class="button" value="返&nbsp;&nbsp;回" onclick="location.href='${pageContext.request.contextPath}/consult?page=1&rows=${rows }'"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

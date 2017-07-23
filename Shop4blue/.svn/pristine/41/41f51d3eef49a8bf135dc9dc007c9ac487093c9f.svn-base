@@ -1,0 +1,12 @@
+package com.shop.test;
+
+import org.junit.Test;
+
+public class TestByJunit {
+	
+	@Test
+	public void test1(){
+		
+	}
+
+}

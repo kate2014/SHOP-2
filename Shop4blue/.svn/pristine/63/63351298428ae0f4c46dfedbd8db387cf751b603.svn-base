@@ -1,0 +1,93 @@
+package com.shop.service.backorder;
+
+import java.util.List;
+
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryTemplate;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderItem;
+import com.shop.entity.XxOrderLog;
+import com.shop.entity.XxPayment;
+import com.shop.entity.XxRefunds;
+import com.shop.entity.XxReturns;
+import com.shop.entity.XxShipping;
+
+public interface Order4ManageService {
+	/**
+	 * 查询所有订单
+	 * @param start
+	 * @param size
+	 * @return
+	 */
+	public List<XxOrder> selectAll(int start,int size);
+	/**
+	 * 查询订单总数
+	 * @return
+	 */
+	public int totalNum();
+	/**
+	 * 根据主键查询订单
+	 * @param id
+	 * @return
+	 */
+	public XxOrder selectById(Long id);
+	/**
+	 * 根据订单id查询所有订单项
+	 * @param id 订单id
+	 * @return
+	 */
+	public List<XxOrderItem> selectByOrderId(Long id);
+	/**
+	 * 查询DeliveryTemplate所有
+	 * @return
+	 */
+	public List<XxDeliveryTemplate> selectAllTemplate();
+	/**
+	 * 查询DeliveryCenter所有
+	 * @return
+	 */
+	public List<XxDeliveryCenter> selectAllCenter();
+	/**
+	 * 根据主键查询DeliveryTemplate
+	 * @param id
+	 * @return
+	 */
+	public XxDeliveryTemplate selectTemplateById(Long id);
+	/**
+	 * 根据主键查询DeliveryCenter
+	 * @param id
+	 * @return
+	 */
+	public XxDeliveryCenter selectCenterById(Long id);
+	/**
+	 * 根据订单id查询收款信息
+	 * @param id 订单id
+	 * @return
+	 */
+	public List<XxPayment> findPaymentByOrderId(Long id);
+	/**
+	 * 根据订单id查询发货信息
+	 * @param id 订单id
+	 * @return
+	 */
+	public XxShipping findShippingByOrderId(Long id);
+	/**
+	 * 根据订单id查询退款信息
+	 * @param id 订单id
+	 * @return
+	 */
+	public XxRefunds findRefundsByOrderId(Long id);
+	/**
+	 * 根据订单id查询退货信息
+	 * @param id 订单id
+	 * @return
+	 */
+	public XxReturns findReturnsByOrderId(Long id);
+	/**
+	 * 根据订单id查询订单日志
+	 * @param id 订单id
+	 * @return
+	 */
+	public List<XxOrderLog> findOrderLogByOrderId(Long id);
+
+}

@@ -1,0 +1,19 @@
+package com.shop.service.backstage;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxAdminMapper;
+import com.shop.entity.XxAdmin;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+	@Autowired
+	XxAdminMapper adminMapper;
+
+	@Override
+	public void updatePassword(XxAdmin admin) {
+		adminMapper.updateByPrimaryKeySelective(admin);
+	}
+
+}

@@ -1,0 +1,263 @@
+package com.shop.service.websevice;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shop.dao.XxCartItemMapper;
+import com.shop.dao.XxCartMapper;
+import com.shop.dao.XxDepositMapper;
+import com.shop.dao.XxMemberMapper;
+import com.shop.dao.XxOrderItemMapper;
+import com.shop.dao.XxOrderLogMapper;
+import com.shop.dao.XxOrderMapper;
+import com.shop.dao.XxProductMapper;
+import com.shop.dao.XxProductProductImageMapper;
+import com.shop.dao.XxReceiverMapper;
+import com.shop.entity.XxAdmin;
+import com.shop.entity.XxCart;
+import com.shop.entity.XxCartItem;
+import com.shop.entity.XxCouponCode;
+import com.shop.entity.XxDeposit;
+import com.shop.entity.XxMember;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderItem;
+import com.shop.entity.XxOrderLog;
+import com.shop.entity.XxPaymentMethod;
+import com.shop.entity.XxProduct;
+import com.shop.entity.XxProductProductImage;
+import com.shop.entity.XxReceiver;
+import com.shop.entity.XxShippingMethod;
+import com.shop.utils.GenerateSn;
+
+@Service
+public class OrderShopImplService implements OrderShopService {
+	@Autowired
+	XxProductProductImageMapper productImageMapper;
+	@Autowired
+	XxReceiverMapper receiverMapper;
+	@Autowired
+	XxOrderMapper orderMapper;
+	@Autowired
+	XxOrderItemMapper orderItemMapper;
+	@Autowired
+	XxOrderLogMapper orderLogMapper;
+	@Autowired
+	XxMemberMapper memberMapper;
+	@Autowired
+	XxDepositMapper depositMapper;
+	@Autowired
+	XxProductMapper productMapper;
+	@Autowired
+	XxCartMapper cartMapper;
+	@Autowired
+	XxCartItemMapper cartItemMapper;
+	
+	
+	@Override
+	public XxOrder build(XxCart cart, XxReceiver receiver, XxPaymentMethod paymentMethod, XxShippingMethod shippingMethod, XxCouponCode couponCode, boolean isInvoice, String invoiceTitle, boolean useBalance, String memo) {
+		XxOrder order = new XxOrder();
+		order.setShippingStatus(0);
+		order.setFee(new BigDecimal(0));
+		order.setPromotionDiscount(new BigDecimal(0));
+		order.setCouponDiscount(new BigDecimal(0));
+		order.setOffsetAmount(new BigDecimal(0));
+		order.setPoint(cart.getEffectivePoint());
+		order.setMemo(memo);
+		order.setMember(cart.getMember());
+
+		if (receiver != null) {
+			order.setConsignee(receiver.getConsignee());
+			order.setAreaName(receiver.getAreaName());
+			order.setAddress(receiver.getAddress());
+			order.setZipCode(receiver.getZipCode());
+			order.setPhone(receiver.getPhone());
+			order.setArea(receiver.getArea());
+		}
+
+		// 订单支付方式
+		if(paymentMethod!=null){
+			order.setPaymentMethod(paymentMethod.getId());
+			order.setPaymentMethodName(paymentMethod.getName());
+		}
+		// 设置运费
+		if (shippingMethod != null  ) {
+			BigDecimal freight = shippingMethod.calculateFreight(cart.getWeight());
+			order.setFreight(freight);
+			order.setShippingMethod(shippingMethod.getId());
+			order.setShippingMethodName(shippingMethod.getName());
+		} else {
+			order.setFreight(new BigDecimal(0));
+		}
+
+		// 设置订单项
+		List<XxOrderItem> orderItems = order.getOrderItems();
+		for (XxCartItem cartItem : cart.getCartItems()) {
+			if (cartItem != null && cartItem.getProduct() != null) {
+				XxProduct product = cartItem.getXxProduct();
+				XxOrderItem orderItem = new XxOrderItem();
+				orderItem.setProduct(cartItem.getProduct());
+				orderItem.setSn(product.getSn());
+				orderItem.setName(product.getName());
+				orderItem.setFullName(product.getFullName());
+				orderItem.setPrice(cartItem.getUnitPrice());
+				orderItem.setWeight(product.getWeight());
+				orderItem.setThumbnail(product.getThumbnail());
+				orderItem.setIsGift(false);
+				orderItem.setQuantity(cartItem.getQuantity());
+				orderItem.setShippedQuantity(0);
+				orderItem.setReturnQuantity(0);
+				orderItem.setXxProduct(product);
+				orderItem.setOrders(order.getId());
+				orderItems.add(orderItem);
+			}
+		}
+		order.setOrderItems(orderItems);
+		
+		if (isInvoice && StringUtils.isNotEmpty(invoiceTitle)) {
+			order.setIsInvoice(true);
+			order.setInvoiceTitle(invoiceTitle);
+			order.setTax(order.calculateTax());
+		} else {
+			order.setIsInvoice(false);
+			order.setTax(new BigDecimal(0));
+		}
+		
+
+		if (useBalance) {
+			XxMember member = cart.getXxMember();
+			if (member.getBalance().compareTo(order.getOrderMoney()) >= 0) {
+				order.setAmountPaid(order.getOrderMoney());
+			} else {
+				order.setAmountPaid(member.getBalance());
+			}
+		} else {
+			order.setAmountPaid(new BigDecimal(0));
+		}
+
+		if (order.getAmountPayable().compareTo(new BigDecimal(0)) == 0) {
+			order.setOrderStatus(1);
+			order.setPaymentStatus(2);
+		} else if (order.getAmountPayable().compareTo(new BigDecimal(0)) > 0 && order.getAmountPaid().compareTo(new BigDecimal(0)) > 0) {
+			order.setOrderStatus(1);
+			order.setPaymentStatus(1);
+		} else {
+			order.setOrderStatus(0);
+			order.setPaymentStatus(0);
+		}
+
+		if (paymentMethod != null && paymentMethod.getTimeout() != null && order.getPaymentStatus() == 0) {
+			order.setExpire(DateUtils.addMinutes(new Date(), paymentMethod.getTimeout()));
+		}
+
+		return order;
+	}
+
+	@Override
+	public List<XxProductProductImage> findProductImageByProductId(Long id) {
+		return productImageMapper.findProductImageByProductId(id);
+	}
+
+	@Override
+	public List<XxReceiver> findReceiversByMemberId(Long id) {
+		return receiverMapper.findReceiversByMemberId(id);
+	}
+
+	@Override
+	public void saveReceiver(XxReceiver receiver) {
+		receiverMapper.insert(receiver);
+	}
+
+	@Override
+	public XxReceiver findReceiversById(Long id) {
+		return receiverMapper.selectByPrimaryKey(id);
+	}
+
+	@Transactional
+	@Override
+	public XxOrder create(XxCart cart, XxReceiver receiver, XxPaymentMethod paymentMethod,
+			XxShippingMethod shippingMethod, XxCouponCode couponCode, boolean isInvoice, String invoiceTitle,
+			boolean useBalance, String memo, XxAdmin operator) {
+		XxOrder order = build(cart, receiver, paymentMethod, shippingMethod, couponCode, isInvoice, invoiceTitle, useBalance, memo);
+
+		order.setSn(GenerateSn.generate());
+		if (paymentMethod.getMethod() == 0) {
+			order.setLockExpire(DateUtils.addSeconds(new Date(), 20));
+			if(operator!=null)
+			order.setOperator(operator.getId());
+		}
+
+		if ( (order.getPaymentStatus() == 1 || order.getPaymentStatus() == 2)) {
+			order.setIsAllocatedStock(true);
+		} else {
+			order.setIsAllocatedStock(false);
+		}
+		order.setCreateDate(new Date());
+		order.setModifyDate(new Date());
+		orderMapper.insert(order);
+
+		XxOrderLog orderLog = new XxOrderLog();
+		orderLog.setType(0);
+		orderLog.setOperator("会员");
+		orderLog.setOrders(order.getId());
+		orderLog.setCreateDate(new Date());
+		orderLog.setModifyDate(new Date());
+		orderLogMapper.insert(orderLog);
+		
+		for(XxOrderItem oi : order.getOrderItems()){
+			oi.setCreateDate(new Date());
+			oi.setModifyDate(new Date());
+			oi.setOrders(order.getId());
+			orderItemMapper.insert(oi);
+		}
+
+		XxMember member = cart.getXxMember();
+		if (order.getAmountPaid().compareTo(new BigDecimal(0)) > 0) {
+			member.setBalance(member.getBalance().subtract(order.getAmountPaid()));
+			memberMapper.updateByPrimaryKeySelective(member);
+
+			XxDeposit deposit = new XxDeposit();
+			deposit.setType(operator != null ? 4 : 1);
+			deposit.setCredit(new BigDecimal(0));
+			deposit.setDebit(order.getAmountPaid());
+			deposit.setBalance(member.getBalance());
+			deposit.setOperator(operator != null ? operator.getUsername() : null);
+			deposit.setMember(member.getId());
+			deposit.setOrders(order.getId());
+			deposit.setCreateDate(new Date());
+			deposit.setModifyDate(new Date());
+			depositMapper.insert(deposit);
+		}
+
+		if ((order.getPaymentStatus() == 1 || order.getPaymentStatus() == 2)) {
+			for (XxOrderItem orderItem : order.getOrderItems()) {
+				if (orderItem != null) {
+					XxProduct product = orderItem.getXxProduct();
+					if (product != null && product.getStock() != null) {
+						product.setAllocatedStock(product.getAllocatedStock() + (orderItem.getQuantity() - orderItem.getShippedQuantity()));
+						productMapper.updateByPrimaryKeySelective(product);
+					}
+				}
+			}
+		}
+		// 清空购物车项
+		List<XxCartItem> list = cartItemMapper.findCartItemsByCartId(cart.getId());
+		for(XxCartItem ci : list){
+			cartItemMapper.deleteByPrimaryKey(ci.getId());
+		}
+		// 清空购物车
+		cartMapper.deleteByPrimaryKey(cart.getId());
+		return order;
+	}
+
+	@Override
+	public XxOrder findOrderBySn(String sn) {
+		return orderMapper.findOrderBySn(sn);
+	}
+}

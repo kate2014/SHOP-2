@@ -1,0 +1,50 @@
+package com.shop.controller.webcontroller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.shop.entity.XxProduct;
+import com.shop.entity.XxProductCategory;
+import com.shop.service.websevice.HotGoodsService;
+import com.shop.service.websevice.ShopContentService;
+
+
+@Controller
+@RequestMapping("/shopContent")
+public class ShopContentController {
+	
+	@Autowired
+	private ShopContentService shopContentService;
+	@Autowired
+	private HotGoodsService hotGoodsService;
+	
+	//处理商品信息
+	/**
+	 * 
+	 * @param id 获得的商品ID
+	 * @return
+	 */
+	@RequestMapping("/shop")
+	public String shopContent(@RequestParam Long id,Model model){
+		System.out.println(id);
+		List<XxProductCategory> list=hotGoodsService.selectProductCategroy();
+		model.addAttribute("list",list);
+		XxProductCategory xxpc=shopContentService.bigTagName(id);
+//		System.out.println("++++++bigtagname"+listbig.get(0).getId());
+//		System.out.println("++++++bigtagname"+listbig.get(0).getName());
+		model.addAttribute("xxpc",xxpc);//大标签
+		List<XxProductCategory> listsmall = shopContentService.smallTagName(id);
+		model.addAttribute("xxpcs",listsmall.get(0));
+		
+		
+		XxProduct xxProduct = shopContentService.productContent(id);
+		model.addAttribute("xxProduct",xxProduct);
+		
+		return "shop/shopContent";
+	}
+}

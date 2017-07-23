@@ -1,0 +1,115 @@
+package com.shop.controller.backorder;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxMemberRank;
+import com.shop.service.backorder.DeliveryOrderService;
+import com.shop.service.backstage.UtilsService;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/deliveryManage")
+public class DeliveryManageController {
+	@Autowired
+	DeliveryOrderService deliveryorder;
+	@Autowired
+	UtilsService utilService;
+  
+	@RequestMapping("/todeliveryManage")
+	public String todeliveryManage(Model model,Integer page,Integer size){
+		if(page==null){
+			page=1;
+		}
+		if(size==null){
+			size=2;
+		}
+		Page<Map<String,Object>> pages=new Page<>();
+		Map<String,Object> map = new HashMap<>();
+		map.put("index", (page-1)*size);
+		map.put("num",size);
+		List<Map<String,Object>>  list=deliveryorder.getMember(map);
+		int total = deliveryorder.selectMemberCount();
+		pages.setPage(page);
+		pages.setRows(list);
+		pages.setSize(size);
+		pages.setTotal(total);
+		
+		model.addAttribute("page", pages);
+		return "backstage/order/deliverymanage";
+	}
+	@RequestMapping("/deliverymanageadd")
+	public String add(){
+		return "backstage/order/deliverymanageadd";
+	}
+	@RequestMapping("/getuser")
+	public String getuser(XxDeliveryCenter xxdeliverycenter){
+		xxdeliverycenter.setCreateDate(new Date());
+		xxdeliverycenter.setModifyDate(new Date());
+		String address=deliveryorder.getAreaName(xxdeliverycenter.getArea());
+		xxdeliverycenter.setAreaName(address);
+		if(xxdeliverycenter.getIsDefault()==null){
+			xxdeliverycenter.setIsDefault(false);
+		}
+		deliveryorder.insert(xxdeliverycenter);
+		return "redirect:todeliveryManage";
+	}
+	@RequestMapping("/delete")
+	public List<XxDeliveryCenter> delete(String str){
+		utilService.deleteByIds(str, XxDeliveryCenter.class, "id");
+		List<XxDeliveryCenter> list=deliveryorder.findAll();
+		return list;
+	}
+	@RequestMapping("/edit")
+	public String edit(XxDeliveryCenter deliverycenter){
+		System.out.println(deliverycenter.getName());
+		System.out.println(deliverycenter.getIsDefault());
+		Long id=deliverycenter.getArea();
+		System.out.println(id);
+		String address=deliveryorder.getAreaName(deliverycenter.getArea());
+		deliverycenter.setAreaName(address);
+		deliveryorder.update(deliverycenter);
+		return "redirect:todeliveryManage";
+	}
+	@RequestMapping("/edit1/{id}")
+	public String edit1(@PathVariable Long id,Model model){
+		XxDeliveryCenter deliverycenter=deliveryorder.findidByid(id);
+		List<Map<String,Object>> list=deliveryorder.selectByid(id);
+		model.addAttribute("deliverycenter",list);
+		return "backstage/order/deliverymanageedit";
+		}
+	@RequestMapping("update")
+	public String update(XxDeliveryCenter deliverycenter){
+		deliveryorder.insert(deliverycenter);
+		return "redirect:todeliveryManage";
+	}
+	@RequestMapping("/showdeliveryByCount")
+	public String showMemberByCount(@RequestParam(value="rows",defaultValue="5")int size,@RequestParam(value="page",defaultValue="1")int page,Model model){
+		int total = deliveryorder.selectMemberCount();
+		Page<Map<String,Object>> pages=new Page<>();
+		Map<String,Object> map = new HashMap<>();
+		System.out.println(page+"asdasdasddddddddddddddddddddddd00");
+		System.out.println(size+"0000000000000000000000000000000000");
+		map.put("index", (page-1)*size);
+		map.put("num",size);
+		List<Map<String,Object>> list = deliveryorder.getMember(map);
+		pages.setPage(page);
+		pages.setRows(list);
+		pages.setSize(size);
+		pages.setTotal(total);
+		model.addAttribute(pages);
+		System.out.println(list.size()+"sdasdasdddddddddddddddddddddddddddddddddddddddw11111=============");
+		return "backstage/order/deliverymanage";
+    }
+}

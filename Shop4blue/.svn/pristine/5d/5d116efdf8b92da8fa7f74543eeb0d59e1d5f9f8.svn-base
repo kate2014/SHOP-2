@@ -1,0 +1,30 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxProductNotifyMapper;
+import com.shop.entity.XxProductNotify;
+import com.shop.entity.XxProductNotifyExample;
+
+@Service
+public class GoodsMessageServiceImpl implements GoodsMessageService {
+
+	@Resource
+	private XxProductNotifyMapper xpnm;
+	@Override
+	public List<XxProductNotify> getAll(Map<String,Object> map) {
+		List<XxProductNotify> list=xpnm.getAll(map);
+        return list;
+	}
+	@Override
+	public int selectcount() {
+            int size = xpnm.countByExample(new XxProductNotifyExample());
+		return size;
+	}
+
+}

@@ -1,0 +1,9 @@
+package com.shop.service.backstage;
+
+import com.shop.entity.XxAdmin;
+
+public interface AdminService {
+	
+	public void updatePassword(XxAdmin admin);
+
+}

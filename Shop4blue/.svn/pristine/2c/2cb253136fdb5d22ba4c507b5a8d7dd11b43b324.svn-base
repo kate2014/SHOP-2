@@ -1,0 +1,53 @@
+package com.shop.controller.backstage;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.shop.entity.XxAdmin;
+import com.shop.service.backstage.LoginService;
+
+/**
+ * 简单登录
+ * @author ddj
+ *
+ */
+@Controller
+@RequestMapping("/")
+public class Login4BackController {
+
+	@RequestMapping("/tologin")
+	public String toLogin(HttpSession session) {
+		session.removeAttribute("admin");
+		return "backstage/login";
+	}
+
+	@Autowired
+	LoginService loginService;
+
+	@RequestMapping("/login")
+	public String login(XxAdmin admin, HttpSession session,HttpServletRequest request) {
+		if (admin.getUsername() != null && admin.getUsername() != "" && admin.getPassword() != null
+				&& admin.getPassword() != "") {
+			XxAdmin ad = loginService.login(admin);
+			if (ad != null){
+				session.setAttribute("admin", ad);
+				return "redirect:index";
+			}
+		}
+		return "redirect:tologin";
+		
+
+	}
+	
+	@RequestMapping("/index")
+	public String index(){
+		return "backstage/index";
+	}
+	
+	
+
+}

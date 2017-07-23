@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxAttributeMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxAttribute" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="property_index" property="propertyIndex" jdbcType="INTEGER" />
+    <result column="product_category" property="productCategory" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_date, modify_date, orders, name, property_index, product_category
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxAttributeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from xx_attribute
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from xx_attribute
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxAttributeExample" >
+    delete from xx_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxAttribute" >
+    insert into xx_attribute (id, create_date, modify_date, 
+      orders, name, property_index, 
+      product_category)
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{orders,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{propertyIndex,jdbcType=INTEGER}, 
+      #{productCategory,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxAttribute" >
+    insert into xx_attribute
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="modifyDate != null" >
+        modify_date,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="propertyIndex != null" >
+        property_index,
+      </if>
+      <if test="productCategory != null" >
+        product_category,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyIndex != null" >
+        #{propertyIndex,jdbcType=INTEGER},
+      </if>
+      <if test="productCategory != null" >
+        #{productCategory,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxAttributeExample" resultType="java.lang.Integer" >
+    select count(*) from xx_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_attribute
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orders != null" >
+        orders = #{record.orders,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyIndex != null" >
+        property_index = #{record.propertyIndex,jdbcType=INTEGER},
+      </if>
+      <if test="record.productCategory != null" >
+        product_category = #{record.productCategory,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_attribute
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      orders = #{record.orders,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      property_index = #{record.propertyIndex,jdbcType=INTEGER},
+      product_category = #{record.productCategory,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.entity.XxAttribute" >
+    update xx_attribute
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyIndex != null" >
+        property_index = #{propertyIndex,jdbcType=INTEGER},
+      </if>
+      <if test="productCategory != null" >
+        product_category = #{productCategory,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.entity.XxAttribute" >
+    update xx_attribute
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      orders = #{orders,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      property_index = #{propertyIndex,jdbcType=INTEGER},
+      product_category = #{productCategory,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="XxAttributeResultMap" type="com.shop.entity.XxAttribute" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="property_index" property="propertyIndex" jdbcType="INTEGER" />
+    <result column="product_category" property="productCategory" jdbcType="BIGINT" />
+    <association property="xxProductCategory" javaType="com.shop.entity.XxProductCategory">
+    	<id column="id1" property="id" jdbcType="BIGINT" />
+	    <result column="create_date1" property="createDate" jdbcType="TIMESTAMP" />
+	    <result column="modify_date1" property="modifyDate" jdbcType="TIMESTAMP" />
+	    <result column="orders1" property="orders" jdbcType="INTEGER" />
+	    <result column="grade" property="grade" jdbcType="INTEGER" />
+	    <result column="name1" property="name" jdbcType="VARCHAR" />
+	    <result column="seo_description" property="seoDescription" jdbcType="VARCHAR" />
+	    <result column="seo_keywords" property="seoKeywords" jdbcType="VARCHAR" />
+	    <result column="seo_title" property="seoTitle" jdbcType="VARCHAR" />
+	    <result column="tree_path" property="treePath" jdbcType="VARCHAR" />
+	    <result column="parent" property="parent" jdbcType="BIGINT" />
+    </association>
+    <collection property="xxAttributeOptions" ofType="com.shop.entity.XxAttributeOption">
+    	<result column="attribute" property="attribute" jdbcType="BIGINT" />
+	    <result column="options" property="options" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <select id="selectAll" resultMap="XxAttributeResultMap" parameterType="map">
+  	SELECT
+		a.*, 
+		b.id id1,
+		b.create_date create_date1,
+		b.modify_date modify_date1,
+		b.orders orders1,
+		b.grade grade,
+		b.name name1,
+		b.seo_description seo_description,
+		b.seo_keywords seo_keywords,
+		b.seo_title seo_title,
+		b.tree_path tree_path,
+		b.parent parent,
+		c.*
+	FROM
+		xx_attribute a
+	LEFT JOIN xx_product_category b ON a.product_category = b.id
+	LEFT JOIN xx_attribute_option c ON a.id = c.attribute
+	where a.del=0
+  </select>
+  <insert id="insertAttribute" parameterType="com.shop.entity.XxAttribute" useGeneratedKeys="true" keyProperty="id">
+  	INSERT INTO xx_attribute (
+		NAME,
+		orders,
+		product_category,
+		create_date,
+		modify_date,
+		property_index
+	)
+	VALUES
+		(
+			#{name,jdbcType=VARCHAR},
+			#{orders,jdbcType=INTEGER},
+			#{productCategory,jdbcType=BIGINT},
+			now(),
+			now(),
+			0
+		)
+  </insert>
+  <select id="getAll" resultType="int">
+  	select count(*) from xx_attribute
+  </select>
+</mapper>

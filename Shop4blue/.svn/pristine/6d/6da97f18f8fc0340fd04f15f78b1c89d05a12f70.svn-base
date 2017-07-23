@@ -1,0 +1,24 @@
+package com.shop.service.backstage;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxMemberMapper;
+@Service
+public class MemberManagerServiceImpl implements MemberManagerService {
+	@Autowired
+	private XxMemberMapper xmm;
+
+	public List<Map<String, Object>> getMember(Map<String, Object> map) {
+		
+		List<Map<String,Object>> list =  xmm.selectMemberByTag(map);
+		
+		return list;
+	}
+
+}

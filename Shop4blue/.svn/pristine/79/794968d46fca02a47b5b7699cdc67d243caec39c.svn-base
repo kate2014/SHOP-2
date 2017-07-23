@@ -1,0 +1,44 @@
+package com.shop.service.websevice;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shop.dao.XxProductMapper;
+import com.shop.entity.XxProduct;
+
+
+@Service
+public class ShopServiceImpl implements ShopService{
+
+	@Autowired
+	private XxProductMapper xxProductMapper;
+	
+	/**
+	 * 查询商品 显示
+	 */
+	@Override
+	public List<XxProduct> selectShop(Long id) {
+		List<XxProduct> list=xxProductMapper.selectShopByList(id);
+		return list;
+	}
+
+	@Override
+	public List<XxProduct> selectShopBySort(String sort,String type) {
+		Map map=new HashMap();
+		String str[]=sort.split("-");
+		map.put("id", Long.parseLong(type));
+		map.put("type1", str[0]);
+		map.put("type2", str[1]);
+		System.out.println(Long.parseLong(type)+","+str[0]+","+str[1]);
+		return xxProductMapper.selectShopByType(map);
+	}
+
+	
+
+	
+}

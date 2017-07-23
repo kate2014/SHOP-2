@@ -1,0 +1,11 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+
+import com.shop.entity.XxProductCategory;
+
+public interface ProductCategoryService {
+	
+	public List<XxProductCategory> getAll();
+
+}

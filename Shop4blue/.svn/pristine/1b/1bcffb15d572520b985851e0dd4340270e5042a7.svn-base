@@ -1,0 +1,13 @@
+package com.shop.service.backstage;
+
+import org.springframework.stereotype.Service;
+
+/**
+ * 咨询管理Service
+ * @author Administrator
+ *
+ */
+@Service
+public class ConsultServiceImpl implements ConsultService {
+
+}

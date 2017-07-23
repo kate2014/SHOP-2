@@ -1,0 +1,287 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>添加会员 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.js"></script>
+<link href="${pageContext.request.contextPath}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.tools.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.lSelect.js"></script>
+
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.validate.js"></script> --%>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/input.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/datePicker/WdatePicker.js"></script>
+<!-- <script type="text/javascript">
+   
+
+$().ready(function() {
+	alert(1);
+	var $inputForm = $("#inputForm");
+	var $areaId = $("#areaId");
+	// 地区选择
+	$areaId.lSelect({
+		url: "/Shop4blue/admin/common/area.jhtml"
+	});
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			username: {
+				required: true,
+				pattern: /^[0-9a-z_A-Z\u4e00-\u9fa5]+$/,
+				minlength: 2,
+				maxlength: 20,
+				remote: {
+					url: "check_username.jhtml",
+					cache: false
+				}
+			},
+			password:{
+				required: true,
+				pattern: /^[^\s&\"<>]+$/,
+				minlength: 4,
+				maxlength: 20
+			},
+			rePassword: {
+				required: true,
+				equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+					,remote: {
+						url: "check_email.jhtml",
+						cache: false
+					}
+			},
+			point: {
+				required: true,
+				digits: true
+			},
+			balance: {
+				required: true,
+				min: 0,
+				decimal: {
+					integer: 12,
+					fraction: 2
+				}
+			}
+		},
+		messages: {
+			username: {
+				pattern: "非法字符",
+				remote: "用户名被禁用或已存在"
+			},
+			password: {
+				pattern: "非法字符"
+			}
+				,email: {
+					remote: "已存在"
+				}
+		}
+	});
+
+}); 
+</script> -->
+<script type="text/javascript">
+$(function(){
+	
+	var $inputForm = $("#inputForm");
+	var $areaId = $("#areaId");
+	// 地区选择
+	$areaId.lSelect({
+		url: "${pageContext.request.contextPath}/area/area"
+	});
+	
+	
+    $("#tj").click(function(){
+           var name = $("#username").val();
+           var password = $("#password").val();
+           var rePassword = $("#rePassword").val();
+           var email = $("#email").val();
+           var point = $("#point").val();
+           var balance = $("#balance").val();
+           if(name!=""&&password!=""&&rePassword!=""&&email!=""&&point!=""&&balance!=""){
+        	   if(password==rePassword){
+        		  $("#inputForm").submit();
+        	   }else{
+        		   alert("两次输入的密码不一致");
+        	   }
+           }else{
+        	   alert("请将带星号的项填写完整");
+           }
+           
+           
+    })
+
+})
+
+
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="${pageContext.request.contextPath }/page/backstage/index.jsp">首页</a> &raquo; 添加会员
+	</div>
+	<form id="inputForm" action="${pageContext.request.contextPath }/memberm/saveMember" method="post">
+	
+		<ul id="tab" class="tab">
+			<li>
+				<input type="button" value="基本信息" />
+			</li>
+				<li>
+					<input type="button" value="个人资料" />
+				</li>
+		</ul>
+		<table class="input tabContent">
+			<tr>
+				<th>
+					<span class="requiredField">*</span>用户名:
+				</th>
+				<td>
+					<input type="text" name="username" id="username" class="text" maxlength="20" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>密码:
+				</th>
+				<td>
+					<input type="password" id="password" name="password" class="text" maxlength="20" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>确认密码:
+				</th>
+				<td>
+					<input type="password" name="rePassword" id="rePassword" class="text" maxlength="20" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>E-mail:
+				</th>
+				<td>
+					<input type="text" name="email" id="email"class="text" maxlength="200" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>积分:
+				</th>
+				<td>
+					<input type="text" name="point" id="point" class="text" value="0" maxlength="9" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>余额:
+				</th>
+				<td>
+					<input type="text" name="balance" id="balance" class="text" value="0" maxlength="16" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					会员等级:
+				</th>
+				<td>
+					<select name="memberRank">
+					<c:forEach items="${rank }" var="r">
+					   <option value="${r.id }" ${r.id==1?'selected':'' }>${r.name }</option>
+					</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					设置:
+				</th>
+				<td>
+					<label>
+						<input type="checkbox" name="isEnabled" value="true" checked="checked" />是否启用
+						<input type="hidden" name="_isEnabled" value="false" />
+					</label>
+				</td>
+			</tr>
+		</table>
+			<table class="input tabContent">
+					<tr>
+						<th>
+							姓名:
+						</th>
+						<td>
+								<input type="text" name="memberAttribute_1" class="text" maxlength="200" />
+						</td>
+					</tr>
+					<tr>
+						<th>
+							性别:
+						</th>
+						<td>
+								<span class="fieldSet">
+										<label>
+											<input type="radio" name="memberAttribute_2" value="male" />男
+										</label>
+										<label>
+											<input type="radio" name="memberAttribute_2" value="female" />女
+										</label>
+								</span>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							出生日期:
+						</th>
+						<td>
+								<input type="text" name="memberAttribute_3" class="text Wdate" onfocus="WdatePicker();" />
+						</td>
+					</tr>
+					<tr>
+						<th>
+							地区:
+						</th>
+						<td>
+								<span class="fieldSet">
+									<input type="hidden" id="areaId" name="area" value="${xm.area==null?'1':xm.area }" treePath="${xm.tree_path }" />
+								</span>
+						</td>
+						<%-- <td>
+								<span class="fieldSet">
+									<input type="hidden" id="areaId" name="area" value="${xm.area }" treePath="${xm.tree_path }" />
+								</span>
+						</td> --%>
+					</tr>
+					<tr>
+						<th>
+							地址:
+						</th>
+						<td>
+								<input type="text" name="memberAttribute_5" class="text" maxlength="200" />
+						</td>
+					</tr>
+			</table>
+		<table class="input">
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="button" id ="tj" class="button" value="确&nbsp;&nbsp;定" />
+					<input type="button" id="backButton" class="button" value="返&nbsp;&nbsp;回" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

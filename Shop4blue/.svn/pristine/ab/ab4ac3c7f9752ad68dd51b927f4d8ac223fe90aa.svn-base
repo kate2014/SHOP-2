@@ -1,0 +1,13 @@
+package com.shop.controller.backstage;
+
+import org.springframework.stereotype.Controller;
+
+/**
+ * 会员等级
+ * @author Administrator
+ *
+ */
+@Controller
+public class MemberRankController {
+
+}

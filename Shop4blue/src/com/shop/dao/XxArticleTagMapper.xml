@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxArticleTagMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxArticleTagKey" >
+    <id column="articles" property="articles" jdbcType="BIGINT" />
+    <id column="tags" property="tags" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    articles, tags
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxArticleTagExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_article_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.shop.entity.XxArticleTagKey" >
+    delete from xx_article_tag
+    where articles = #{articles,jdbcType=BIGINT}
+      and tags = #{tags,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxArticleTagExample" >
+    delete from xx_article_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxArticleTagKey" >
+    insert into xx_article_tag (articles, tags)
+    values (#{articles,jdbcType=BIGINT}, #{tags,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxArticleTagKey" >
+    insert into xx_article_tag
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articles != null" >
+        articles,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="articles != null" >
+        #{articles,jdbcType=BIGINT},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxArticleTagExample" resultType="java.lang.Integer" >
+    select count(*) from xx_article_tag
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_article_tag
+    <set >
+      <if test="record.articles != null" >
+        articles = #{record.articles,jdbcType=BIGINT},
+      </if>
+      <if test="record.tags != null" >
+        tags = #{record.tags,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_article_tag
+    set articles = #{record.articles,jdbcType=BIGINT},
+      tags = #{record.tags,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

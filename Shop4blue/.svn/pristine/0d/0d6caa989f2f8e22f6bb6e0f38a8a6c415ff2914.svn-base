@@ -1,0 +1,21 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxParameterGroupMapper;
+import com.shop.entity.XxParameterGroup;
+
+@Service
+public class ParameterServiceImpl implements ParameterService {
+	
+	@Autowired 
+	XxParameterGroupMapper parameterGroupMapper;
+	@Override
+	public List<XxParameterGroup> findParams(){
+		return parameterGroupMapper.findParms();
+	}
+
+}

@@ -1,0 +1,59 @@
+package com.shop.service.backorder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxDeliveryCenterMapper;
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryCenterExample;
+@Service
+public class DeliveryOrderServiceImpl implements DeliveryOrderService {
+	 @Autowired  
+	 XxDeliveryCenterMapper deliveryCenter;
+	@Override
+	public List<XxDeliveryCenter> findAll() {
+		List <XxDeliveryCenter> delevercenter=deliveryCenter.selectByExample(new XxDeliveryCenterExample());
+		return delevercenter;
+	}
+	@Override
+	public void insert(XxDeliveryCenter xxdeliverycenter) {
+		deliveryCenter.insert(xxdeliverycenter);
+	}
+	@Override
+	public XxDeliveryCenter findidByid(Long id) {
+		return deliveryCenter.selectByPrimaryKey(id);
+	}
+	@Override
+	public void update(XxDeliveryCenter deliverycenter) {
+		
+		deliveryCenter.updateByPrimaryKeySelective(deliverycenter);
+	}
+	@Override
+	public int selectMemberCount() {
+		HashMap<String, Object> map = deliveryCenter.selectDeliveryCount();
+		Long count = (Long) map.get("count");
+		int intValue = count.intValue();
+		return intValue;
+	}
+	@Override
+	public List<Map<String, Object>> getMember(Map<String, Object> map) {
+		List<Map<String, Object>> list = deliveryCenter.selectDeliveryByTag(map);
+		return list;
+	}
+	@Override
+	public List<Map<String,Object>> selectByid(Long id) {
+		List<Map<String, Object>> list=deliveryCenter.selectByPrimaryId(id);
+		return list;
+	}
+	@Override
+	public String getAreaName(Long area) {
+		String address=deliveryCenter.getAreaname(area);
+		return address;
+	}
+
+    
+}

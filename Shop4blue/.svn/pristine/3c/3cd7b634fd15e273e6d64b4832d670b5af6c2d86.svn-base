@@ -1,0 +1,54 @@
+package com.shop.controller.webcontroller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderItem;
+import com.shop.service.backorder.Order4ManageService;
+import com.shop.service.websevice.MyOrdersService;
+
+@Controller
+@RequestMapping("/myorders")
+public class MyOrdersController {
+	
+	@Autowired
+	private Order4ManageService orderManagerService;
+	@Resource
+	private MyOrdersService myOrdersService;
+	@Resource
+	private Order4ManageService order4ManageService;
+	@RequestMapping("/selectall")
+	public String selectAll(Long userid,Model model){
+		List<XxOrder> orders=myOrdersService.getAllBymember(userid);
+		for(XxOrder x:orders){
+			List<XxOrderItem> orderItem =order4ManageService.selectByOrderId(x.getId());
+			x.setOrderItems(orderItem);
+		}
+		model.addAttribute("orders", orders);
+		return "shop/personalcenter/myorders";
+	}
+	@RequestMapping("/check")
+	public String check(Model model,Long id){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		order.setOrderItems(orderItem);
+		model.addAttribute("order", order);
+		return "shop/personalcenter/myorderscheck";
+	}
+	@RequestMapping("/updateorder")
+	public @ResponseBody XxOrder updateOrder(Long id){
+		XxOrder order=orderManagerService.selectById(id);
+		order.setOrderStatus(3);
+		orderManagerService.updateOrder(order);
+		return order;
+	}
+
+}

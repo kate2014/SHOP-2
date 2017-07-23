@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="../css/css02.css"/>
+    <script src="../js/js02.js"></script>
+</head>
+<body>
+<div id="head">
+    <div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">订单列表</a>
+        </span>
+    </div>
+</div>
+<div id="bodyer">
+    <div class="btn-group btn-default-dao">
+        <a href="" id="btn-first" class="btn">发送到货通知</a>
+        <a href="" class="btn"><span id="shanchu"></span>删除</a>
+        <a href="" class="btn"><span id="shuaxin"></span>刷新</a>
+        <a href="" class="btn">到货通知筛选<span class="xiasanjiao"></span></a>
+        <a  href="#" class="btn">每页显示<span class="xiasanjiao"></span></a>
+    </div>
+    <form class="search">
+        <input type="search"/>
+        <button type="submit" class="btn-search"></button>
+    </form>
+    <table>
+        <tr>
+            <th><input type="checkbox" id="selAll" onclick="selectAll();"/></th>
+            <th>商品名称</th>
+            <th>会员</th>
+            <th>E-mail</th>
+            <th>登记日期</th>
+            <th>通知日期</th>
+            <th>状态</th>
+            <th>已发送</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>商品名称</td>
+            <td>会员</td>
+            <td>E-mail</td>
+            <td>登记日期</td>
+            <td>通知日期</td>
+            <td>状态</td>
+            <td>已发送</td>
+        </tr>
+    </table>
+    <ul class="pagination">
+        <li><a href="">首页</a></li>
+        <li class="active"><a href="">&laquo;上一页</a></li>
+        <li><a href="">...</a></li>
+        <li><a href="">下一页&raquo;</a></li>
+        <li><a href="">尾页</a></li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+package com.shop.service.backorder;
+
+import java.util.List;
+import java.util.Map;
+
+import com.shop.entity.XxDeliveryCenter;
+
+public interface DeliveryOrderService {
+	public List<XxDeliveryCenter> findAll();
+	public void insert(XxDeliveryCenter xxdeliverycenter);
+	public XxDeliveryCenter findidByid(Long id);
+	public void update(XxDeliveryCenter deliverycenter);
+	public int selectMemberCount();
+	public List<Map<String, Object>> getMember(Map<String, Object> map);
+	public List<Map<String,Object>> selectByid(Long id);
+}

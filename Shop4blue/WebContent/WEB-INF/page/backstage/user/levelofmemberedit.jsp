@@ -1,0 +1,144 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>编辑会员等级 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+<link href="${pageContext.request.contextPath}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.tools.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/input.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	var $amount = $("#amount");
+	var $isSpecial = $("#isSpecial");
+	
+	
+	// 特殊会员等级修改
+	$isSpecial.click(function() {
+		if ($(this).prop("checked")) {
+			$amount.val("").prop("disabled", true);
+		} else {
+			$amount.prop("disabled", false);
+		}
+	});
+	
+	// 表单验证
+	$inputForm.validate({
+		rules: {
+			name: {
+				required: true,
+				remote: {
+					url: "check_name.jhtml?previousName=%E8%B4%B5%E5%AE%BE%E4%BC%9A%E5%91%98",
+					cache: false
+				}
+			},
+			scale: {
+				required: true,
+				min: 0,
+				decimal: {
+					integer: 3,
+					fraction: 3
+				}
+			},
+			amount: {
+				required: true,
+				min: 0,
+				decimal: {
+					integer: 12,
+					fraction: 2
+				},
+				remote: {
+					url: "check_amount.jhtml?previousAmount=",
+					cache: false
+				}
+			}
+		},
+		messages: {
+			name: {
+				remote: "已存在"
+			},
+			amount: {
+				remote: "已存在"
+			}
+		}
+	});
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="">首页</a> &raquo; 编辑会员等级
+	</div>
+	<form id="inputForm" action="${pageContext.request.contextPath}/memberRank/edit" method="post">
+		<input type="hidden" name="id" value="${memberrank.id}" />
+		<table class="input">
+			<tr>
+				<th>
+					<span class="requiredField">*</span>名称:
+				</th>
+				<td>
+					<input type="text" name="name" class="text" value="${memberrank.name}" maxlength="100" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>优惠比例:
+				</th>
+				<td>
+					<input type="text" name="scale" class="text" value="${memberrank.scale}" maxlength="7" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					<span class="requiredField">*</span>消费金额:
+				</th>
+				<td>
+					<input type="text" id="amount" name="amount" class="text" value="${memberrank.amount}" maxlength="16" disabled="disabled" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					设置:
+				</th>
+				<td>
+				${l.isDefault}
+					<label>
+					<c:if test="${memberrank.isDefault=='true'}">
+						<input type="checkbox" name="isDefault" value="true"  checked="checked"/>是否默认
+							</c:if>
+						<c:if test="${memberrank.isDefault!='true'}">
+						<input type="checkbox" name="isDefault" value="true" />是否默认
+							</c:if>
+							</label>
+					<label title="特殊会员等级不随消费金额变化">
+					<c:if test="${memberrank.isSpecial=='true'}">
+						<input type="checkbox" id="isSpecial" name="isSpecial" value="true" checked="checked" />是否特殊
+						</c:if>
+						<c:if test="${memberrank.isSpecial!='true'}">
+						<input type="checkbox" id="isSpecial" name="isSpecial" value="true" />是否特殊
+						</c:if>
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="确&nbsp;&nbsp;定" />
+					<input type="button" id="backButton" class="button" value="返&nbsp;&nbsp;回" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

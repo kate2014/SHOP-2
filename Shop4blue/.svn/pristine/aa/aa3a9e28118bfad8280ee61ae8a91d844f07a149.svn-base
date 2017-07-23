@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxDepositMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxDeposit" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="credit" property="credit" jdbcType="DECIMAL" />
+    <result column="debit" property="debit" jdbcType="DECIMAL" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="member" property="member" jdbcType="BIGINT" />
+    <result column="orders" property="orders" jdbcType="BIGINT" />
+    <result column="payment" property="payment" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_date, modify_date, balance, credit, debit, memo, operator, type, member, 
+    orders, payment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxDepositExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_deposit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from xx_deposit
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from xx_deposit
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxDepositExample" >
+    delete from xx_deposit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxDeposit" >
+    insert into xx_deposit (id, create_date, modify_date, 
+      balance, credit, debit, 
+      memo, operator, type, 
+      member, orders, payment
+      )
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{balance,jdbcType=DECIMAL}, #{credit,jdbcType=DECIMAL}, #{debit,jdbcType=DECIMAL}, 
+      #{memo,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{member,jdbcType=BIGINT}, #{orders,jdbcType=BIGINT}, #{payment,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxDeposit" >
+    insert into xx_deposit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="modifyDate != null" >
+        modify_date,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="debit != null" >
+        debit,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="member != null" >
+        member,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=DECIMAL},
+      </if>
+      <if test="debit != null" >
+        #{debit,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="member != null" >
+        #{member,jdbcType=BIGINT},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=BIGINT},
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxDepositExample" resultType="java.lang.Integer" >
+    select count(*) from xx_deposit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_deposit
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.credit != null" >
+        credit = #{record.credit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.debit != null" >
+        debit = #{record.debit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.member != null" >
+        member = #{record.member,jdbcType=BIGINT},
+      </if>
+      <if test="record.orders != null" >
+        orders = #{record.orders,jdbcType=BIGINT},
+      </if>
+      <if test="record.payment != null" >
+        payment = #{record.payment,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_deposit
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      balance = #{record.balance,jdbcType=DECIMAL},
+      credit = #{record.credit,jdbcType=DECIMAL},
+      debit = #{record.debit,jdbcType=DECIMAL},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      member = #{record.member,jdbcType=BIGINT},
+      orders = #{record.orders,jdbcType=BIGINT},
+      payment = #{record.payment,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.entity.XxDeposit" >
+    update xx_deposit
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=DECIMAL},
+      </if>
+      <if test="debit != null" >
+        debit = #{debit,jdbcType=DECIMAL},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="member != null" >
+        member = #{member,jdbcType=BIGINT},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=BIGINT},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.entity.XxDeposit" >
+    update xx_deposit
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      balance = #{balance,jdbcType=DECIMAL},
+      credit = #{credit,jdbcType=DECIMAL},
+      debit = #{debit,jdbcType=DECIMAL},
+      memo = #{memo,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      member = #{member,jdbcType=BIGINT},
+      orders = #{orders,jdbcType=BIGINT},
+      payment = #{payment,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

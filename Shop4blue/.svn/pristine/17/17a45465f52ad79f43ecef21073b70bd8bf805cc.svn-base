@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxDeliveryTemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxDeliveryTemplate" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="background" property="background" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="INTEGER" />
+    <result column="is_default" property="isDefault" jdbcType="BIT" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="offsetx" property="offsetx" jdbcType="INTEGER" />
+    <result column="offsety" property="offsety" jdbcType="INTEGER" />
+    <result column="width" property="width" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.shop.entity.XxDeliveryTemplate" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_date, modify_date, background, height, is_default, memo, name, offsetx, 
+    offsety, width
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.shop.entity.XxDeliveryTemplateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from xx_delivery_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxDeliveryTemplateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_delivery_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from xx_delivery_template
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from xx_delivery_template
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxDeliveryTemplateExample" >
+    delete from xx_delivery_template
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxDeliveryTemplate" >
+    insert into xx_delivery_template (id, create_date, modify_date, 
+      background, height, is_default, 
+      memo, name, offsetx, 
+      offsety, width, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{background,jdbcType=VARCHAR}, #{height,jdbcType=INTEGER}, #{isDefault,jdbcType=BIT}, 
+      #{memo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{offsetx,jdbcType=INTEGER}, 
+      #{offsety,jdbcType=INTEGER}, #{width,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxDeliveryTemplate" >
+    insert into xx_delivery_template
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="modifyDate != null" >
+        modify_date,
+      </if>
+      <if test="background != null" >
+        background,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="isDefault != null" >
+        is_default,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="offsetx != null" >
+        offsetx,
+      </if>
+      <if test="offsety != null" >
+        offsety,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="background != null" >
+        #{background,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=INTEGER},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="offsetx != null" >
+        #{offsetx,jdbcType=INTEGER},
+      </if>
+      <if test="offsety != null" >
+        #{offsety,jdbcType=INTEGER},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxDeliveryTemplateExample" resultType="java.lang.Integer" >
+    select count(*) from xx_delivery_template where del=0
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_delivery_template
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.background != null" >
+        background = #{record.background,jdbcType=VARCHAR},
+      </if>
+      <if test="record.height != null" >
+        height = #{record.height,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDefault != null" >
+        is_default = #{record.isDefault,jdbcType=BIT},
+      </if>
+      <if test="record.memo != null" >
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.offsetx != null" >
+        offsetx = #{record.offsetx,jdbcType=INTEGER},
+      </if>
+      <if test="record.offsety != null" >
+        offsety = #{record.offsety,jdbcType=INTEGER},
+      </if>
+      <if test="record.width != null" >
+        width = #{record.width,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update xx_delivery_template
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      background = #{record.background,jdbcType=VARCHAR},
+      height = #{record.height,jdbcType=INTEGER},
+      is_default = #{record.isDefault,jdbcType=BIT},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      offsetx = #{record.offsetx,jdbcType=INTEGER},
+      offsety = #{record.offsety,jdbcType=INTEGER},
+      width = #{record.width,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_delivery_template
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      background = #{record.background,jdbcType=VARCHAR},
+      height = #{record.height,jdbcType=INTEGER},
+      is_default = #{record.isDefault,jdbcType=BIT},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      offsetx = #{record.offsetx,jdbcType=INTEGER},
+      offsety = #{record.offsety,jdbcType=INTEGER},
+      width = #{record.width,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.entity.XxDeliveryTemplate" >
+    update xx_delivery_template
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="background != null" >
+        background = #{background,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=INTEGER},
+      </if>
+      <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="offsetx != null" >
+        offsetx = #{offsetx,jdbcType=INTEGER},
+      </if>
+      <if test="offsety != null" >
+        offsety = #{offsety,jdbcType=INTEGER},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.shop.entity.XxDeliveryTemplate" >
+    update xx_delivery_template
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      background = #{background,jdbcType=VARCHAR},
+      height = #{height,jdbcType=INTEGER},
+      is_default = #{isDefault,jdbcType=BIT},
+      memo = #{memo,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      offsetx = #{offsetx,jdbcType=INTEGER},
+      offsety = #{offsety,jdbcType=INTEGER},
+      width = #{width,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.entity.XxDeliveryTemplate" >
+    update xx_delivery_template
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      background = #{background,jdbcType=VARCHAR},
+      height = #{height,jdbcType=INTEGER},
+      is_default = #{isDefault,jdbcType=BIT},
+      memo = #{memo,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      offsetx = #{offsetx,jdbcType=INTEGER},
+      offsety = #{offsety,jdbcType=INTEGER},
+      width = #{width,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selctExpressModel" parameterType="map" resultType="map">
+  select * from xx_delivery_template  where del=0 limit #{index},#{num}
+  </select>
+</mapper>

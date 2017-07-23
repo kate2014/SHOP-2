@@ -1,0 +1,12 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+import java.util.Map;
+
+public interface GoodManagerService {
+
+	List<Map<String, Object>> getProduct(Map<String, Object> map);
+
+	int selectProductCount();
+
+}

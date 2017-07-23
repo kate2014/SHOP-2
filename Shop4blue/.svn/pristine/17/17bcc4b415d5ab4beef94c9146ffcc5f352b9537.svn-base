@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="../css/css02.css"/>
+</head>
+<body>
+<div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">发货点列表</a> （共1条记录）
+        </span>
+</div>
+<div id="container">
+    <form action="">
+        <fieldset>
+            <lable>
+                <span class="bi">*</span>
+                名称：
+            </lable>
+            <input type="text"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                <span class="bi">*</span>
+            </lable>
+            联系人：
+            <input type="text"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                <span class="bi">*</span>
+                地区：
+                <select name="" id="">
+                    <option value="">请选择</option>
+                    <option value="">北京</option>
+                    <option value="">上海</option>
+                    <option value="">天津</option>
+                    <option value="">大连</option>
+                </select>
+            </lable>
+        </fieldset>
+        <fieldset>
+            <lable>
+                <span class="bi">*</span>
+                地址：
+            </lable>
+            <input type="text"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                邮编：
+            </lable>
+            <input type="text"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                电话：
+            </lable>
+            <input type="text"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                手机：
+            </lable>
+            <input type="text"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                是否默认：
+            </lable>
+            <input type="checkbox"/>
+        </fieldset>
+        <fieldset>
+            <lable>
+                备注：
+            </lable>
+            <input type="text"/>
+        </fieldset>
+        <input type="button" value="确定"/>
+        <input type="button" value="返回" src="发货点管理.html"/>
+    </form>
+</div>
+</body>
+</html>

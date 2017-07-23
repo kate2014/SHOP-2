@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="../css/css02.css"/>
+    <script src="../js/js02.js"></script>
+    <script src="../js/模态js.js"></script>
+</head>
+<body>
+<div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">发货点列表</a> （共1条记录）
+        </span>
+</div>
+<div id="bodyer">
+    <div id="container">
+        <div class="btn-group">
+            <a href="添加发货点.html" class="btn"><span id="tianjia"></span>添加</a>
+            <a href="" class="btn btn-default"><span id="shanchu"></span>删除</a>
+            <a href="" class="btn btn-default"><span id="shuaxin"></span>刷新</a>
+            <a href="" class="btn btn-default">每页显示<span class="xiasanjiao"></span></a>
+        </div>
+        <form class="search">
+            <input type="search"/>
+            <button type="submit" class="btn-search"></button>
+        </form>
+        <table>
+            <tr>
+                <th><input type="checkbox" id="selAll" onclick="selectAll();"/></th>
+                <th>名称</th>
+                <th>联系人</th>
+                <th>地区名称</th>
+                <th>地址</th>
+                <th>邮编</th>
+                <th>电话</th>
+                <th>手机</th>
+                <th>是否默认</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+                <td>北京发货中心</td>
+                <td>李晓明</td>
+                <td>北京市东城区</td>
+                <td>新建安天坛东路888号</td>
+                <td>100062</td>
+                <td>010-88888888</td>
+                <td>13888888888</td>
+                <td><span class="duihao"></span></td>
+                <td><a href="">[编辑]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+                <td>北京发货中心</td>
+                <td>李晓明</td>
+                <td>北京市东城区</td>
+                <td>新建安天坛东路888号</td>
+                <td>100062</td>
+                <td>010-88888888</td>
+                <td>13888888888</td>
+                <td><span class="duihao"></span></td>
+                <td><a href="">[编辑]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+                <td>北京发货中心</td>
+                <td>李晓明</td>
+                <td>北京市东城区</td>
+                <td>新建安天坛东路888号</td>
+                <td>100062</td>
+                <td>010-88888888</td>
+                <td>13888888888</td>
+                <td><span class="duihao"></span></td>
+                <td><a href="">[编辑]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+                <td>北京发货中心</td>
+                <td>李晓明</td>
+                <td>北京市东城区</td>
+                <td>新建安天坛东路888号</td>
+                <td>100062</td>
+                <td>010-88888888</td>
+                <td>13888888888</td>
+                <td><span class="duihao"></span></td>
+                <td><a href="">[编辑]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+                <td>北京发货中心</td>
+                <td>李晓明</td>
+                <td>北京市东城区</td>
+                <td>新建安天坛东路888号</td>
+                <td>100062</td>
+                <td>010-88888888</td>
+                <td>13888888888</td>
+                <td><span class="duihao"></span></td>
+                <td><a href="">[编辑]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+                <td>北京发货中心</td>
+                <td>李晓明</td>
+                <td>北京市东城区</td>
+                <td>新建安天坛东路888号</td>
+                <td>100062</td>
+                <td>010-88888888</td>
+                <td>13888888888</td>
+                <td><span class="duihao"></span></td>
+                <td><a href="">[编辑]</a></td>
+            </tr>
+        </table>
+        <ul class="pagination">
+            <li><a href="">首页</a></li>
+            <li class="active"><a href="">&laquo;上一页</a></li>
+            <li><a href="">...</a></li>
+            <li><a href="">下一页&raquo;</a></li>
+            <li><a href="">尾页</a></li>
+        </ul>
+    </div>
+</div>
+<div id="modal-1">
+    <div id="dailog" class="dailog">
+        <div id="modal-head">
+            <span id="cha"></span>
+            <p>添加发货点</p>
+        </div>
+        <div id="modal-1-1">
+
+            <form action="">
+                <fieldset>
+                    <lable>
+                        <span>*</span>
+                        名称：
+                    </lable>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        <span>*</span>
+                    </lable>
+                    联系人：
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        <span>*</span>
+                        地区：
+                        <select name="" id="">
+                            <option value="">--请选择--</option>
+                            <option value="">北京</option>
+                            <option value="">上海</option>
+                            <option value="">天津</option>
+                            <option value="">大连</option>
+                        </select>
+                    </lable>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        <span>*</span>
+                        地址：
+                    </lable>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        邮编：
+                    </lable>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        电话：
+                    </lable>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        手机：
+                    </lable>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        是否默认：
+                    </lable>
+                    <input type="checkbox"/>
+                </fieldset>
+                <fieldset>
+                    <lable>
+                        备注：
+                    </lable>
+                    <input type="text"/>
+                </fieldset>
+                <input type="submit" value="确定" class="modal-btn" id="okbtn"/>
+                <input type="button" value="取消" class="modal-btn" id="closebtn"/>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

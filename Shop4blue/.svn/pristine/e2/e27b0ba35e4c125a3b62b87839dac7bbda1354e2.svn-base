@@ -1,0 +1,85 @@
+package com.shop.controller.backorder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxRefunds;
+import com.shop.service.backorder.Order4ReturnMoneyService;
+import com.shop.service.backstage.UtilsService;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/orderReturn")
+public class Order4ReturnController {
+      @Autowired
+	   private Order4ReturnMoneyService orm;
+      @Autowired
+      private UtilsService us;
+	@RequestMapping("/returnMoney")
+	public String returnMoney(Model model,Integer page,Integer size){
+		 if(page==null){
+	 			page=1;
+	 		}
+	 		if(size==null){
+	 			size=20;
+	 		}Page<Map<String,Object>> pages=new Page<>();
+	 		Map<String,Object> map = new HashMap<>();
+	 		map.put("index", (page-1)*2);
+	 		map.put("num",size);
+	 		List<Map<String,Object>> list = orm.getXxRefunds(map);
+	 		int total = orm.selectRefundsCount();
+			pages.setPage(page);
+			pages.setRows(list);
+			pages.setSize(size);
+			pages.setTotal(total);
+			model.addAttribute("page",pages);
+			return "backstage/order/returnmoney";
+	}
+	@RequestMapping("/checkRefundsBysize")
+	public String checkRefundsBysize(@RequestParam(value="rows",defaultValue="5")int size,@RequestParam(value="page",defaultValue="1")int page,Model model){
+		int total = orm.selectRefundsCount();
+ 		Page<Map<String,Object>> pages=new Page<>();
+ 		Map<String,Object> map = new HashMap<>();
+ 		map.put("index", (page-1)*size);
+ 		map.put("num",size*page);
+ 		List<Map<String,Object>> list = orm.getXxRefunds(map);
+ 		pages.setPage(page); 
+ 		pages.setRows(list);
+ 		pages.setSize(size);
+ 		pages.setTotal(total); 
+ 		model.addAttribute(pages);  
+ 		return "backstage/order/returnmoney";
+	}
+	   @SuppressWarnings("rawtypes")
+		@RequestMapping("/delRefunds")
+	     public @ResponseBody Page delPayment(String str,int page,int size){
+	    	 us.deleteByUpdate(str, XxRefunds.class, "id");
+	    	 int total = orm.selectRefundsCount();
+	    	 Page<Map<String,Object>> pages=new Page<>();
+	  		Map<String,Object> map = new HashMap<>();
+	  		map.put("index", (page-1)*2);
+	  		map.put("num",size);
+	  		List<Map<String,Object>> list = orm.getXxRefunds(map);
+	  		pages.setPage(page);
+			pages.setRows(list);
+			pages.setSize(size);
+			pages.setTotal(total);
+			return pages;
+	     }
+	   @RequestMapping("/ReturnMoneyDetails")
+	   public String ReturnMoneyDetails(Model model,int id){
+		   XxRefunds xr = orm.getXxRefundsById(id);
+		   model.addAttribute("xr", xr);
+		return "backstage/order/returnmoneydetails";
+		   
+	   }
+}

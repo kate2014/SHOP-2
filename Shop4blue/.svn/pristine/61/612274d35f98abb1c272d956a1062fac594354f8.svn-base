@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxOrderItemMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxOrderItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="is_gift" property="isGift" jdbcType="BIT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="return_quantity" property="returnQuantity" jdbcType="INTEGER" />
+    <result column="shipped_quantity" property="shippedQuantity" jdbcType="INTEGER" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="thumbnail" property="thumbnail" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="INTEGER" />
+    <result column="orders" property="orders" jdbcType="BIGINT" />
+    <result column="product" property="product" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_date, modify_date, full_name, is_gift, name, price, quantity, return_quantity, 
+    shipped_quantity, sn, thumbnail, weight, orders, product
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxOrderItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_order_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from xx_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from xx_order_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxOrderItemExample" >
+    delete from xx_order_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxOrderItem" >
+    insert into xx_order_item (id, create_date, modify_date, 
+      full_name, is_gift, name, 
+      price, quantity, return_quantity, 
+      shipped_quantity, sn, thumbnail, 
+      weight, orders, product
+      )
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{fullName,jdbcType=VARCHAR}, #{isGift,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{returnQuantity,jdbcType=INTEGER}, 
+      #{shippedQuantity,jdbcType=INTEGER}, #{sn,jdbcType=VARCHAR}, #{thumbnail,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=INTEGER}, #{orders,jdbcType=BIGINT}, #{product,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxOrderItem" >
+    insert into xx_order_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="modifyDate != null" >
+        modify_date,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="isGift != null" >
+        is_gift,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="returnQuantity != null" >
+        return_quantity,
+      </if>
+      <if test="shippedQuantity != null" >
+        shipped_quantity,
+      </if>
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="thumbnail != null" >
+        thumbnail,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="product != null" >
+        product,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="isGift != null" >
+        #{isGift,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="returnQuantity != null" >
+        #{returnQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="shippedQuantity != null" >
+        #{shippedQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbnail != null" >
+        #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=BIGINT},
+      </if>
+      <if test="product != null" >
+        #{product,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxOrderItemExample" resultType="java.lang.Integer" >
+    select count(*) from xx_order_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_order_item
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fullName != null" >
+        full_name = #{record.fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isGift != null" >
+        is_gift = #{record.isGift,jdbcType=BIT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnQuantity != null" >
+        return_quantity = #{record.returnQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.shippedQuantity != null" >
+        shipped_quantity = #{record.shippedQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.sn != null" >
+        sn = #{record.sn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.thumbnail != null" >
+        thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=INTEGER},
+      </if>
+      <if test="record.orders != null" >
+        orders = #{record.orders,jdbcType=BIGINT},
+      </if>
+      <if test="record.product != null" >
+        product = #{record.product,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_order_item
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      full_name = #{record.fullName,jdbcType=VARCHAR},
+      is_gift = #{record.isGift,jdbcType=BIT},
+      name = #{record.name,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      return_quantity = #{record.returnQuantity,jdbcType=INTEGER},
+      shipped_quantity = #{record.shippedQuantity,jdbcType=INTEGER},
+      sn = #{record.sn,jdbcType=VARCHAR},
+      thumbnail = #{record.thumbnail,jdbcType=VARCHAR},
+      weight = #{record.weight,jdbcType=INTEGER},
+      orders = #{record.orders,jdbcType=BIGINT},
+      product = #{record.product,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.entity.XxOrderItem" >
+    update xx_order_item
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="isGift != null" >
+        is_gift = #{isGift,jdbcType=BIT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="returnQuantity != null" >
+        return_quantity = #{returnQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="shippedQuantity != null" >
+        shipped_quantity = #{shippedQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="thumbnail != null" >
+        thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=BIGINT},
+      </if>
+      <if test="product != null" >
+        product = #{product,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.entity.XxOrderItem" >
+    update xx_order_item
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      is_gift = #{isGift,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=INTEGER},
+      return_quantity = #{returnQuantity,jdbcType=INTEGER},
+      shipped_quantity = #{shippedQuantity,jdbcType=INTEGER},
+      sn = #{sn,jdbcType=VARCHAR},
+      thumbnail = #{thumbnail,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      orders = #{orders,jdbcType=BIGINT},
+      product = #{product,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

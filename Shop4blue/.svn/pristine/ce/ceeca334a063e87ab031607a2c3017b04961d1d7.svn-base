@@ -1,0 +1,49 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/css01.css"/>
+</head>
+<body>
+    <div id="nav-left">
+        <div id="left-dingdan" class="lf">
+            <ul>
+                <span><b>订单管理</b></span>
+                <br/>
+                <span id="ge"></span>
+                <li>
+                    <a href="订单管理.html" target="订单">订单管理</a>
+                </li>
+                <li>
+                    <a href="" target="订单">收款管理</a>
+                </li>
+                <li>
+                    <a href="" target="订单">退款管理</a>
+                </li>
+                <li>
+                    <a href="" target="订单">发货管理</a>
+                </li>
+                <li>
+                    <a href="" target="订单">退货管理</a>
+                </li>
+                <li>
+                    <a href="发货点管理.html" target="订单">发货点管理</a>
+                </li>
+                <li>
+                    <a href="快递单模板.html" target="订单">快递单模板</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--内容-->
+    <div id="container">
+        <iframe src="订单管理.html" frameborder="0" name="订单"
+                width="100%" height="100%">
+
+        </iframe>
+    </div>
+</body>
+</html>

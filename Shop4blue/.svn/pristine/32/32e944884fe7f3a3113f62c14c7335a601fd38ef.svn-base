@@ -1,0 +1,128 @@
+package com.shop.service.backorder;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxDeliveryCenterMapper;
+import com.shop.dao.XxDeliveryTemplateMapper;
+import com.shop.dao.XxOrderItemMapper;
+import com.shop.dao.XxOrderLogMapper;
+import com.shop.dao.XxOrderMapper;
+import com.shop.dao.XxPaymentMapper;
+import com.shop.dao.XxRefundsMapper;
+import com.shop.dao.XxReturnsMapper;
+import com.shop.dao.XxShippingMapper;
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryCenterExample;
+import com.shop.entity.XxDeliveryTemplate;
+import com.shop.entity.XxDeliveryTemplateExample;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderExample;
+import com.shop.entity.XxOrderItem;
+import com.shop.entity.XxOrderLog;
+import com.shop.entity.XxPayment;
+import com.shop.entity.XxRefunds;
+import com.shop.entity.XxReturns;
+import com.shop.entity.XxShipping;
+
+@Service
+public class Order4ManageServiceImpl implements Order4ManageService {
+	@Autowired
+	XxOrderMapper orderMapper;
+	@Autowired
+	XxOrderItemMapper orderItemMapper;
+	@Autowired
+	XxDeliveryTemplateMapper deliveryTemplateMapper;
+	@Autowired
+	XxDeliveryCenterMapper deliveryCenterMapper;
+	@Autowired
+	XxPaymentMapper paymentMapper;
+	@Autowired
+	XxShippingMapper shippingMapper;
+	@Autowired
+	XxRefundsMapper refundsMapper;
+	@Autowired
+	XxReturnsMapper returnsMapper;
+	@Autowired
+	XxOrderLogMapper orderLogMapper;
+
+	@Override
+	public List<XxOrder> selectAll(int start,int size) {
+		return orderMapper.findAll(start,size);
+	}
+
+	@Override
+	public int totalNum() {
+		return orderMapper.countByExample(new XxOrderExample());
+	}
+
+	@Override
+	public XxOrder selectById(Long id) {
+		return orderMapper.findById(id);
+	}
+
+	@Override
+	public List<XxOrderItem> selectByOrderId(Long id) {
+		return orderItemMapper.findByOrderId(id);
+	}
+
+	@Override
+	public List<XxDeliveryTemplate> selectAllTemplate() {
+		return deliveryTemplateMapper.selectByExampleWithBLOBs(new XxDeliveryTemplateExample());
+	}
+
+	@Override
+	public List<XxDeliveryCenter> selectAllCenter() {
+		return deliveryCenterMapper.selectByExample(new XxDeliveryCenterExample());
+	}
+
+	@Override
+	public XxDeliveryTemplate selectTemplateById(Long id) {
+		return deliveryTemplateMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public XxDeliveryCenter selectCenterById(Long id) {
+		return deliveryCenterMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<XxPayment> findPaymentByOrderId(Long id) {
+		return paymentMapper.findPaymentByOrderId(id);
+	}
+
+	@Override
+	public XxShipping findShippingByOrderId(Long id) {
+		return shippingMapper.findShippingByOrderId(id);
+	}
+
+	@Override
+	public XxRefunds findRefundsByOrderId(Long id) {
+		return refundsMapper.findRefundsByOrderId(id);
+	}
+
+	@Override
+	public XxReturns findReturnsByOrderId(Long id) {
+		return returnsMapper.findReturnsByOrderId(id);
+	}
+
+	@Override
+	public List<XxOrderLog> findOrderLogByOrderId(Long id) {
+		return orderLogMapper.findOrderLogByOrderId(id);
+	}
+
+	@Override
+	public void updateOrder(XxOrder order) {
+		orderMapper.updateByPrimaryKey(order);
+	}
+
+	@Override
+	public void insertOrderLog(XxOrderLog orderLog) {
+		orderLogMapper.insert(orderLog);
+	}
+	
+
+
+}

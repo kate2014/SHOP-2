@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="../css/css02.css"/>
+</head>
+<body>
+<div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">发货点列表</a> （共1条记录）
+        </span>
+</div>
+<div id="container">
+    <form action="">
+        <table>
+            <tr>
+                <th><span class="bi">*</span>名称：</th>
+                <td><input type="text"/></td>
+            </tr>
+            <tr>
+                <th><span class="bi">*</span>上级分类：</th>
+                <td>
+                    <select name="" id="fenlei">
+                        <option value="">顶级分类</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th><span class="bi">*</span>筛选品牌：</th>
+                <td>
+                    <input type="checkbox"/>梵希曼
+                    <input type="checkbox"/>梵希曼
+                    <input type="checkbox"/>梵希曼
+                    <input type="checkbox"/>梵希曼
+                    <input type="checkbox"/>梵希曼
+                    <input type="checkbox"/>梵希曼
+                    <input type="checkbox"/>梵希曼
+                </td>
+            </tr>
+            <tr>
+                <th><span class="bi">*</span>页面标题：</th>
+                <td><input type="text"/></td>
+            </tr>
+            <tr>
+                <th><span class="bi">*</span>页面关键词：</th>
+                <td><input type="text"/></td>
+            </tr>
+            <tr>
+                <th><span class="bi">*</span>页面描述：</th>
+                <td><input type="text"/></td>
+            </tr>
+            <tr>
+                <th><span class="bi">*</span>排序：</th>
+                <td><input type="text"/></td>
+            </tr>
+        </table>
+        <input type="button" value="确定"/>
+        <input type="button" value="返回" src="发货点管理.html"/>
+    </form>
+</div>
+</body>
+</html>

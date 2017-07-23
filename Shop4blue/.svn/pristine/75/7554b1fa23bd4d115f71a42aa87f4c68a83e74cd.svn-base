@@ -1,0 +1,128 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="itcast" uri="http://itcast.cn/common/" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/backstage/css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/backstage/css/css02.css"/>
+    <script src="${pageContext.request.contextPath}/resources/backstage/js/js02.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.11.3.js"></script>
+    <style type="text/css">
+       .divsw{
+          width: 110px;
+          height: 90px;
+          border: 1px solid;
+          background-color: #CCFFFF;
+       }
+    </style>
+</head>
+<body>
+<div id="head">
+    <div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">咨询管理</a> （共${page.total }条记录）
+        </span>
+    </div>
+</div>
+
+<div id="bodyer">
+
+    <div class="btn-group">
+        <a id="del" href="#" class="btn btn-default"><span id="shanchu"></span>删除</a>
+        <a  href="${pageContext.request.contextPath}/consult?page=1&rows=${rows }" class="btn btn-default"><span id="shuaxin"></span>刷新</a>
+       
+        <a  href="#" id="paggingShow" class="btn btn-default">每页显示<span class="xiasanjiao"></span></a>
+       
+    </div>
+    <form class="search" >
+        <input type="search"/>
+        <button type="submit" class="btn-search"></button>
+    </form>
+    <form id="delMe" action="${pageContext.request.contextPath}/consult?page=1&rows=${rows }" method="post">
+     <input type="hidden" name="flag" value="delMes">
+    <table height="80%">
+        <tr>
+            <th><input type="checkbox" id="selAll" /></th>
+            <th>商品</th>
+            <th>内容</th>
+            <th>会员</th>
+            <th>显示</th>
+            <!--  
+            <th>回复</th>
+             -->
+            <th>创建日期</th>
+            <th>操作</th>
+        </tr>
+        <c:forEach items="${page.rows}" var="l">
+        <tr>
+            <td width="10px" height="20px"><input type="checkbox" name="ids"  class="checkAll" value="${l.id }"/></td>
+            <td width="300px" height="20px">${l.full_name }</td>
+            <td width="300px" height="20px">${l.content }</td>
+            <td width="30px" height="20px">${l.username}</td>
+            
+            <td width="30px" height="20px">
+              <c:if test="${l.is_show }">
+                <span class="duihao"></span>
+                
+              </c:if>
+              
+              <c:if test="${!l.is_show }">
+                 <span class="cuohao"></span>
+              </c:if>
+              
+            </td>
+            <!-- 
+            <td width="30px" height="20px"><span class="duihao"></span></td>
+            -->
+            <td width="50px" height="20px"><fmt:formatDate value="${l.create_date }" pattern="yyyy-MM-dd"/></td>
+            <td width="120px" height="20px"><a href="consultreply?id=${l.id }">[回复]</a><a href="consultedit?id=${l.id }">[编辑]</a>[查看]</td>
+        </tr>
+        </c:forEach>
+  
+    </table>
+    </form>
+    <itcast:page url="${pageContext.request.contextPath}/consult"/>
+    
+</div>
+
+</body>
+<script type="text/javascript">
+  $(function(){
+      $("#selAll").click(function(){
+     	 $("input[type=checkbox]").prop("checked",function(){return !this.checked});
+     	$(this).prop("checked",function(){return !this.checked});
+      })
+      
+      $("#paggingShow").hover(function(e){
+    	  
+    	  var div=$("<div class='divsw' ><div><a href='${pageContext.request.contextPath}/consult?rows=5'>5</a></div><div><a href='${pageContext.request.contextPath}/consult?rows=10'>10</a></div><div><a href='${pageContext.request.contextPath}/consult?rows=20'>20</a></div></div>");
+    	  
+		    div.css({
+		    	position:"absolute",
+		    	left:"177px",
+		    	top:"72px",
+		    	display:"none"
+		    })
+		    $(this).append(div);
+		    div.show();
+		    
+		 },function(){
+			 $(".divsw").hide();
+		 })
+		 $("#seldiv").click(function(){
+			 $(this).remove();
+			 
+		 })
+		 $("#del").click(function(){
+			 $("#delMe").submit();
+		 })
+	  
+  })
+
+</script>
+</html>

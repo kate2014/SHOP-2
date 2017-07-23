@@ -1,0 +1,92 @@
+package com.shop.controller.backorder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxShipping;
+import com.shop.service.backorder.Order4ShippingService;
+import com.shop.service.backstage.UtilsService;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/orderShipping")
+public class Order4ShippingController {
+	@Autowired
+	private Order4ShippingService oss;
+	@Autowired
+	private UtilsService us;
+
+	@RequestMapping("/getShipping")
+	public String getShipping(Model model, Integer page, Integer size) {
+		if (page == null) {
+			page = 1;
+		}
+		if (size == null) {
+			size = 5;
+		}
+		Page<Map<String, Object>> pages = new Page<>();
+		Map<String, Object> map = new HashMap<>();
+		map.put("index", (page - 1) * 2);
+		map.put("num", size);
+		List<Map<String, Object>> list = oss.getShipping(map);
+		int total = oss.selectShippingCount();
+		pages.setPage(page);
+		pages.setRows(list);
+		pages.setSize(size);
+		pages.setTotal(total);
+		model.addAttribute("page", pages);
+		return "backstage/order/shipping";
+
+	}
+	 @RequestMapping("/checkShippingBySize")
+	 	public String checkProductsBysize(@RequestParam(value="rows",defaultValue="5")int size,@RequestParam(value="page",defaultValue="1")int page,Model model){
+	    	int total = oss.selectShippingCount();
+	 		Page<Map<String,Object>> pages=new Page<>();
+	 		Map<String,Object> map = new HashMap<>();
+	 		map.put("index", (page-1)*size);
+	 		map.put("num",size*page);
+	 		List<Map<String,Object>> list = oss.getShipping(map);
+	 		System.out.println(page);
+	 		System.out.println(size);
+	 		System.out.println(list.size()+"dasdasdasdaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+	 		pages.setPage(page);
+	 		pages.setRows(list);
+	 		pages.setSize(size);
+	 		pages.setTotal(total);
+	 		model.addAttribute(pages);
+	 		return "backstage/order/shipping";
+	 	}
+	    @SuppressWarnings("rawtypes")
+		@RequestMapping("/delShipping")
+	     public @ResponseBody Page delShipping(String str,int page,int size){
+	    	 us.deleteByUpdate(str, XxShipping.class, "id");
+	    	 int total = oss.selectShippingCount();
+	    	 Page<Map<String,Object>> pages=new Page<>();
+	  		Map<String,Object> map = new HashMap<>();
+	  		map.put("index", (page-1)*2);
+	  		map.put("num",size);
+	  		List<Map<String,Object>> list = oss.getShipping(map);
+	  		pages.setPage(page);
+			pages.setRows(list);
+			pages.setSize(size);
+			pages.setTotal(total);
+			return pages;
+	    	 
+	     }
+	     @RequestMapping("/ShippingDetails")
+		   public String ReturnMoneyDetails(Model model,int id){
+	    	 XxShipping xs = oss.getXxShippingById(id);
+			   model.addAttribute("xs", xs);
+			return "backstage/order/shippingdetails";
+			   
+		   }
+}

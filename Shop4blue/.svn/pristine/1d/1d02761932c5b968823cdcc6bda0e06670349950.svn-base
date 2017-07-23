@@ -1,0 +1,18 @@
+package com.shop.controller.backstage;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.shop.service.backstage.ConsultService;
+
+/**
+ * 咨询管理Controller
+ * @author Administrator
+ *
+ */
+@Controller
+public class ConsultController {
+	@Autowired
+	ConsultService consultService;
+
+}

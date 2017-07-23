@@ -1,0 +1,89 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>编辑评论 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+<link href="${pageContext.request.contextPath}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/input.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $inputForm = $("#inputForm");
+	
+	
+});
+</script>
+</head>
+<body>
+	<div class="path">
+		<a href="">首页</a> &raquo; 编辑评论
+	</div>
+	<form id="inputForm" action="update.jhtml" method="post">
+		<input type="hidden" name="id" value="56" />
+		<table class="input">
+			<tr>
+				<th>
+					商品:
+				</th>
+				<td>
+					<a href="/shopxx/product/content/201705/150.html" target="_blank">JackJones杰克琼斯男士立领拉链机车夹克B212121038</a>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					会员:
+				</th>
+				<td>
+						游客
+				</td>
+			</tr>
+			<tr>
+				<th>
+					IP:
+				</th>
+				<td>
+					192.168.1.1
+				</td>
+			</tr>
+			<tr>
+				<th>
+					评分:
+				</th>
+				<td>
+					5
+				</td>
+			</tr>
+			<tr>
+				<th>
+					内容:
+				</th>
+				<td>
+					不错，很好，质量很好。穿着也很合身。
+				</td>
+			</tr>
+			<tr>
+				<th>
+					是否显示:
+				</th>
+				<td>
+					<input type="checkbox" name="isShow" value="true" checked="checked" />
+				</td>
+			</tr>
+			<tr>
+				<th>
+					&nbsp;
+				</th>
+				<td>
+					<input type="submit" class="button" value="确&nbsp;&nbsp;定" />
+					<input type="button" id="backButton" class="button" value="返&nbsp;&nbsp;回" />
+				</td>
+			</tr>	
+		</table>
+	</form>
+</body>
+</html>

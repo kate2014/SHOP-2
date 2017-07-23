@@ -1,0 +1,20 @@
+package com.shop.controller.backstage;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.shop.service.backstage.CommentService;
+
+/**
+ * 评论管理
+ * @author Administrator
+ *
+ */
+@Controller
+public class CommentController {
+	// 注入service
+	@Autowired
+	CommentService commentService;
+	
+
+}

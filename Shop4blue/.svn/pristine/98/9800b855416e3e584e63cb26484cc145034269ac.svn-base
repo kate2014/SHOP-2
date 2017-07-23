@@ -1,0 +1,132 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>快递单打印 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+<link href="${pageContext.request.contextPath}/resources/admin/css/common.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/js/common.js"></script>
+<style type="text/css">
+.bar {
+	height: 30px;
+	line-height: 30px;
+	border-bottom: 1px solid #d7e8f8;
+	background-color: #eff7ff;
+}
+
+.content {
+	margin: 4px;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.1);
+	border: 1px solid #dde9f5;
+			width: ${deliveryTemplate.width}px;
+			height: ${deliveryTemplate.height}px;
+			background: url(deliveryTemplate.background}) 0px 0px no-repeat;
+}
+
+.content .item {
+	line-height: 20px;
+	float: left;
+	position: absolute;
+	overflow: hidden;
+	word-wrap: break-word;
+	color: #000000;
+	font-size: 12pt;
+}
+
+.container pre {
+	float: left;
+}
+
+.content .item .resize {
+	display: none;
+}
+</style>
+<style type="text/css" media="print">
+.bar {
+	display: none;
+}
+
+.content {
+	margin: 0px;
+	border: none;
+			margin-left: ${deliveryTemplate.offsetx}px;
+			margin-top: ${deliveryTemplate.offsety}px;
+			background: none;
+}
+</style>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $deliveryForm = $("#deliveryForm");
+	var $deliveryTemplate = $("#deliveryTemplate");
+	var $deliveryCenter = $("#deliveryCenter");
+	var $print = $("#print");
+	
+	$deliveryTemplate.add($deliveryCenter).change(function() {
+		if ($deliveryTemplate.val() != "" && $deliveryCenter.val() != "") {
+			$deliveryForm.submit();
+		}
+	});
+
+	$print.click(function() {
+		if ($deliveryTemplate.val() == "") {
+			$.message("warn", "请选择快递单模板");
+			return false;
+		}
+		if ($deliveryCenter.val() == "") {
+			$.message("warn", "请选择发货点");
+			return false;
+		}
+		window.print();
+		return false;
+	});
+
+});
+</script>
+</head>
+<body>
+	<div class="bar">
+		<form id="deliveryForm" action="${pageContext.request.contextPath}/ordermanage/kuaidiprint" method="get">
+			<input type="hidden" name="orderId" value="${order.id }" />
+			<a href="javascript:;" id="print" class="button">打 印</a>
+			快递单模板:
+			<select id="deliveryTemplate" name="deliveryTemplateId">
+				<option value="">请选择...</option>
+				<c:forEach items="${template }" var="l">
+				<c:if test="${l.id==deliveryTemplate.id }">
+				<option value="${l.id }" selected="selected">${l.name }</option>
+				</c:if>
+				<c:if test="${l.id!=deliveryTemplate.id }">
+				<option value="${l.id }" >${l.name }</option>
+				</c:if>
+				</c:forEach>
+			</select>
+			发货点:
+			<select id="deliveryCenter" name="deliveryCenterId">
+				<option value="">请选择...</option>
+				<c:forEach items="${center }" var="d">
+					<c:if test="${d.id==deliveryCenter.id }">
+					<option value="${d.id }" selected="selected">${d.name }</option>
+					</c:if>
+					<c:if test="${d.id!=deliveryCenter.id }">
+					<option value="${d.id }">${d.name }</option>
+					</c:if>
+				</c:forEach>
+			</select>
+		</form>
+	</div>
+		<div class="content">
+		${deliveryTemplate.content }
+		</div>
+</body>
+</html>

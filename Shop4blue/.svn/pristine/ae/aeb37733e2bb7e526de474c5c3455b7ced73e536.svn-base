@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="../css/css02.css"/>
+    <script src="../js/js02.js"></script>
+</head>
+<body>
+<div id="head">
+    <div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">订单列表</a> （共0条记录）
+        </span>
+    </div>
+
+</div>
+
+<div id="bodyer">
+    <div class="btn-group">
+        <a href="#" class="btn btn-default"><span id="shanchu"></span>删除</a>
+        <a  href="#" class="btn btn-default"><span id="shuaxin"></span>刷新</a>
+        <a  href="#" class="btn btn-default">订单筛选<span class="xiasanjiao"></span></a>
+        <a  href="#" class="btn btn-default">每页显示<span class="xiasanjiao"></span></a>
+    </div>
+    <form class="search">
+        <input type="search"/>
+        <button type="submit" class="btn-search"></button>
+    </form>
+    <table>
+        <tr>
+            <th><input type="checkbox" id="selAll" onclick="selectAll();"/></th>
+            <th>名称</th>
+            <th>绑定分类</th>
+            <th>可选项</th>
+            <th>排序</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>材质</td>
+            <td>连衣裙</td>
+            <td>风格 通勤 组合形式 裙长 款式 袖长 领型...</td>
+            <td>1</td>
+            <td><a href="">[编辑]</a></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>裙长</td>
+            <td>连衣裙</td>
+            <td>风格 通勤 组合形式 裙长 款式 袖长 领型...</td>
+            <td>2</td>
+            <td><a href="">[编辑]</a></td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>领型</td>
+            <td>连衣裙</td>
+            <td>风格 通勤 组合形式 裙长 款式 袖长 领型...</td>
+            <td>3</td>
+            <td><a href="">[编辑]</a></td>
+        </tr>
+    </table>
+    <ul class="pagination">
+        <li><a href="">首页</a></li>
+        <li class="active"><a href="">&laquo;上一页</a></li>
+        <li><a href="">...</a></li>
+        <li><a href="">下一页&raquo;</a></li>
+        <li><a href="">尾页</a></li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/backstage/css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/backstage/css/css02.css"/>
+    <script src="${pageContext.request.contextPath}/resources/backstage/js/js02.js"></script>
+    <!--<script src="${pageContext.request.contextPath}/resources/js/js003.js"></script>-->
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-1.4.2.min.js"></script>
+</head>
+<body>
+<div id="head">
+    <div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">订单列表</a> （共0条记录）
+        </span>
+    </div>
+</div>
+<div id="bodyer">
+    <div class="btn-group">
+        <a href="javascript:" class="btn btn-default" id="delBtn"><span id="shanchu"></span>删除</a>
+        <a  href="" class="btn btn-default"><span id="shuaxin"></span>刷新</a>
+        <select name="" class="myxs">
+            <option value="">商品筛选</option>
+            <option value="">女装</option>
+            <option value="">男装</option>
+            <option value="">神装</option>
+            <option value="">连衣裙</option>
+        </select>
+        <select name="" class="myxs">
+            <option value="">每页显示</option>
+            <option value="">10</option>
+            <option value="">20</option>
+            <option value="">30</option>
+            <option value="">40</option>
+        </select>
+    </div>
+    <form class="search">
+        <input type="search"/>
+        <button type="submit" class="btn-search"></button>
+    </form>
+    <table id="biaoge">
+        <tr>
+            <th>
+                <input type="checkbox" id="selAll" onclick="selectAll();"/>
+            </th>
+            <th>编号</th>
+            <th>名称</th>
+            <th>商品分类</th>
+            <th>销售价</th>
+            <th>成本价</th>
+            <th>库存</th>
+            <th>是否上架</th>
+            <th>创建日期</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox"  name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="cmodal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="checkAll" class="checkAll" onclick="setSelectAll();"/></td>
+            <td>201304529</td>
+            <td>尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...</td>
+            <td>连衣裙</td>
+            <td>298.00</td>
+            <td></td>
+            <td></td>
+            <td><span class="duihao"></span></td>
+            <td>2015/05/08</td>
+            <td>
+                <a href="javascript:" class="modal">[编辑]</a>
+                <a href="javascript:" class="cmodal">[查看]</a>
+            </td>
+        </tr>
+    </table>
+    <ul class="pagination">
+        <li><a href="">首页</a></li>
+        <li class="active"><a href="">&laquo;上一页</a></li>
+        <li><a href="">...</a></li>
+            <select name="" id="yeshu">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+        <li><a href="">下一页&raquo;</a></li>
+        <li><a href="">尾页</a></li>
+    </ul>
+</div>
+
+<div id="modal-1">
+    <div id="dailog" class="dailog">
+        <div id="modal-head">
+            <span id="cha"></span>
+            <p>订单更改</p>
+        </div>
+        <div id="modal-1-1">
+            <form action="">
+                <fieldset>
+                    <label>
+                        编号：
+                    </label>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        名称：
+                    </label>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        商品分类：
+                    </label>
+                    <input type="text"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        销售价：
+                    </label>
+                    <input type="number"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        成本：
+                    </label>
+                    <input type="number"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        库存：
+                    </label>
+                    <input type="number"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        是否上架：
+                    </label>
+                    <label for="shi">是：</label><input type="radio" name="1" value="shi" id="shi"/>
+                    <label for="fou">否：</label><input type="radio" name="1" id="fou"/>
+                </fieldset>
+                <fieldset>
+                    <label>
+                        创建日期：
+                    </label>
+                    <input type="datetime-local"/>
+                </fieldset>
+                <input type="submit" value="确定" class="modal-btn" id="okbtn"/>
+                <input type="button" value="取消" class="modal-btn" id="closebtn"/>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="cmodal-1">
+    <div id="cdailog" class="dailog">
+        <div id="cmodal-head">
+            <span id="ccha"></span>
+            <p>订单查看</p>
+        </div>
+        <div id="cmodal-1-1">
+            <form action="">
+               <table>
+                   <tr>
+                       <td>
+                           编号：201304529
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           名称：尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底...
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           商品分类：连衣裙
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           销售价：298.00
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           成本价：
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           库存：
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           是否上架：是
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           创建日期：2015/05/08
+                       </td>
+                   </tr>
+               </table>
+                <input type="button" value="确定" class="modal-btn" id="cclosebtn"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){
+        $('.modal').on('click',function(){
+            $("#modal-1").fadeIn("1000").css({"display":"block"});
+            $("#dailog").animate({
+                bottom:'10%',
+                top: '10%',
+                opacity: '1'
+            },800);
+        });
+        $('#cha,#closebtn').on('click',function(){
+            $("#dailog").animate({
+                top: '7%',
+                bottom:'13%',
+                opacity: '0'
+            },1000,function(){
+                $("#modal-1").css({"display":"none"});
+            });
+            $('#modal-1').fadeOut("1000");
+        });
+        $('.cmodal').on('click',function(){
+            $("#cmodal-1").fadeIn("1000").css({"display":"block"});
+            $("#cdailog").animate({
+                bottom:'10%',
+                top: '10%',
+                opacity: '1'
+            },800);
+        });
+        $('#ccha,#cclosebtn').on('click',function(){
+            $("#cdailog").animate({
+                top: '7%',
+                bottom:'13%',
+                opacity: '0'
+            },1000,function(){
+                $("#cmodal-1").css({"display":"none"});
+            });
+            $('#cmodal-1').fadeOut("1000");
+        });
+        $('#delBtn').on('click',function(){
+            $(".checkAll:checked").parent().parent().remove();
+        });
+    });
+</script>
+</html>

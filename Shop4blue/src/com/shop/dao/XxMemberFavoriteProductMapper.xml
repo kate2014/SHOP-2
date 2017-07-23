@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxMemberFavoriteProductMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxMemberFavoriteProductKey" >
+    <id column="favorite_members" property="favoriteMembers" jdbcType="BIGINT" />
+    <id column="favorite_products" property="favoriteProducts" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    favorite_members, favorite_products
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxMemberFavoriteProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_member_favorite_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.shop.entity.XxMemberFavoriteProductKey" >
+    delete from xx_member_favorite_product
+    where favorite_members = #{favoriteMembers,jdbcType=BIGINT}
+      and favorite_products = #{favoriteProducts,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxMemberFavoriteProductExample" >
+    delete from xx_member_favorite_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxMemberFavoriteProductKey" >
+    insert into xx_member_favorite_product (favorite_members, favorite_products)
+    values (#{favoriteMembers,jdbcType=BIGINT}, #{favoriteProducts,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxMemberFavoriteProductKey" >
+    insert into xx_member_favorite_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="favoriteMembers != null" >
+        favorite_members,
+      </if>
+      <if test="favoriteProducts != null" >
+        favorite_products,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="favoriteMembers != null" >
+        #{favoriteMembers,jdbcType=BIGINT},
+      </if>
+      <if test="favoriteProducts != null" >
+        #{favoriteProducts,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxMemberFavoriteProductExample" resultType="java.lang.Integer" >
+    select count(*) from xx_member_favorite_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_member_favorite_product
+    <set >
+      <if test="record.favoriteMembers != null" >
+        favorite_members = #{record.favoriteMembers,jdbcType=BIGINT},
+      </if>
+      <if test="record.favoriteProducts != null" >
+        favorite_products = #{record.favoriteProducts,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_member_favorite_product
+    set favorite_members = #{record.favoriteMembers,jdbcType=BIGINT},
+      favorite_products = #{record.favoriteProducts,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="getAll" parameterType="Long" resultType="Long">
+     select favorite_products from xx_member_favorite_product where  favorite_members=#{userid}
+  
+  </select>
+  <select id="getCount" parameterType="Long" resultType="int">
+    select count(favorite_members) from xx_member_favorite_product  where favorite_members=#{userid}
+  </select>
+</mapper>

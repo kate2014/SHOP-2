@@ -1,0 +1,9 @@
+package com.shop.dao;
+
+import java.util.Map;
+
+public interface UtilsMapper {
+	
+	void deleteById(Map<String, Object> map);
+
+}

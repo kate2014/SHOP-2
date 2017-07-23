@@ -1,0 +1,99 @@
+package com.shop.service.backstage;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxMemberMapper;
+import com.shop.entity.XxMember;
+import com.shop.entity.XxMemberRank;
+
+@Service
+public class MemberManagerServiceImpl implements MemberManagerService {
+	@Autowired
+	private XxMemberMapper xmm;
+
+	public List<Map<String, Object>> getMember(Map<String, Object> map) {
+		List<Map<String, Object>> list = xmm.selectMemberByTag(map);
+		return list;
+	}
+
+	@Override
+	public void saveMember(XxMember xm) {
+		xm.setCreateDate(new Date());
+		xm.setModifyDate(new Date());
+		xm.setAmount(new BigDecimal("0"));
+		xm.setIsEnabled(true);
+		xm.setIsLocked(false);
+		xm.setLoginFailureCount(0);
+
+		xmm.insert(xm);
+	}
+
+	public int selectMemberCount() {
+		HashMap<String, Object> map = xmm.selectMemberCount();
+		Long count = (Long) map.get("count");
+		int intValue = count.intValue();
+		return intValue;
+
+	}
+
+	@Override
+	public void delByIds(Long[] a) {
+		for (int i = 0; i < a.length; i++) {
+			xmm.deleteByPrimaryKey(a[i]);
+		}
+	}
+
+	@Override
+	public List<Map<String,Object>> selectMemberById(long parseLong) {
+		List<Map<String,Object>> list = xmm.selectById(parseLong);
+		return list;
+	}
+
+	@Override
+	public void updateMember(XxMember xm) {
+		xmm.updateByPrimaryKeySelective(xm);
+	}
+
+	@Override
+	public void updateOneConlum(Long changebalance1, Long id) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("changebalance1", changebalance1);
+		map.put("id", id);
+		xmm.updateBanlance(map);
+
+	}
+
+	@Override
+	public void updatePoint(Long changePoint1, Long id) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("changePoint1", changePoint1);
+		map.put("id", id);
+		xmm.updatePoint(map);
+	}
+
+	@Override
+	public XxMember selectMembermById(long parseLong) {
+		XxMember  xm= xmm.selectByPrimaryKey(parseLong);
+		return xm;
+	}
+
+	@Override
+	public Long selectAreaByTreePath(String treePath) {
+		Long area = xmm.selectArea(treePath);
+		return area;
+	}
+
+	@Override
+	public List<XxMemberRank> selectAllLevel() {
+         List<XxMemberRank> rank = xmm.selectAllRank();
+		return rank;
+	}
+
+}

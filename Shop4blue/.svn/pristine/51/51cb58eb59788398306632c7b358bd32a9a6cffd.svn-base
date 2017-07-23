@@ -1,0 +1,28 @@
+package com.shop.service.backorder;
+
+import java.util.List;
+
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryTemplate;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderItem;
+
+public interface Order4ManageService {
+	
+	public List<XxOrder> selectAll(int start,int size);
+	
+	public int totalNum();
+	
+	public XxOrder selectById(Long id);
+	
+	public List<XxOrderItem> selectByOrderId(Long id);
+	
+	public List<XxDeliveryTemplate> selectAllTemplate();
+	
+	public List<XxDeliveryCenter> selectAllCenter();
+	
+	public XxDeliveryTemplate selectTemplateById(Long id);
+	
+	public XxDeliveryCenter selectCenterById(Long id);
+
+}

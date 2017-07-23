@@ -1,0 +1,22 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.XxProductCategoryMapper;
+import com.shop.entity.XxProductCategory;
+@Service
+public class ProductCategoryServiceImpl implements  ProductCategoryService{
+
+	@Resource
+	private XxProductCategoryMapper xpcm;
+	@Override
+	public List<XxProductCategory> getAll() {
+		List<XxProductCategory> list=xpcm.getAll();
+		return list;
+	}
+
+}

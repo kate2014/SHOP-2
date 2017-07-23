@@ -1,0 +1,106 @@
+package com.shop.controller.backstage;
+
+import java.lang.ProcessBuilder.Redirect;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.shop.entity.XxConsultation;
+import com.shop.service.backstage.ConsultService;
+
+import cn.itcast.utils.Page;
+
+/**
+ * 鍜ㄨ绠＄悊Controller
+ * @author Administrator
+ *
+ */
+@Controller
+@RequestMapping("/")
+public class ConsultController {
+	@Autowired
+	ConsultService consultService;
+	
+	//显示咨询,默认20条一页
+	//flag=editShow 是编辑页面的工作,用于改变是否显示,想用这个Controller中两个方法之间的跳转,但不会用
+	@RequestMapping("consult")
+	public String selConsultPagging(Model model,Integer rows,Integer page,XxConsultation xx,String flag,HttpSession session,int []ids){
+		if("editShow".equals(flag)){
+			if(xx.getIsShow()==null){
+				xx.setIsShow(false);
+			}
+			consultService.updateIsShow(xx.getId(),xx.getIsShow());	
+		}
+		if("delMes".equals(flag)){
+			System.out.println(Arrays.toString(ids));
+			consultService.delMessByIds(ids);
+		}
+		if(page==null){
+			page=1;
+		}
+		List<Map<String,Object>> list=consultService.selConsult(page,rows);
+		Page<Map<String,Object>> ppage=new Page<>();
+		ppage.setSize(rows);
+		
+		ppage.setPage(page);
+		ppage.setRows(list);
+		ppage.setTotal(consultService.selectNum());
+        model.addAttribute("page", ppage);
+        session.setAttribute("rows", rows);
+		return "backstage/user/consult";
+	}
+	//回复页面显示,咨询内容以及回复过的内容
+	//x是该咨询的内容,m是回复该咨询的内容
+	@RequestMapping("consultreply")
+	public String reply(XxConsultation xx,Model model,String flag){
+		if("reMess".equals(flag)){
+			consultService.insertReply(xx);
+		}
+		Map<String,Object> x=consultService.selById(xx.getId());
+		List<Map<String,Object>> m=consultService.selReplybyId(xx.getId());
+		//System.out.println(x);
+		
+        model.addAttribute("map", x); 
+        model.addAttribute("reply", m);
+		return "backstage/user/consultreply";
+	}
+	
+	@RequestMapping("consultedit")
+	public String edit(XxConsultation xx,Model model){
+		Map<String,Object> x=consultService.selById(xx.getId());
+		List<Map<String,Object>> m=consultService.selReplybyId(xx.getId());
+        model.addAttribute("map", x); 
+        model.addAttribute("reply", m);
+		return "backstage/user/consultedit";
+	}
+	
+	//编辑页面中删除回复内容
+	//①根据咨询id删除该咨询
+	//②,③同consultreply中的x,m
+	@RequestMapping("replyDel")
+	public String delReply(Long id,Long cid,Model model){
+		consultService.delById(id);//①
+		Map<String,Object> x=consultService.selById(cid);//②
+		List<Map<String,Object>> m=consultService.selReplybyId(cid);//③
+        model.addAttribute("map", x); 
+        model.addAttribute("reply", m);
+		return "backstage/user/consultedit";
+	}
+	
+	@RequestMapping("getmember")
+	public String getMember(Long id,Model model){
+		System.out.println(id);
+		
+		return "backstage/user/consultedit";
+	}
+	
+	
+}

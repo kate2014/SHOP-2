@@ -1,0 +1,7 @@
+package com.shop.service.backstage;
+
+public interface UtilsService {
+	
+	public <T> void deleteByIds(Long [] ids,Class<T> clazz,String cid);
+
+}

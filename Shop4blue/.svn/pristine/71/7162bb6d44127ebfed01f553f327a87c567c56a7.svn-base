@@ -1,0 +1,173 @@
+body, html {
+    margin: 0;
+    font-family: "Î¢ÈíÑÅºÚ", "yahei";
+    font-size: 12px;
+    overflow: hidden;
+}
+body, html a{
+    text-decoration: none;
+}
+#wai {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    vertical-align: middle;
+}
+
+/*Í·*/
+#head {
+    width: 100%;
+    height: 80px;
+    background: #33ccff;
+    border-bottom: 1px solid black;
+}
+#head img{
+    width: 250px;
+    height: 80px;
+}
+.right {
+    margin-top: 5px;
+    margin-right:10px ;
+    float: right;
+}
+#head div span{
+    display: inline-block;
+    margin-top: 4px;
+}
+#head div span a{
+    color: grey;
+}
+#head div span a:hover{
+    color: blue;
+}
+.xian {
+    border-right: 1px solid black;
+    padding-right: 6px;
+}
+
+#xia {
+    background: rgba(255, 255, 255, .3);
+    display: inline-block;
+    height: 32px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    top: -50px;
+    padding-top: 15px;
+}
+#xia a:hover{
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    background: #aadffd;
+    color: #004974;
+    border-bottom:5px solid red ;
+    transform: rotate(0deg);
+    transition: all .2s cubic-bezier(0.1, 0.1, 0.1, 0.1);
+}
+#left-nav{
+    position: absolute;
+    top: 45px;
+    right: 5px;
+}
+#left-nav a{
+    color: grey;
+    margin: 1px;
+}
+#left-nav a:hover{
+    color: #0000cc;
+
+}
+#xia a {
+    display: inline-block;
+    padding: 15px 30px;
+    background: #ccccff;
+    text-align: center;
+    margin: 0;
+    font-size: 16px;
+    width: 60px;
+    transform: rotate(45deg);
+    outline: none;
+}
+
+#xia #kong {
+    width: 240px;
+    height: 20px;
+    float: left;
+}
+#xia input{
+    display: inline-block;
+    width: 100px;
+    height: 60px;
+    position: absolute;
+    top: -10px;
+    opacity: 0;
+}
+.deng{
+    float: left;
+    margin-top: -16px;
+    color: #0000cc;
+    overflow: hidden;
+    width: 8%;
+}
+/*×óµ¼º½*/
+#left-shangpin{
+    width: 100%;
+    height: 600px;
+    float: left;
+}
+#nav-left {
+    height: 900px;
+    width: 15%;
+    background: whitesmoke;
+    float: left;
+    overflow: hidden;
+}
+#nav-left ul{
+    padding: 0;
+}
+
+#nav-left a {
+    float: left;
+    color: black;
+    margin-left: 50px;
+}
+#nav-left span{
+    display: inline-block;
+    margin-bottom:15px ;
+    margin-left: 50px;
+}
+#ge{
+    display: inline-block;
+    height: 1px;
+    width: 80px;
+    border-bottom: 1px dashed black;
+}
+#nav-left ul li a{
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+#nav-left ul li{
+    list-style: none;
+    height: 30px;
+    margin-top: 5px;
+}
+#nav-left ul li:hover{
+    background: #99ccff;
+}
+#nav-left ul li:hover a{
+    color: blue;
+}
+.lf ul span b{
+    font-size: 20px;
+}
+/*ÄÚÈÝ*/
+#container {
+    width: 85%;
+    float: left;
+    height: 600px;
+}

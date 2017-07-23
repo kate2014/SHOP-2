@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxParameterGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxParameterGroup" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="product_category" property="productCategory" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_date, modify_date, orders, name, product_category
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxParameterGroupExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_parameter_group
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from xx_parameter_group
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from xx_parameter_group
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxParameterGroupExample" >
+    delete from xx_parameter_group
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxParameterGroup" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into xx_parameter_group (id, create_date, modify_date, 
+      orders, name, product_category,del
+      )
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{orders,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{productCategory,jdbcType=BIGINT},0
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxParameterGroup" >
+    insert into xx_parameter_group
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="modifyDate != null" >
+        modify_date,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="productCategory != null" >
+        product_category,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategory != null" >
+        #{productCategory,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxParameterGroupExample" resultType="java.lang.Integer" >
+    select count(*) from xx_parameter_group
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_parameter_group
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orders != null" >
+        orders = #{record.orders,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCategory != null" >
+        product_category = #{record.productCategory,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_parameter_group
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      orders = #{record.orders,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      product_category = #{record.productCategory,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.entity.XxParameterGroup" >
+    update xx_parameter_group
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategory != null" >
+        product_category = #{productCategory,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.entity.XxParameterGroup" >
+    update xx_parameter_group
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      orders = #{orders,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      product_category = #{productCategory,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <resultMap type="com.shop.entity.XxParameterGroup" id="findParm">
+  	<id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="product_category" property="productCategory" jdbcType="BIGINT" />
+    <!-- 一对一 -->
+    <association property="category" javaType="com.shop.entity.XxProductCategory">
+    	<id column="cid" property="id" jdbcType="BIGINT" />
+	    <result column="ccreate_date" property="createDate" jdbcType="TIMESTAMP" />
+	    <result column="cmodify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+	    <result column="corders" property="orders" jdbcType="INTEGER" />
+	    <result column="cgrade" property="grade" jdbcType="INTEGER" />
+	    <result column="cname" property="name" jdbcType="VARCHAR" />
+	    <result column="cseo_description" property="seoDescription" jdbcType="VARCHAR" />
+	    <result column="cseo_keywords" property="seoKeywords" jdbcType="VARCHAR" />
+	    <result column="cseo_title" property="seoTitle" jdbcType="VARCHAR" />
+	    <result column="ctree_path" property="treePath" jdbcType="VARCHAR" />
+	    <result column="cparent" property="parent" jdbcType="BIGINT" />
+    </association>
+    <!-- 一对多 -->
+  	<collection property="parameters" ofType="com.shop.entity.XxParameter">
+  		 <id column="bid" property="id" jdbcType="BIGINT" />
+	    <result column="bcreate_date" property="createDate" jdbcType="TIMESTAMP" />
+	    <result column="bmodify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+	    <result column="borders" property="orders" jdbcType="INTEGER" />
+	    <result column="bname" property="name" jdbcType="VARCHAR" />
+	    <result column="bparameter_group" property="parameterGroup" jdbcType="BIGINT" />
+  	</collection>
+  </resultMap>
+  
+  <sql id="findmapparm">
+  	select a.*,
+
+		b.id bid,b.create_date bcreate_date,b.modify_date bmodify_date,b.name bname,
+		b.orders borders,b.parameter_group bparameter_group,
+		
+		c.id cid,c.create_date cccreate_date,c.grade cgrade,c.modify_date cmodify_date,
+		c.name cname,c.orders corders,c.parent cparent, c.seo_description cseo_description,
+		c.seo_keywords cseo_keywords,c.seo_title cseo_title,c.tree_path ctree_path
+  			from xx_Parameter_Group a left join xx_Parameter b on a.id=b.parameter_group
+  			left join Xx_Product_Category c on a.product_category=c.id
+  </sql>
+  
+  	<select id="findParms" resultMap="findParm" >
+  		 <include refid="findmapparm" />
+  		 where a.del!=1 order by a.orders,b.orders asc
+  	</select>
+  	
+  	<select id="totalNum" resultType="int">
+  		select count(*) from xx_Parameter_Group where del!=1
+  	</select>
+  	
+  	<select id="findOne" parameterType="long" resultMap="findParm">
+  		<include refid="findmapparm" />
+  		where a.id = #{id} and a.del!=1
+  	</select>
+  
+</mapper>

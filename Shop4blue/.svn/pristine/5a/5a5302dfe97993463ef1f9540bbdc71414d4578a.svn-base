@@ -1,0 +1,234 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>收货地址 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+<link href="/shopxx/resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+<link href="/shopxx/resources/shop/css/member.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/shopxx/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="/shopxx/resources/shop/js/common.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+	
+	var $listTable = $("#listTable");
+	var $delete = $("#listTable a.delete");
+	
+
+	// 删除
+	$delete.click(function() {
+		if (confirm("您确定要删除吗？")) {
+			var $tr = $(this).closest("tr");
+			var id = $tr.find("input[name='id']").val();
+			$.ajax({
+				url: "delete.jhtml",
+				type: "POST",
+				data: {id: id},
+				dataType: "json",
+				cache: false,
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success") {
+						var $siblings = $tr.siblings();
+						if ($siblings.size() <= 1) {
+							$listTable.after('<p>暂无信息<\/p>');
+						} else {
+							$siblings.last().addClass("last");
+						}
+						$tr.remove();
+					}
+				}
+			});
+		}
+		return false;
+	});
+
+});
+</script>
+</head>
+<body>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $productSearchForm = $("#productSearchForm");
+	var $keyword = $("#productSearchForm input");
+	var defaultKeyword = "商品搜索";
+	
+	var username = getCookie("username");
+	if (username != null) {
+		$headerUsername.text("您好, " + username).show();
+		$headerLogout.show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+	}
+	
+	$keyword.focus(function() {
+		if ($keyword.val() == defaultKeyword) {
+			$keyword.val("");
+		}
+	});
+	
+	$keyword.blur(function() {
+		if ($keyword.val() == "") {
+			$keyword.val(defaultKeyword);
+		}
+	});
+	
+	$productSearchForm.submit(function() {
+		if ($.trim($keyword.val()) == "" || $keyword.val() == defaultKeyword) {
+			return false;
+		}
+	});
+
+});
+</script>
+<%@include file="../header.jsp" %>
+	<div class="container member">
+<div class="span6">
+	<div class="info">
+		<div class="top"></div>
+		<div class="content">
+			<p>您好，<strong>test</strong></p>
+			<p>
+				会员等级:
+				<span class="red">贵宾会员</span>
+			</p>
+		</div>
+		<div class="bottom"></div>
+	</div>
+	<div class="menu">
+		<div class="title">
+			<a href="/shopxx/member/index.jhtml">会员中心</a>
+		</div>
+		<div class="content">
+			<dl>
+				<dt>交易信息</dt>
+				<dd>
+					<a href="/shopxx/member/order/list.jhtml">我的订单</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/coupon_code/list.jhtml">我的优惠券</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/coupon_code/exchange.jhtml">兑换优惠券</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>我的收藏</dt>
+				<dd>
+					<a href="/shopxx/member/favorite/list.jhtml">商品收藏</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/product_notify/list.jhtml">到货通知</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/review/list.jhtml">商品评论</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/consultation/list.jhtml">商品咨询</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>我的消息</dt>
+				<dd>
+					<a href="/shopxx/member/message/send.jhtml">发送消息</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/message/list.jhtml">我的消息</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/message/draft.jhtml">草稿箱</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>个人资料</dt>
+				<dd>
+					<a href="/shopxx/member/profile/edit.jhtml">个人资料</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/password/edit.jhtml">修改密码</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/receiver/list.jhtml" class="current">收货地址</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>预存款</dt>
+				<dd>
+					<a href="/shopxx/member/deposit/recharge.jhtml">预存款充值</a>
+				</dd>
+				<dd>
+					<a href="/shopxx/member/deposit/list.jhtml">我的预存款</a>
+				</dd>
+			</dl>
+		</div>
+		<div class="bottom"></div>
+	</div>
+</div>		<div class="span18 last">
+			<div class="list">
+				<div class="title">收货地址</div>
+				<div class="bar">
+					<a href="add.jhtml" class="button">添加收货地址</a>
+				</div>
+				<table id="listTable" class="list">
+					<tr>
+						<th>
+							收货人
+						</th>
+						<th>
+							地址
+						</th>
+						<th>
+							是否默认
+						</th>
+						<th>
+							操作
+						</th>
+					</tr>
+						<tr>
+							<td>
+								<input type="hidden" name="id" value="2" />
+								ddj
+							</td>
+							<td>
+								<span title="福建省龙岩市新罗区东城">福建省龙岩市新罗区东城</span>
+							</td>
+							<td>
+								是
+							</td>
+							<td>
+								<a href="edit.jhtml?id=2">[编辑]</a>
+								<a href="javascript:;" class="delete">[删除]</a>
+							</td>
+						</tr>
+						<tr class="last">
+							<td>
+								<input type="hidden" name="id" value="1" />
+								ddj
+							</td>
+							<td>
+								<span title="福建省龙岩市新罗区xxx">福建省龙岩市新罗区xxx</span>
+							</td>
+							<td>
+								否
+							</td>
+							<td>
+								<a href="edit.jhtml?id=1">[编辑]</a>
+								<a href="javascript:;" class="delete">[删除]</a>
+							</td>
+						</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<%@include file="../footer.jsp" %>
+</body>
+</html>

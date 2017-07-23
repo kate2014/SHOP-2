@@ -1,0 +1,25 @@
+package com.shop.controller.backgoods;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.shop.entity.XxParameterGroup;
+import com.shop.service.backgoods.ParameterService;
+
+@Controller
+@RequestMapping("/parameter")
+public class ParameterController {
+	@Autowired
+	ParameterService parameterService;
+	
+	public String list(Model model){
+		List<XxParameterGroup> list = parameterService.findParams();
+		model.addAttribute("list", list);
+		return "";
+	}
+
+}

@@ -1,0 +1,618 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>商品 - Powered By SHOP++</title>
+	<meta name="author" content="SHOP++ Team" />
+	<meta name="copyright" content="SHOP++" />
+<link href="${pageContext.request.contextPath }/resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath }/resources/shop/css/product.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/shop/js/jquery.lazyload.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/shop/js/common.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $productForm = $("#productForm");
+	var $brandId = $("#brandId");
+	var $promotionId = $("#promotionId");
+	var $orderType = $("#orderType");
+	var $pageNumber = $("#pageNumber");
+	var $pageSize = $("#pageSize");
+	var $filter = $("#filter dl");
+	var $lastFilter = $("#filter dl:eq(2)");
+	var $hiddenFilter = $("#filter dl:gt(2)");
+	var $moreOption = $("#filter dd.moreOption");
+	var $moreFilter = $("#moreFilter a");
+	var $tableType = $("#tableType");
+	var $listType = $("#listType");
+	var $orderSelect = $("#orderSelect");
+	var $brand = $("#filter a.brand");
+	var $attribute = $("#filter a.attribute");
+	var $previousPage = $("#previousPage");
+	var $nextPage = $("#nextPage");
+	var $size = $("#layout a.size");
+	var $tagIds = $("input[name='tagIds']");
+	var $sort = $("#sort a");
+	var $startPrice = $("#startPrice");
+	var $endPrice = $("#endPrice");
+	var $result = $("#result");
+	var $productImage = $("#result img");
+	
+	
+	var layoutType = getCookie("layoutType");
+	if (layoutType == "listType") {
+		$listType.addClass("currentList");
+		$result.removeClass("table").addClass("list");
+	} else {
+		$tableType.addClass("currentTable");
+		$result.removeClass("list").addClass("table");
+	}
+	
+	$tableType.click(function() {
+		var $this = $(this);
+		if (!$this.hasClass("currentTable")) {
+			$this.addClass("currentTable");
+			$listType.removeClass("currentList");
+			$result.removeClass("list").addClass("table");
+			addCookie("layoutType", "tableType", {path: "/shopxx/"});
+		}
+	});
+	
+	$listType.click(function() {
+		var $this = $(this);
+		if (!$this.hasClass("currentList")) {
+			$this.addClass("currentList");
+			$tableType.removeClass("currentTable");
+			$result.removeClass("table").addClass("list");
+			addCookie("layoutType", "listType", {path: "/shopxx/"});
+		}
+	});
+	
+	$size.click(function() {
+		var $this = $(this);
+		$pageNumber.val(1);
+		$pageSize.val($this.attr("pageSize"));
+		$productForm.submit();
+		return false;
+	});
+	
+	$previousPage.click(function() {
+		$pageNumber.val(0);
+		$productForm.submit();
+		return false;
+	});
+	
+	$nextPage.click(function() {
+		$pageNumber.val(2);
+		$productForm.submit();
+		return false;
+	});
+	
+	$orderSelect.mouseover(function() {
+		var $this = $(this);
+		var offset = $this.offset();
+		var $menuWrap = $this.closest("div.orderSelect");
+		var $popupMenu = $menuWrap.children("div.popupMenu");
+		$popupMenu.css({left: offset.left, top: offset.top + $this.height()}).show();
+		$menuWrap.mouseleave(function() {
+			$popupMenu.hide();
+		});
+	});
+	
+	$tagIds.click(function() {
+		$pageNumber.val(1);
+		$productForm.submit();
+	});
+	
+	$sort.click(function() {
+		var $this = $(this);
+		if ($this.hasClass("current")) {
+			$orderType.val("");
+		} else {
+			$orderType.val($this.attr("orderType"));
+		}
+		$pageNumber.val(1);
+		$productForm.submit();
+		return false;
+	});
+	
+	$startPrice.add($endPrice).focus(function() {
+		$(this).siblings("button").show();
+	});
+	
+	$startPrice.add($endPrice).keypress(function(event) {
+		var $this = $(this);
+		var key = event.keyCode?event.keyCode:event.which;
+		if (key == 13 || (key >= 48 && key <= 57) || (key == 46 && $this.val().indexOf(".") == -1)) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+	
+	$productForm.submit(function() {
+		if ($brandId.val() == "") {
+			$brandId.prop("disabled", true)
+		}
+		if ($promotionId.val() == "") {
+			$promotionId.prop("disabled", true)
+		}
+		if ($orderType.val() == "" || $orderType.val() == "topDesc") {
+			$orderType.prop("disabled", true)
+		}
+		if ($pageNumber.val() == "" || $pageNumber.val() == "1") {
+			$pageNumber.prop("disabled", true)
+		}
+		if ($pageSize.val() == "" || $pageSize.val() == "20") {
+			$pageSize.prop("disabled", true)
+		}
+		if ($startPrice.val() == "" || !/^\d+(\.\d+)?$/.test($startPrice.val())) {
+			$startPrice.prop("disabled", true)
+		}
+		if ($endPrice.val() == "" || !/^\d+(\.\d+)?$/.test($endPrice.val())) {
+			$endPrice.prop("disabled", true)
+		}
+	});
+	
+	$productImage.lazyload({
+		threshold: 100,
+		effect: "fadeIn"
+	});
+	
+	$.pageSkip = function(pageNumber) {
+		$pageNumber.val(pageNumber);
+		$productForm.submit();
+		return false;
+	}
+	
+});
+</script>
+</head>
+<body>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $productSearchForm = $("#productSearchForm");
+	var $keyword = $("#productSearchForm input");
+	var defaultKeyword = "商品搜索";
+	
+	var username = getCookie("username");
+	if (username != null) {
+		$headerUsername.text("您好, " + username).show();
+		$headerLogout.show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+	}
+	
+	$keyword.focus(function() {
+		if ($keyword.val() == defaultKeyword) {
+			$keyword.val("");
+		}
+	});
+	
+	$keyword.blur(function() {
+		if ($keyword.val() == "") {
+			$keyword.val(defaultKeyword);
+		}
+	});
+	
+	$productSearchForm.submit(function() {
+		if ($.trim($keyword.val()) == "" || $keyword.val() == defaultKeyword) {
+			return false;
+		}
+	});
+
+});
+</script>
+<%@include file="header.jsp" %>
+<div class="container productList">
+		<div class="span6">
+	
+			<%@include file="shoplist.jsp" %> 
+			
+			<div class="hotProduct">
+				<div class="title">热销商品</div>
+				<ul>
+								<li>
+									<a href="/shopxx/product/content/201705/189.html" title="圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫">圣得西 正品男装 经典版白蓝粉色</a>
+										<div>
+											<div>评分: </div>
+											<div class="score10"></div>
+											<div>5.0</div>
+										</div>
+									<div>销售价: <strong>￥1589.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/300.html" title="尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底裙子 春款">尚都比拉女装2013夏装新款蕾丝连</a>
+									<div>销售价: <strong>￥298.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/298.html" title="尚都比拉2013夏装新款淑女装 春款森女系 碎花修身短袖蕾丝连衣裙">尚都比拉2013夏装新款淑女装 春款</a>
+										<div>
+											<div>评分: </div>
+											<div class="score8"></div>
+											<div>4.0</div>
+										</div>
+									<div>销售价: <strong>￥289.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/293.html" title="尚都比拉2013夏装新款女装 韩版淑女装 蕾丝雪纺连衣裙 春款短袖">尚都比拉2013夏装新款女装 韩版淑</a>
+										<div>
+											<div>评分: </div>
+											<div class="score10"></div>
+											<div>5.0</div>
+										</div>
+									<div>销售价: <strong>￥259.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/290.html" title="尚都比拉2013夏装新款 韩版优雅甜美淑女装 春款蕾丝雪纺连衣裙子">尚都比拉2013夏装新款 韩版优雅甜</a>
+										<div>
+											<div>评分: </div>
+											<div class="score10"></div>
+											<div>5.0</div>
+										</div>
+									<div>销售价: <strong>￥299.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/287.html" title="尚都比拉2013夏装新款 韩版优雅淑女装 七分袖蕾丝雪纺连衣裙春款">尚都比拉2013夏装新款 韩版优雅淑</a>
+										<div>
+											<div>评分: </div>
+											<div class="score10"></div>
+											<div>5.0</div>
+										</div>
+									<div>销售价: <strong>￥339.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/285.html" title="尚都比拉2013夏装新款 春款修身淑女装 雪纺短袖假两件套连衣裙子">尚都比拉2013夏装新款 春款修身淑</a>
+										<div>
+											<div>评分: </div>
+											<div class="score10"></div>
+											<div>5.0</div>
+										</div>
+									<div>销售价: <strong>￥269.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/282.html" title="尚都比拉2013夏装新款 春款甜美淑女装 荷叶袖修身蕾丝雪纺连衣裙">尚都比拉2013夏装新款 春款甜美淑</a>
+										<div>
+											<div>评分: </div>
+											<div class="score10"></div>
+											<div>5.0</div>
+										</div>
+									<div>销售价: <strong>￥269.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li>
+									<a href="/shopxx/product/content/201705/279.html" title="尚都比拉2013春夏装新款女装 春款修身女裙 蕾丝雪纺短袖连衣裙子">尚都比拉2013春夏装新款女装 春款</a>
+										<div>
+											<div>评分: </div>
+											<div class="score8"></div>
+											<div>4.0</div>
+										</div>
+									<div>销售价: <strong>￥266.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+								<li class="last">
+									<a href="/shopxx/product/content/201705/275.html" title="尚都比拉2013夏装新款女装 春款蕾丝上衣 甜美打底衫雪纺衫衬衫女">尚都比拉2013夏装新款女装 春款蕾</a>
+									<div>销售价: <strong>￥199.00元</strong></div>
+									<div>月销量: <em>0</em></div>
+								</li>
+				</ul>
+			</div>
+		</div>
+		<div class="span18 last">
+			<div class="path">
+				<ul>
+					<li>
+						<a href="/shopxx/">首页</a>
+					</li>
+						<li class="last">商品</li>
+				</ul>
+			</div>
+			<form id="productForm" action="/shopxx/product/list.jhtml" method="get">
+				<input type="hidden" id="brandId" name="brandId" value="" />
+				<input type="hidden" id="promotionId" name="promotionId" value="" />
+				<input type="hidden" id="orderType" name="orderType" value="" />
+				<input type="hidden" id="pageNumber" name="pageNumber" value="1" />
+				<input type="hidden" id="pageSize" name="pageSize" value="20" />
+				<div class="bar">
+					<div id="layout" class="layout">
+						<label>布局:</label>
+						<a href="javascript:;" id="tableType" class="tableType">
+							<span>&nbsp;</span>
+						</a>
+						<a href="javascript:;" id="listType" class="listType">
+							<span>&nbsp;</span>
+						</a>
+						<label>数量:</label>
+						<a href="javascript:;" class="size current" pageSize="20">
+							<span>20</span>
+						</a>
+						<a href="javascript:;" class="size" pageSize="40">
+							<span>40</span>
+						</a>
+						<a href="javascript:;" class="size" pageSize="80">
+							<span>80</span>
+						</a>
+						<span class="page">
+							<label>共24个商品 1/2</label>
+									<a href="javascript:;" id="nextPage" class="nextPage">
+										<span>下一页</span>
+									</a>
+						</span>
+					</div>
+					<div id="sort" class="sort">
+						<div id="orderSelect" class="orderSelect">
+								<span>置顶降序</span>
+							<div class="popupMenu">
+								<ul>
+										<li>
+											<a href="javascript:;" orderType="topDesc">置顶降序</a>
+										</li>
+										<li>
+											<a href="javascript:;" orderType="priceAsc">价格升序</a>
+										</li>
+										<li>
+											<a href="javascript:;" orderType="priceDesc">价格降序</a>
+										</li>
+										<li>
+											<a href="javascript:;" orderType="salesDesc">销量降序</a>
+										</li>
+										<li>
+											<a href="javascript:;" orderType="scoreDesc">评分降序</a>
+										</li>
+										<li>
+											<a href="javascript:;" orderType="dateDesc">日期降序</a>
+										</li>
+								</ul>
+							</div>
+						</div>
+						<a href="javascript:;" class="asc" orderType="priceAsc">价格</a>
+						<a href="javascript:;" class="desc" orderType="salesDesc">销量</a>
+						<a href="javascript:;" class="desc" orderType="scoreDesc">评分</a>
+						<input type="text" id="startPrice" name="startPrice" class="startPrice" value="" maxlength="16" title="价格过滤最低价格" onpaste="return false" />-<input type="text" id="endPrice" name="endPrice" class="endPrice" value="" maxlength="16" title="价格过滤最高价格" onpaste="return false" />
+						<button type="submit">确&nbsp;&nbsp;定</button>
+					</div>
+					<div class="tag">
+						<label>只查看:</label>
+								<label>
+									<input type="checkbox" name="tagIds" value="1" checked="checked" />热销
+								</label>
+								<label>
+									<input type="checkbox" name="tagIds" value="2" />最新
+								</label>
+					</div>
+				</div>
+				<div id="result" class="result table clearfix">
+						<ul>
+									<li>
+										<a href="/shopxx/product/content/201705/189.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/c5b1b396-181a-4805-9e68-9b400d71f91e-thumbnail.jpg" />
+											<span class="price">
+												￥1589.00
+													<del>￥1906.80</del>
+											</span>
+											<span title="圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫">圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/300.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/0ff130db-0a1b-4b8d-a918-ed9016317009-thumbnail.jpg" />
+											<span class="price">
+												￥298.00
+													<del>￥357.60</del>
+											</span>
+											<span title="尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底裙子 春款">尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底裙子 春款</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/290.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/51afeef5-f6cb-4936-abea-315cfca0edc0-thumbnail.jpg" />
+											<span class="price">
+												￥299.00
+													<del>￥358.80</del>
+											</span>
+											<span title="尚都比拉2013夏装新款 韩版优雅甜美淑女装 春款蕾丝雪纺连衣裙子">尚都比拉2013夏装新款 韩版优雅甜美淑女装 春款蕾丝雪纺连衣裙子</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/279.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/2553e635-7aa4-416a-83f4-5288145684a1-thumbnail.jpg" />
+											<span class="price">
+												￥266.00
+													<del>￥319.20</del>
+											</span>
+											<span title="尚都比拉2013春夏装新款女装 春款修身女裙 蕾丝雪纺短袖连衣裙子">尚都比拉2013春夏装新款女装 春款修身女裙 蕾丝雪纺短袖连衣裙子</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/248.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/c41d0347-364c-42bb-baeb-25142c1ed167-thumbnail.jpg" />
+											<span class="price">
+												￥323.00
+													<del>￥387.60</del>
+											</span>
+											<span title="婷美塑身内衣正品燃脂塑身衣套装tingmei收腹瘦身衣薄束身衣">婷美塑身内衣正品燃脂塑身衣套装tingmei收腹瘦身衣薄束身衣</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/247.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/9f164e13-bcaa-48a6-9b35-0ca96629f614-thumbnail.jpg" />
+											<span class="price">
+												￥121.00
+													<del>￥145.20</del>
+											</span>
+											<span title="婷美正品塑身衣收腹 塑身背心 舒适托胸 蕾丝动能燃脂 瘦身美体">婷美正品塑身衣收腹 塑身背心 舒适托胸 蕾丝动能燃脂 瘦身美体</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/246.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/698a395e-ac95-4f76-a3c9-aa4e5fbc9217-thumbnail.jpg" />
+											<span class="price">
+												￥199.00
+													<del>￥238.80</del>
+											</span>
+											<span title="维依恋2013夏装新款波西米亚印花雪纺半身裙抹胸连衣裙两穿长裙子">维依恋2013夏装新款波西米亚印花雪纺半身裙抹胸连衣裙两穿长裙子</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/242.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/2af8be8a-75b9-41ae-b009-a7c54b685a4e-thumbnail.jpg" />
+											<span class="price">
+												￥658.00
+													<del>￥789.60</del>
+											</span>
+											<span title="婷美正品秋冬保暖衣 轻压塑身衣美体衣保暖内衣 塑身内衣分体套装">婷美正品秋冬保暖衣 轻压塑身衣美体衣保暖内衣 塑身内衣分体套装</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/241.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/1a3ad7de-7ee9-4530-b89a-46375219beb5-thumbnail.jpg" />
+											<span class="price">
+												￥328.00
+													<del>￥393.60</del>
+											</span>
+											<span title="婷美正品 四季款魔鬼瘦塑身衣套装瘦腰翘臀B罩杯">婷美正品 四季款魔鬼瘦塑身衣套装瘦腰翘臀B罩杯</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/230.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/ea566af4-0cdb-4017-a8c7-27e407794204-thumbnail.jpg" />
+											<span class="price">
+												￥139.00
+													<del>￥166.80</del>
+											</span>
+											<span title="卡绚 情侣家居服套装 春秋纯棉男女睡衣长袖条纹居家服 时">卡绚 情侣家居服套装 春秋纯棉男女睡衣长袖条纹居家服 时</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/229.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/dea31d42-fa3e-4b69-a631-51ca7c79f032-thumbnail.jpg" />
+											<span class="price">
+												￥139.00
+													<del>￥166.80</del>
+											</span>
+											<span title="卡绚 男士睡衣春秋条纹纯棉长袖家居服套装大码圆领全棉质居家服">卡绚 男士睡衣春秋条纹纯棉长袖家居服套装大码圆领全棉质居家服</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/221.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/1c81f492-a3d7-4c06-8658-bc2c76808cd3-thumbnail.jpg" />
+											<span class="price">
+												￥121.00
+													<del>￥145.20</del>
+											</span>
+											<span title="2013新款夏季家居服女 大码全棉夏装家居睡衣 运动短袖短裤套装">2013新款夏季家居服女 大码全棉夏装家居睡衣 运动短袖短裤套装</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/213.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/f1174ca6-6bdf-4d0b-86e6-5455bc8e89ad-thumbnail.jpg" />
+											<span class="price">
+												￥99.00
+													<del>￥118.80</del>
+											</span>
+											<span title="女士夏季短袖睡裙清纯棉质甜美可爱少女睡衣V领条纹连衣裙家居裙">女士夏季短袖睡裙清纯棉质甜美可爱少女睡衣V领条纹连衣裙家居裙</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/166.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/4107e1ce-5e7c-4941-bc0f-718f35ba14cd-thumbnail.jpg" />
+											<span class="price">
+												￥269.00
+													<del>￥322.80</del>
+											</span>
+											<span title="JackJones杰克琼斯男士立领拼接式夹克I212121041">JackJones杰克琼斯男士立领拼接式夹克I212121041</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/137.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/6f8ae4bf-cbd3-41c7-aa22-0fe81db6add4-thumbnail.jpg" />
+											<span class="price">
+												￥239.00
+													<del>￥286.80</del>
+											</span>
+											<span title="JackJones杰克琼斯男士纯棉格纹短袖衬衫C212204021">JackJones杰克琼斯男士纯棉格纹短袖衬衫C212204021</span>
+										</a>
+									</li>
+									<li>
+										<a href="/shopxx/product/content/201705/113.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/3d835c07-08c5-46d7-912d-adcd41f8c8e6-thumbnail.jpg" />
+											<span class="price">
+												￥739.00
+													<del>￥886.80</del>
+											</span>
+											<span title="2013春夏柒牌男装官方正品男士休闲印花短袖T恤衫702T506653">2013春夏柒牌男装官方正品男士休闲印花短袖T恤衫702T506653</span>
+										</a>
+									</li>
+									<li class="last">
+										<a href="/shopxx/product/content/201705/109.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/5e5be432-fbee-4bdd-a7bd-a92e01f9bfc4-thumbnail.jpg" />
+											<span class="price">
+												￥899.00
+													<del>￥1078.80</del>
+											</span>
+											<span title="2013春夏柒牌男装正品西服 男立领修身韩版 西服套装 902C141200">2013春夏柒牌男装正品西服 男立领修身韩版 西服套装 902C141200</span>
+										</a>
+									</li>
+									<li class="last">
+										<a href="/shopxx/product/content/201705/96.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/94fd156b-cbdc-40d7-8231-8e26bae2ed9c-thumbnail.jpg" />
+											<span class="price">
+												￥268.00
+													<del>￥321.60</del>
+											</span>
+											<span title="梵希蔓2013新款夏装甜美女装连衣裙短袖雪纺蕾丝拼接公主裙百褶裙">梵希蔓2013新款夏装甜美女装连衣裙短袖雪纺蕾丝拼接公主裙百褶裙</span>
+										</a>
+									</li>
+									<li class="last">
+										<a href="/shopxx/product/content/201705/80.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/9aafeb39-655a-43f9-97d5-248508deeeed-thumbnail.jpg" />
+											<span class="price">
+												￥298.00
+													<del>￥357.60</del>
+											</span>
+											<span title="梵希蔓2013夏装新款蕾丝连衣裙镂空假两件套连衣裙刺绣短袖连衣裙">梵希蔓2013夏装新款蕾丝连衣裙镂空假两件套连衣裙刺绣短袖连衣裙</span>
+										</a>
+									</li>
+									<li class="last">
+										<a href="/shopxx/product/content/201705/66.html">
+											<img src="/shopxx/upload/image/blank.gif" width="170" height="170" data-original="http://storage.shopxx.net/demo-image/3.0/201301/cae1bc6b-0159-4ce0-9a9c-4926df231b4f-thumbnail.jpg" />
+											<span class="price">
+												￥453.00
+													<del>￥543.60</del>
+											</span>
+											<span title="Max Toney 春装男士休闲西服便西装 时尚修身外套小西装 男 229">Max Toney 春装男士休闲西服便西装 时尚修身外套小西装 男 229</span>
+										</a>
+									</li>
+						</ul>
+				</div>
+	<div class="pagination">
+			<span class="firstPage">&nbsp;</span>
+			<span class="previousPage">&nbsp;</span>
+				<span class="currentPage">1</span>
+				<a href="javascript: $.pageSkip(2);">2</a>
+			<a class="nextPage" href="javascript: $.pageSkip(2);">&nbsp;</a>
+			
+			<a class="lastPage" href="javascript: $.pageSkip(2);">&nbsp;</a>
+	</div>
+			</form>
+		</div>
+	</div>
+<%@include file="footer.jsp" %>
+</body>
+</html>

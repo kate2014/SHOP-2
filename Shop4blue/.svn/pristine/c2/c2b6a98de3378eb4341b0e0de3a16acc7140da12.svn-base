@@ -1,0 +1,10 @@
+package com.shop.service.backgoods;
+
+import java.util.List;
+
+import com.shop.entity.XxParameterGroup;
+
+public interface ParameterService {
+	public List<XxParameterGroup> findParams();
+
+}

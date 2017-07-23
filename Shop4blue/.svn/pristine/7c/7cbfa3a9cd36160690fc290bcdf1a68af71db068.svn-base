@@ -1,0 +1,13 @@
+package com.shop.service.backstage;
+
+import org.springframework.stereotype.Service;
+
+/**
+ * 会员等级
+ * @author Administrator
+ *
+ */
+@Service
+public class MemberRankServiceImpl implements MemberRankService {
+
+}

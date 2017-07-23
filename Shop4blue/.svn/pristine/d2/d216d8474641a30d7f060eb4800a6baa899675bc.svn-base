@@ -1,0 +1,89 @@
+package com.shop.controller.backgoods;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxProduct;
+import com.shop.service.backgoods.GoodManagerService;
+import com.shop.service.backstage.UserService;
+import com.shop.service.backstage.UtilsService;
+
+import cn.itcast.utils.Page;
+@Controller
+@RequestMapping("/product")
+public class GoodManagerController {
+    @Autowired
+    private GoodManagerService gms;
+    @Autowired
+    private UtilsService us;
+	
+//	/product/checkProducts
+	@RequestMapping("/checkProducts")
+	public String checkProducts(Model model,Integer page,Integer size){
+		if(page==null){
+			page=1;
+		}
+		if(size==null){
+			size=20;
+		}
+		Page<Map<String,Object>> pages=new Page<>();
+		Map<String,Object> map = new HashMap<>();
+		map.put("index", (page-1)*2);
+		map.put("num",size);
+		List<Map<String,Object>> list = gms.getProduct(map);
+		int total = gms.selectProductCount();
+		pages.setPage(page);
+		pages.setRows(list);
+		pages.setSize(size);
+		pages.setTotal(total);
+		model.addAttribute("page",pages);
+		return "backstage/goods/goodmanage";
+		
+	}
+	@RequestMapping("/checkProductsBysize")
+	public String checkProductsBysize(@RequestParam(value="rows",defaultValue="5")int size,@RequestParam(value="page",defaultValue="1")int page,Model model){
+		int total = gms.selectProductCount();
+		Page<Map<String,Object>> pages=new Page<>();
+		Map<String,Object> map = new HashMap<>();
+		map.put("index", (page-1)*size);
+		map.put("num",size*page);
+		List<Map<String,Object>> list = gms.getProduct(map);
+		pages.setPage(page);
+		pages.setRows(list);
+		pages.setSize(size);
+		pages.setTotal(total);
+		model.addAttribute(pages);
+		return "backstage/goods/goodmanage";
+	}
+	@RequestMapping("addProduct")
+	public String addProduct(){
+		return "backstage/goods/addgood";
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping("delProduct")
+	public @ResponseBody Page delProduct(String str,int page,int size){
+		System.out.println(page+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		System.out.println(size+"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+		us.deleteByUpdate(str, XxProduct.class, "id");
+		int total = gms.selectProductCount();
+		Page<Map<String,Object>> pages=new Page<>();
+		Map<String,Object> map = new HashMap<>();
+		map.put("index", (page-1)*size);
+		map.put("num",size*page);
+		List<Map<String,Object>> list = gms.getProduct(map);
+		pages.setPage(page);
+		pages.setRows(list);
+		pages.setSize(size);
+		pages.setTotal(total);
+		return pages;
+	}
+}

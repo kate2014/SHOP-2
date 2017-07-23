@@ -1,0 +1,69 @@
+package com.shop.controller.backgoods;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.shop.entity.XxAttribute;
+import com.shop.entity.XxAttributeExample;
+import com.shop.entity.XxAttributeOption;
+import com.shop.entity.XxProductCategory;
+import com.shop.service.backgoods.ProductCategoryService;
+import com.shop.service.backgoods.SpsxService;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/spsx")
+public class GoodSPSXController {
+
+	@Autowired
+	SpsxService spsxService;
+	@Autowired
+	ProductCategoryService productCategoryService;
+	
+	@RequestMapping("/toAddSpsx")
+	public String toAddSpsx(Model model){
+		List<XxProductCategory> list=productCategoryService.getAll();
+		model.addAttribute("list",list);
+		return "backstage/goods/添加商品属性";
+	}
+	@RequestMapping("/tospsx")
+	public String getAll(Model model,Integer page,@RequestParam(value="rows",defaultValue="5") Integer rowss){
+		if(page==null){
+			page=1;
+		}
+		Page<XxAttribute> pages=new Page();
+		List<XxAttribute> list=spsxService.getAll();
+		List<XxAttribute> list1=new ArrayList<>();
+		for(int i=(page-1)*rowss;i<page*rowss&&i<list.size();i++){
+			list1.add(list.get(i));
+		}
+		
+		pages.setPage(page);
+		pages.setSize(rowss);
+		pages.setRows(list1);
+		pages.setTotal(spsxService.getCountAttribute());
+		System.out.println(spsxService.getCountAttribute());
+		model.addAttribute("page",pages);
+		return "backstage/goods/商品属性";
+	}
+	@RequestMapping("/addSpsx")
+	public String addSpsx(XxAttribute xxAttribute,String[] options){
+		System.out.println("++++++++");
+		XxAttributeOption xxAttributeOption=new XxAttributeOption();
+		spsxService.addSpsx(xxAttribute);
+		xxAttributeOption.setAttribute(xxAttribute.getId());
+		for(int i=0;i<options.length;i++){
+			xxAttributeOption.setOptions(options[i]);
+			spsxService.addAttributeOption(xxAttributeOption);
+		}
+		System.out.println("=============");
+		return "redirect:tospsx";
+	}
+}

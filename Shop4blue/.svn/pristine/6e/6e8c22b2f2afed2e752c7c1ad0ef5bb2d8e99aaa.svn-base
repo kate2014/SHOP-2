@@ -1,0 +1,546 @@
+package com.shop.controller.backorder;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang.time.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.shop.entity.XxAdmin;
+import com.shop.entity.XxArea;
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryCorp;
+import com.shop.entity.XxDeliveryTemplate;
+import com.shop.entity.XxMember;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrder.OrderStatus;
+import com.shop.entity.XxOrderItem;
+import com.shop.entity.XxOrderLog;
+import com.shop.entity.XxPayment;
+import com.shop.entity.XxPaymentMethod;
+import com.shop.entity.XxProduct;
+import com.shop.entity.XxRefunds;
+import com.shop.entity.XxReturns;
+import com.shop.entity.XxReturnsItem;
+import com.shop.entity.XxShipping;
+import com.shop.entity.XxShippingItem;
+import com.shop.entity.XxShippingMethod;
+import com.shop.service.backorder.Order4ManageService;
+import com.shop.service.backorder.OrderManageEditService;
+import com.shop.service.backstage.AreaService;
+import com.shop.service.backstage.UtilsService;
+import com.shop.utils.GenerateSn;
+import com.shop.utils.Message;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/ordermanage")
+public class Order4ManagerController {
+	@Autowired
+	Order4ManageService orderManagerService;
+	@Autowired
+	UtilsService utilsSerbice;
+	@Autowired
+	OrderManageEditService orderManageEditService;
+	@Autowired
+	AreaService areaService;
+	
+	
+	
+	@RequestMapping("/list")
+	public String list(Integer page,Integer size,Model model,Integer orderStatus,Integer paymentStatus,Integer shippingStatus,Integer hasExpired){
+		if(page==null){
+			page=1;
+		}
+		if(size==null){
+			size=5;
+		}
+		Page<XxOrder> pages = new Page<>();
+		pages.setPage(page);
+		pages.setSize(size);
+		
+		Map<String,Object> map=new HashMap<>();
+		if(orderStatus!=null){model.addAttribute("orderStatus", orderStatus);map.put("orderStatus", orderStatus);}
+		if(paymentStatus!=null){model.addAttribute("paymentStatus", paymentStatus);map.put("paymentStatus", paymentStatus);}
+		if(shippingStatus!=null){model.addAttribute("shippingStatus", shippingStatus);map.put("shippingStatus", shippingStatus);}
+		if(hasExpired!=null){model.addAttribute("hasExpired", hasExpired);map.put("hasExpired", hasExpired);}
+		map.put("start",(page-1)*size );
+		map.put("size", size);
+		// 总数   分页用
+		int sum = orderManagerService.totalNum(map);
+		pages.setTotal(sum);
+		List<XxOrder> list = orderManagerService.selectAll(map);
+		// 插入订单项数据 统计数量 金额等
+		for(XxOrder order : list){
+			List<XxOrderItem> orderItems = orderManagerService.selectByOrderId(order.getId());
+			order.setOrderItems(orderItems);
+		}
+		pages.setRows(list);
+		model.addAttribute("page", pages);
+		
+		return "backstage/order/ordermanage";
+	}
+	
+	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public Page<XxOrder> delete(String str,Page<XxOrder> pages){
+		utilsSerbice.deleteByUpdate(str, XxOrder.class, "id");
+		int page = pages.getPage();
+		int size = pages.getSize();
+		Map<String,Object> map=new HashMap<>();
+		map.put("start",(page-1)*size );
+		map.put("size", size);
+		List<XxOrder> list = orderManagerService.selectAll(map);
+		pages.setRows(list);
+		return pages;
+	}
+	
+	/**
+	 * 订单管理的查看
+	 * @param model
+	 * @param id 订单id
+	 * @return
+	 */
+	@RequestMapping("tolook")
+	public String tolook(Model model,Long id){
+		
+		// 1 订单信息 order
+		// 2 商品信息 orderItem
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		/*// 给订单价格,重量,数量 赋值
+		BigDecimal orderMoney=new BigDecimal("0");
+		int weight=0;
+		int quantity=0;
+		for(XxOrderItem oi : orderItem){
+			orderMoney=orderMoney.add(oi.getPrice().multiply(new BigDecimal(oi.getQuantity())));
+			weight+=oi.getWeight()!=null?oi.getWeight():0;
+			quantity+=oi.getQuantity()!=null?oi.getQuantity():0;
+		}*/
+		// 是否有这折扣！
+		/*if(order.getPromotionDiscount()!=null){
+			orderMoney=orderMoney.multiply(order.getPromotionDiscount());
+		}*/
+		// 订单价格+运费
+		//orderMoney=orderMoney.add(order.getFreight());
+		/*System.err.println("=============="+order.getPromotion());
+		order.setWeight(weight);*/
+		//order.setOrderMoney(orderMoney);
+		order.setOrderItems(orderItem);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		
+		// 3 查询收款信息
+		List<XxPayment> payments = orderManagerService.findPaymentByOrderId(id);
+		model.addAttribute("payments", payments);
+		
+		// 4 查询发货信息
+		XxShipping shipping = orderManagerService.findShippingByOrderId(id);
+		model.addAttribute("shipping", shipping);
+		
+		// 5 查询退款信息
+		XxRefunds refunds = orderManagerService.findRefundsByOrderId(id);
+		model.addAttribute("refunds", refunds);
+		
+		// 6 查询退货信息
+		XxReturns returns = orderManagerService.findReturnsByOrderId(id);
+		model.addAttribute("returns", returns);
+		
+		// 7 查询订单日志
+		List<XxOrderLog> orderLogs = orderManagerService.findOrderLogByOrderId(id);
+		model.addAttribute("orderLogs", orderLogs);
+		
+		// 查询所有配送方式和物流公司
+		List<XxShippingMethod> shippingMethods = orderManageEditService.getSmethod();
+		List<XxDeliveryCorp> deliveryCorps = orderManageEditService.getDeliveryCorp();
+		model.addAttribute("shippingMethods", shippingMethods);
+		model.addAttribute("deliveryCorps", deliveryCorps);
+		
+		return "backstage/order/ordermanageedit";
+	}
+	
+	/**
+	 * 检查锁定
+	 * @param session
+	 * @param id 订单id
+	 * @return
+	 */
+	@RequestMapping("checklock")
+	@ResponseBody
+	public String checkLock(HttpSession session,Long id){
+		// 获得当前用户
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		// 根据id查询当前订单
+		XxOrder order = orderManagerService.selectById(id);
+		if (order == null) {
+			return "false";
+		}
+		System.err.println("操作员："+order.getOperator());
+		System.err.println("锁定==========="+order.isLocked(admin)+","+order.isExpired());
+		if (order.isLocked(admin)) {
+			return "false";
+		} 
+		else{
+			// 设置锁定到期时间
+			order.setLockExpire(DateUtils.addSeconds(new Date(), 20));
+			// 一天
+//			order.setExpire(new Date(new Date().getTime()+60*1000*60*24));
+			// 设置操作员
+			order.setOperator(admin.getId());	
+			orderManagerService.updateOrder(order);
+			//return Message.success("admin.message.success");
+			return "success";
+		}
+	}
+	
+	/**
+	 * 确认
+	 */
+	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
+	public String confirm(HttpSession session,Long id, RedirectAttributes redirectAttributes) {
+		XxOrder order = orderManagerService.selectById(id);
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		System.err.println("11111"+order != null);
+		System.err.println("22222"+!order.isExpired());
+		System.err.println("33333"+(order.getOrderStatus() == 0));
+		System.err.println("44444"+!order.isLocked(admin));
+		if (order != null && !order.isExpired() && order.getOrderStatus() == 0 && !order.isLocked(admin)) {
+			order.setOrderStatus(1);
+			orderManagerService.updateOrder(order);
+			redirectAttributes.addFlashAttribute("success");
+			//redirectAttributes.addFlashAttribute("net.shopxx.template.directive.FlashMessageDirective.FLASH_MESSAGE", Message.success("admin.message.success"));
+			// 打日志
+			XxOrderLog orderLog = new XxOrderLog();
+			orderLog.setCreateDate(new Date());
+			orderLog.setModifyDate(new Date());
+			orderLog.setOperator(admin.getUsername());
+			orderLog.setType(2);
+			orderLog.setOrders(order.getId());
+			orderManagerService.insertOrderLog(orderLog);
+			redirectAttributes.addFlashAttribute("success");
+		} 
+		return "redirect:tolook?id=" + id;
+	}
+	
+
+	/**
+	 * 支付
+	 */
+	@RequestMapping(value = "/payment", method = RequestMethod.POST)
+	public String payment(HttpSession session,Long orderId, Long paymentMethodId, XxPayment payment, RedirectAttributes redirectAttributes) {
+		XxOrder order = orderManagerService.selectById(orderId);
+		payment.setOrders(order.getId());
+		XxPaymentMethod paymentMethod = orderManagerService.findPaymentMethodById(paymentMethodId);
+		payment.setPaymentMethod(paymentMethod != null ? paymentMethod.getName() : null);
+		
+		if (order.isExpired() || order.getOrderStatus() != 1) {
+			return "error";
+		}
+		if (order.getPaymentStatus() != 0 && order.getPaymentStatus() != 1) {
+			return "error";
+		}
+		System.err.println("======================"+payment.getAmount());
+		// 没赋值
+		//|| payment.getAmount().compareTo(order.getOrderMoney()) > 0
+		if (payment.getAmount().compareTo(new BigDecimal(0)) <= 0 ) {
+			return "error";
+		}
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		if (order.isLocked(admin)) {
+			return "error";
+		}
+		payment.setSn(GenerateSn.generate());
+		payment.setType(0);
+		payment.setStatus(1);
+		payment.setFee(new BigDecimal(0));
+		payment.setOperator(admin.getUsername());
+		payment.setPaymentDate(new Date());
+		payment.setPaymentPluginId(null);
+		payment.setExpire(null);
+		payment.setMember(null);
+		payment.setCreateDate(new Date());
+		payment.setModifyDate(new Date());
+		orderManagerService.addPayment(order, payment, admin);
+		redirectAttributes.addFlashAttribute("success");
+		return "redirect:tolook?id=" + orderId;
+	}
+	
+	/**
+	 * 退款
+	 */
+	@RequestMapping(value = "/refunds", method = RequestMethod.POST)
+	public String refunds(HttpSession session,Long orderId, Long paymentMethodId, XxRefunds refunds, RedirectAttributes redirectAttributes) {
+		XxOrder order = orderManagerService.selectById(orderId);
+		refunds.setOrders(order.getId());
+		XxPaymentMethod paymentMethod = orderManagerService.findPaymentMethodById(order.getPaymentMethod());
+		refunds.setPaymentMethod(paymentMethod != null ? paymentMethod.getName() : null);
+		if (order.isExpired() || order.getOrderStatus() != 1) {
+			return "error";
+		}
+		if (order.getPaymentStatus() != 2 && order.getPaymentStatus() != 1 && order.getPaymentStatus() != 3) {
+			return "error";
+		}
+		if (refunds.getAmount().compareTo(new BigDecimal(0)) <= 0 || refunds.getAmount().compareTo(order.getAmountPaid()) > 0) {
+			return "error";
+		}
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		if (order.isLocked(admin)) {
+			return "error";
+		}
+		refunds.setSn(GenerateSn.generate());
+		refunds.setOperator(admin.getUsername());
+		refunds.setCreateDate(new Date());
+		refunds.setModifyDate(new Date());
+		orderManagerService.addrefunds(order, refunds, admin);
+		redirectAttributes.addFlashAttribute("success");
+		return "redirect:tolook?id=" + orderId;
+	}
+	
+	/**
+	 * 发货
+	 */
+	@RequestMapping(value = "/shipping", method = RequestMethod.POST)
+	public String shipping(HttpSession session,Long orderId, Long shippingMethodId, Long deliveryCorpId, Long areaId, XxShipping shipping, RedirectAttributes redirectAttributes) {
+		// 查询订单和订单项 插入订单
+		XxOrder order = orderManagerService.selectById(orderId);
+		List<XxOrderItem> orderItems = orderManagerService.selectByOrderId(orderId);
+		if (order == null) {
+			return "error"; 
+		}
+		order.setOrderItems(orderItems);
+		for (Iterator<XxShippingItem> iterator = shipping.getShippingItems().iterator(); iterator.hasNext();) {
+			XxShippingItem shippingItem = iterator.next();
+			if (shippingItem == null || shippingItem.getSn()==null || shippingItem.getQuantity() == null || shippingItem.getQuantity() <= 0) {
+				iterator.remove();
+				continue;
+			}
+			// 查询订单项的商品 插入订单项中
+			XxOrderItem orderItem = order.getOrderItem(shippingItem.getSn());
+			XxProduct product = orderManagerService.findProductById(orderItem.getProduct());
+			orderItem.setXxProduct(product);
+			if (orderItem == null || shippingItem.getQuantity() > orderItem.getQuantity() - orderItem.getShippedQuantity()) {
+				return "error";
+			}
+			if (orderItem.getProduct() != null && orderItem.getXxProduct().getStock() != null && shippingItem.getQuantity() > orderItem.getXxProduct().getStock()) {
+				return "error";
+			}
+			shippingItem.setName(orderItem.getFullName());
+			shippingItem.setShipping(shipping.getId());
+		}
+		shipping.setOrders(order.getId());
+		XxShippingMethod shippingMethod = orderManagerService.findShippingMethodById(shippingMethodId);
+		shipping.setShippingMethod(shippingMethod != null ? shippingMethod.getName() : null);
+		XxDeliveryCorp deliveryCorp = orderManagerService.findDeliveryCorpById(deliveryCorpId);
+		shipping.setDeliveryCorp(deliveryCorp != null ? deliveryCorp.getName() : null);
+		shipping.setDeliveryCorpUrl(deliveryCorp != null ? deliveryCorp.getUrl() : null);
+		shipping.setDeliveryCorpCode(deliveryCorp != null ? deliveryCorp.getCode() : null);
+		XxArea area = areaService.find(areaId);
+		shipping.setArea(area != null ? area.getFullName() : null);
+		if (order.isExpired() || order.getOrderStatus() != 1) {
+			return "error";
+		}
+		if (order.getShippingStatus() != 0 && order.getShippingStatus() != 1) {
+			return "error";
+		}
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		if (order.isLocked(admin)) {
+			return "error";
+		}
+		shipping.setSn(GenerateSn.generate());
+		shipping.setOperator(admin.getUsername());
+		orderManagerService.addshipping(order, shipping, admin);
+		redirectAttributes.addFlashAttribute("success");
+		return "redirect:tolook?id=" + orderId;
+	}
+	
+	/**
+	 * 退货
+	 */
+	@RequestMapping(value = "/returns", method = RequestMethod.POST)
+	public String returns(HttpSession session,Long orderId, Long shippingMethodId, Long deliveryCorpId, Long areaId, XxReturns returns, RedirectAttributes redirectAttributes) {
+		XxOrder order = orderManagerService.selectById(orderId);
+		List<XxOrderItem> orderItems = orderManagerService.selectByOrderId(orderId);
+		if (order == null) {
+			return "error";
+		}
+		order.setOrderItems(orderItems);
+		for (Iterator<XxReturnsItem> iterator = returns.getReturnsItems().iterator(); iterator.hasNext();) {
+			XxReturnsItem returnsItem = iterator.next();
+			if (returnsItem == null || returnsItem.getSn()==null || returnsItem.getQuantity() == null || returnsItem.getQuantity() <= 0) {
+				iterator.remove();
+				continue;
+			}
+			XxOrderItem orderItem = order.getOrderItem(returnsItem.getSn());
+			System.err.println(returnsItem.getQuantity() > orderItem.getShippedQuantity() - orderItem.getReturnQuantity());
+			if (orderItem == null || returnsItem.getQuantity() > orderItem.getShippedQuantity() - orderItem.getReturnQuantity()) {
+				return "error";
+			}
+			returnsItem.setName(orderItem.getFullName());
+			returnsItem.setReturns(returns.getId());
+		}
+		System.err.println(2);
+		returns.setOrders(order.getId());
+		XxShippingMethod shippingMethod = orderManagerService.findShippingMethodById(shippingMethodId);
+		returns.setShippingMethod(shippingMethod != null ? shippingMethod.getName() : null);
+		XxDeliveryCorp deliveryCorp = orderManagerService.findDeliveryCorpById(deliveryCorpId);
+		returns.setDeliveryCorp(deliveryCorp != null ? deliveryCorp.getName() : null);
+		XxArea area = areaService.find(areaId);
+		returns.setArea(area != null ? area.getFullName() : null);
+		if (order.isExpired() || order.getOrderStatus() != 1) {
+			return "error";
+		}
+		if (order.getShippingStatus() != 2 && order.getShippingStatus() != 1 && order.getShippingStatus() != 3) {
+			return "error";
+		}
+		System.err.println(3);
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		if (order.isLocked(admin)) {
+			return "error";
+		}
+		returns.setSn(GenerateSn.generate());
+		returns.setOperator(admin.getUsername());
+		orderManagerService.addreturns(order, returns, admin);
+		redirectAttributes.addFlashAttribute("success");
+		return "redirect:tolook?id=" + orderId;
+	}
+
+	/**
+	 * 完成
+	 */
+	@RequestMapping(value = "/complete", method = RequestMethod.POST)
+	public String complete(HttpSession session,Long id, RedirectAttributes redirectAttributes) {
+		XxOrder order = orderManagerService.selectById(id);
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		if (order != null && !order.isExpired() && order.getOrderStatus() == 1 && !order.isLocked(admin)) {
+			orderManagerService.addcomplete(order, admin);
+			redirectAttributes.addFlashAttribute("success");
+		} else {
+			redirectAttributes.addFlashAttribute("admin.common.invalid");
+		}
+		return "redirect:tolook?id=" + id;
+	}
+
+	/**
+	 * 取消
+	 */
+	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
+	public String cancel(HttpSession session,Long id, RedirectAttributes redirectAttributes) {
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItems = orderManagerService.selectByOrderId(id);
+		order.setOrderItems(orderItems);
+		XxAdmin admin = (XxAdmin) session.getAttribute("admin");
+		if (order != null && !order.isExpired() && order.getOrderStatus() == 0 && !order.isLocked(admin)) {
+			orderManagerService.addcancel(order, admin);
+			redirectAttributes.addFlashAttribute("success");
+		} else {
+			redirectAttributes.addFlashAttribute("admin.common.invalid");
+		}
+		return "redirect:tolook?id=" + id;
+	}
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("orderprint")
+	public String printOrder(Long id,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		model.addAttribute("localdate", new Date());
+		double totalMoney=0;
+		for(XxOrderItem m : orderItem){
+			totalMoney+=m.getPrice().doubleValue()*m.getQuantity();
+		}
+		model.addAttribute("totalMoney",totalMoney);
+		return "backstage/order/printorder";
+	}
+	
+	@RequestMapping("shoplistprint")
+	public String printShoplist(Long id,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		model.addAttribute("localdate", new Date());
+		double totalMoney=0;
+		for(XxOrderItem m : orderItem){
+			totalMoney+=m.getPrice().doubleValue()*m.getQuantity();
+		}
+		model.addAttribute("totalMoney",totalMoney);
+		return "backstage/order/printshoplist";
+	}
+	
+	@RequestMapping("deliverprint")
+	public String printDeliver(Long id,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		model.addAttribute("localdate", new Date());
+		double totalMoney=0;
+		for(XxOrderItem m : orderItem){
+			totalMoney+=m.getPrice().doubleValue()*m.getQuantity();
+		}
+		model.addAttribute("totalMoney",totalMoney);
+		return "backstage/order/printdeliver";
+	}
+	
+	@RequestMapping("kuaidiprint")
+	public String printKuaidi(Long id,Long deliveryTemplateId,Long deliveryCenterId,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		System.err.println(order.getId()+","+order.getAreaName());
+		List<XxDeliveryTemplate> template = orderManagerService.selectAllTemplate();
+		List<XxDeliveryCenter> center = orderManagerService.selectAllCenter();
+		// 判断id是否为空，空则选择默认 非空则查询该id对应的数据
+		XxDeliveryTemplate deliveryTemplate = null;
+		if(deliveryTemplateId==null){
+			for(XxDeliveryTemplate d:template){
+				System.err.println(d.getName()+","+d.getContent());
+				if(d.getIsDefault()==true){
+					deliveryTemplate=d;
+				}
+			}
+		}else{
+			deliveryTemplate = orderManagerService.selectTemplateById(deliveryTemplateId);
+		}
+		XxDeliveryCenter deliveryCenter = null;
+		if(deliveryCenterId==null){
+			for(XxDeliveryCenter d:center){
+				if(d.getIsDefault()==true){
+					deliveryCenter=d;
+				}
+			}
+		}else{
+			deliveryCenter = orderManagerService.selectCenterById(deliveryCenterId);
+		}
+		
+		model.addAttribute("order", order);
+		model.addAttribute("deliveryTemplate", deliveryTemplate);
+		model.addAttribute("template", template);
+		model.addAttribute("deliveryCenter", deliveryCenter);
+		model.addAttribute("center", center);
+		model.addAttribute("haha","bbbbbb${1==1}aaaaa");
+		return "backstage/order/printkuaidi";
+	}
+	
+	
+
+}

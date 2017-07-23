@@ -1,0 +1,16 @@
+package com.shop.service.websevice;
+
+import java.util.List;
+
+import com.shop.dao.XxProductMapper;
+import com.shop.entity.XxProduct;
+import com.shop.entity.XxProductCategory;
+
+public interface ShopContentService {
+
+	XxProductCategory bigTagName(Long id);
+
+	List<XxProductCategory> smallTagName(Long id);
+
+	XxProduct productContent(Long id);
+}

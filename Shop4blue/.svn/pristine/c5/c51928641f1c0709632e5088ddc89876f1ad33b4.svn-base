@@ -1,0 +1,441 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫 商品评论 - Powered By SHOP++</title>
+<meta name="author" content="SHOP++ Team" />
+<meta name="copyright" content="SHOP++" />
+<link href="resources/shop/css/common.css" rel="stylesheet" type="text/css" />
+<link href="resources/shop/css/product.css" rel="stylesheet" type="text/css" />
+<link href="resources/shop/css/review.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="resources/shop/js/jquery.js"></script>
+<script type="text/javascript" src="resources/shop/js/jquery.rating.js"></script>
+<script type="text/javascript" src="resources/shop/js/jquery.validate.js"></script>
+<script type="text/javascript" src="resources/shop/js/common.js"></script>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $reviewForm = $("#reviewForm");
+	var $score = $("input.score");
+	var $tips = $("#tips");
+	var $content = $("#content");
+	var $captcha = $("#captcha");
+	var $captchaImage = $("#captchaImage");
+	var $submit = $(":submit");
+	
+	// 评分
+	$score.rating({
+		callback: function(value, link) {
+			$tips.text(message("{0}分", value));
+		}
+	});
+	
+	// 更换验证码
+	$captchaImage.click(function() {
+		$captchaImage.attr("src", "/shopxx/common/captcha.jhtml?captchaId=01144cb5-f3bb-4d92-a756-37f47c49f6bd&timestamp=" + (new Date()).valueOf());
+	});
+	
+	// 表单验证
+	$reviewForm.validate({
+		rules: {
+			content: {
+				required: true,
+				maxlength: 200
+			},
+			captcha: "required"
+		},
+		submitHandler: function(form) {
+			$.ajax({
+				url: $reviewForm.attr("action"),
+				type: "POST",
+				data: $reviewForm.serialize(),
+				dataType: "json",
+				cache: false,
+				beforeSend: function() {
+					$submit.prop("disabled", true);
+				},
+				success: function(message) {
+					$.message(message);
+					if (message.type == "success") {
+						setTimeout(function() {
+							$submit.prop("disabled", false);
+							location.href = "/shopxx/review/content/189.jhtml";
+						}, 3000);
+					} else {
+						$submit.prop("disabled", false);
+							$captcha.val("");
+							$captchaImage.attr("src", "/shopxx/common/captcha.jhtml?captchaId=01144cb5-f3bb-4d92-a756-37f47c49f6bd&timestamp=" + (new Date()).valueOf());
+					}
+				}
+			});
+		}
+	});
+
+});
+</script>
+</head>
+<body>
+<script type="text/javascript">
+$().ready(function() {
+
+	var $headerLogin = $("#headerLogin");
+	var $headerRegister = $("#headerRegister");
+	var $headerUsername = $("#headerUsername");
+	var $headerLogout = $("#headerLogout");
+	var $productSearchForm = $("#productSearchForm");
+	var $keyword = $("#productSearchForm input");
+	var defaultKeyword = "商品搜索";
+	
+	var username = getCookie("username");
+	if (username != null) {
+		$headerUsername.text("您好, " + username).show();
+		$headerLogout.show();
+	} else {
+		$headerLogin.show();
+		$headerRegister.show();
+	}
+	
+	$keyword.focus(function() {
+		if ($keyword.val() == defaultKeyword) {
+			$keyword.val("");
+		}
+	});
+	
+	$keyword.blur(function() {
+		if ($keyword.val() == "") {
+			$keyword.val(defaultKeyword);
+		}
+	});
+	
+	$productSearchForm.submit(function() {
+		if ($.trim($keyword.val()) == "" || $keyword.val() == defaultKeyword) {
+			return false;
+		}
+	});
+
+});
+</script>
+<%@include file="header.jsp" %>
+<div class="container review">
+		<div class="span6">
+			<div class="hotProductCategory">
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/1.jhtml">时尚女装</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/11.jhtml">连衣裙</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/12.jhtml">针织衫</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/13.jhtml">短外套</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/14.jhtml">小西装</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/2.jhtml">精品男装</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/21.jhtml">针织衫</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/22.jhtml">POLO衫</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/23.jhtml">休闲裤</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/24.jhtml">牛仔裤</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/3.jhtml">精致内衣</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/31.jhtml">女式内裤</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/32.jhtml">男式内裤</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/33.jhtml">保暖内衣</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/34.jhtml">塑身衣</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/4.jhtml">服饰配件</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/41.jhtml">女士腰带</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/42.jhtml">男士皮带</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/43.jhtml">女士围巾</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/44.jhtml">男士围巾</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/5.jhtml">时尚女鞋</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/51.jhtml">高帮鞋</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/52.jhtml">雪地靴</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/53.jhtml">中筒靴</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/54.jhtml">单鞋</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/6.jhtml">流行男鞋</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/59.jhtml">低帮鞋</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/60.jhtml">高帮鞋</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/61.jhtml">休闲鞋</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/62.jhtml">正装鞋</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/7.jhtml">潮流女包</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/63.jhtml">单肩包</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/64.jhtml">双肩包</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/65.jhtml">手提包</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/66.jhtml">手拿包</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/8.jhtml">精品男包</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/67.jhtml">单肩男</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/68.jhtml">双肩包</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/69.jhtml">手提包</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/70.jhtml">手拿包</a>
+									</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/shopxx/product/list/9.jhtml">童装童鞋</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/71.jhtml">运动鞋</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/72.jhtml">牛仔裤</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/73.jhtml">套装</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/74.jhtml">裤子</a>
+									</dd>
+						</dl>
+						<dl class="last">
+							<dt>
+								<a href="/shopxx/product/list/10.jhtml">时尚饰品</a>
+							</dt>
+									<dd>
+										<a href="/shopxx/product/list/75.jhtml">项链</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/76.jhtml">手链</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/77.jhtml">戒指</a>
+									</dd>
+									<dd>
+										<a href="/shopxx/product/list/78.jhtml">耳饰</a>
+									</dd>
+						</dl>
+			</div>
+			<div class="hotProduct">
+				<div class="title">热销商品</div>
+				<ul>
+							<li>
+								<a href="/shopxx/product/content/201705/189.html" title="圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫">圣得西 正品男装 经典版白蓝粉色</a>
+									<div>
+										<div>评分: </div>
+										<div class="score10"></div>
+										<div>5.0</div>
+									</div>
+								<div>销售价: <strong>￥1589.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+							<li>
+								<a href="/shopxx/product/content/201705/300.html" title="尚都比拉女装2013夏装新款蕾丝连衣裙 韩版修身雪纺打底裙子 春款">尚都比拉女装2013夏装新款蕾丝连</a>
+								<div>销售价: <strong>￥298.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+							<li>
+								<a href="/shopxx/product/content/201705/298.html" title="尚都比拉2013夏装新款淑女装 春款森女系 碎花修身短袖蕾丝连衣裙">尚都比拉2013夏装新款淑女装 春款</a>
+									<div>
+										<div>评分: </div>
+										<div class="score8"></div>
+										<div>4.0</div>
+									</div>
+								<div>销售价: <strong>￥289.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+							<li>
+								<a href="/shopxx/product/content/201705/293.html" title="尚都比拉2013夏装新款女装 韩版淑女装 蕾丝雪纺连衣裙 春款短袖">尚都比拉2013夏装新款女装 韩版淑</a>
+									<div>
+										<div>评分: </div>
+										<div class="score10"></div>
+										<div>5.0</div>
+									</div>
+								<div>销售价: <strong>￥259.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+							<li>
+								<a href="/shopxx/product/content/201705/290.html" title="尚都比拉2013夏装新款 韩版优雅甜美淑女装 春款蕾丝雪纺连衣裙子">尚都比拉2013夏装新款 韩版优雅甜</a>
+									<div>
+										<div>评分: </div>
+										<div class="score10"></div>
+										<div>5.0</div>
+									</div>
+								<div>销售价: <strong>￥299.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+							<li class="last">
+								<a href="/shopxx/product/content/201705/287.html" title="尚都比拉2013夏装新款 韩版优雅淑女装 七分袖蕾丝雪纺连衣裙春款">尚都比拉2013夏装新款 韩版优雅淑</a>
+									<div>
+										<div>评分: </div>
+										<div class="score10"></div>
+										<div>5.0</div>
+									</div>
+								<div>销售价: <strong>￥339.00元</strong></div>
+								<div>月销量: <em>0</em></div>
+							</li>
+				</ul>
+			</div>
+		</div>
+		<div class="span18 last">
+			<div class="path">
+				<ul>
+					<li>
+						<a href="/shopxx/">首页</a>
+					</li>
+					<li>
+						<a href="/shopxx/product/content/201705/189.html">圣得西 正品男装 经典版白蓝粉色</a>
+					</li>
+					<li>商品评论</li>
+				</ul>
+			</div>
+			<table class="info">
+				<tr>
+					<th rowspan="3">
+						<img src="http://storage.shopxx.net/demo-image/3.0/201301/c5b1b396-181a-4805-9e68-9b400d71f91e-thumbnail.jpg" alt="圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫" />
+					</th>
+					<td>
+						<a href="/shopxx/product/content/201705/189.html">圣得西 正品男装 经典版白蓝粉色 商务长袖正装衬衫</a>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						销售价: <strong>￥1589.00元</strong>
+					</td>
+				</tr>
+				<tr>
+					<td>
+							<div>评分: </div>
+							<div class="score10"></div>
+							<div>5.0</div>
+					</td>
+				</tr>
+			</table>
+			<form id="reviewForm" action="/shopxx/review/save.jhtml" method="post">
+				<input type="hidden" name="id" value="189" />
+					<input type="hidden" name="captchaId" value="01144cb5-f3bb-4d92-a756-37f47c49f6bd" />
+				<div class="add">
+					<table>
+						<tr>
+							<th>
+								评分:
+							</th>
+							<td>
+								<input type="radio" name="score" class="score" value="1" title="1分 非常不满" />
+								<input type="radio" name="score" class="score" value="2" title="2分 不满意" />
+								<input type="radio" name="score" class="score" value="3" title="3分 一般" />
+								<input type="radio" name="score" class="score" value="4" title="4分 满意" />
+								<input type="radio" name="score" class="score" value="5" title="5分 非常满意" checked="checked" />
+								<strong id="tips" class="tips">5分</strong>
+							</td>
+						</tr>
+						<tr>
+							<th>
+								内容:
+							</th>
+							<td>
+								<textarea id="content" name="content" class="text"></textarea>
+							</td>
+						</tr>
+							<tr>
+								<th>
+									验证码:
+								</th>
+								<td>
+									<span class="fieldSet">
+										<input type="text" id="captcha" name="captcha" class="text captcha" maxlength="4" autocomplete="off" /><img id="captchaImage" class="captchaImage" src="/shopxx/common/captcha.jhtml?captchaId=01144cb5-f3bb-4d92-a756-37f47c49f6bd" title="点击更换验证码" />
+									</span>
+								</td>
+							</tr>
+						<tr>
+							<th>
+								&nbsp;
+							</th>
+							<td>
+								<input type="submit" class="button" value="提交评论" />
+							</td>
+						</tr>
+					</table>
+				</div>
+			</form>
+		</div>
+	</div>
+<%@include file="footer.jsp" %>
+</body>
+</html>

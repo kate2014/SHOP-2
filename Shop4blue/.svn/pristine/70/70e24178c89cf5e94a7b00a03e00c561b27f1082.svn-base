@@ -1,0 +1,9 @@
+package com.shop.service.backstage;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public interface MemberManagerService {
+        public List<Map<String,Object>> getMember(Map<String,Object> map);
+}

@@ -1,0 +1,513 @@
+body, html {
+    margin: 0;
+}
+body,html a{
+    text-decoration: none;
+}
+body,html table tr td {
+    text-overflow: ellipsis;
+}
+#nav {
+    height: 30px;
+    width: 100%;
+    background: lightblue;
+    border-bottom: 1px solid lightblue;
+}
+
+#nav span {
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 15px;
+}
+
+#nav a {
+    color: black;
+}
+#nav a:hover{
+    color: #1155bb;
+}
+#tianjia{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url("../../IMG/common1.gif") no-repeat 0 -150px;
+}
+#shanchu {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url("../../IMG/common1.gif") no-repeat -40px -150px;
+}
+
+#shuaxin {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: url("../../IMG/common1.gif") no-repeat -120px -151px;
+}
+
+.xiasanjiao {
+    display: inline-block;
+    width: 10px;
+    height: 15px;
+    background: url("../../IMG/common1.gif") no-repeat 0 -172px;
+    margin-left: 5px;
+}
+.btn-group .myxs{
+    outline: none;
+    padding: 3px 5px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 3px;
+    border: 1px solid grey;
+    background: lightblue;
+}
+.btn-group{
+    display: inline-block;
+    width: 500px;
+    margin-top:13px ;
+}
+.btn-group .btn {
+    padding: 5px 15px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: 3px;
+    border: 1px solid grey;
+    background: lightblue;
+}
+.search {
+    display: inline-block;
+    float: right;
+    margin-top: 7px;
+    margin-bottom: 7px
+}
+.search input{
+    width: 400px;
+    height: 30px;
+    position: relative;
+    right: -33px;
+}
+@font-face {
+    font-family: xuguangsi;
+    src: url('../../font/glyphicons-halflings-regular.ttf');
+}
+.btn-search{
+    font-family: xuguangsi;
+    font-size: 16px;
+    color: #31b0d5;
+    width: 25px;
+    height: 25px;
+    position: relative;
+    right: 15px;
+    top: 2px;
+    background: white;
+    border: none;
+    outline: none;
+}
+.btn-search:after{
+    content: '\e003';
+    display: block;
+}
+.btn-search:hover{
+    color: blue;
+}
+#bodyer{
+    height: 100%;
+    padding: 0 10px;
+}
+table tr input{
+    margin: 0;
+}
+table{
+    width: 100%;
+}
+table tr th {
+    font-size: 14px;
+    border: 1px solid lightgrey;
+    background: lightblue;
+    padding: 8px 13px;
+    color: #204d74;
+}
+table tr td{
+    font-size: 14px;
+    border: 1px solid lightgrey;
+    padding: 8px 13px;
+    color: #204d74;
+    text-align: center;
+}
+table tr:hover{
+    background: #eeeeee;
+}
+.duihao{
+    margin-left:35px;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background: url("../../IMG/common1.gif") no-repeat -32px -389px;
+}
+#xing{
+    color: red;
+    margin-right: 10px;
+}
+.zi{
+    margin-left: 20px;
+}
+.btn-default-dao{
+    width: 600px;!important;
+}
+.btn-1{
+    width: 100px;
+    height: 30px;
+    background: #d0eeff;
+    border: 1px solid #99d3f5;
+    border-radius: 4px;
+    color: #1e88c7;
+}
+.btn-1:hover{
+    background: #aadffd;
+    border-color: #004974;
+}
+#inp-container {
+    width: 90%;
+    height: 600px;
+}
+#meng{
+    display: inline-block;
+}
+.a-upload{
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    background: #d0eeff;
+    border: 1px solid #99d3f5;
+    border-radius: 4px;
+    padding: 4px 10px;
+    overflow: hidden;
+    color: #1e88c7;
+    text-indent: 0;
+    zoom: 1;
+}
+.a-upload input{
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.a-upload:hover{
+    background: #aadffd;
+    border-color: #004974;
+}
+.btn-down{
+    float: right;
+    margin: 10px;
+    width: 100px;
+    height: 30px;
+    background: #d0eeff;
+    border: 1px solid #99d3f5;
+    border-radius: 4px;
+    color: #1e88c7;
+}
+.btn-down:hover{
+    background: #aadffd;
+    border-color: #004974;
+}
+/*×óµ¼º½*/
+#left-shangpin{
+    width: 100%;
+    height: 600px;
+    float: left;
+}
+#nav-left {
+    height: 900px;
+    width: 15%;
+    background: whitesmoke;
+    float: left;
+    overflow: hidden;
+}
+#nav-left ul{
+    padding: 0;
+}
+
+#nav-left a {
+    float: left;
+    color: black;
+    margin-left: 50px;
+}
+#nav-left span{
+    display: inline-block;
+    margin-bottom:15px ;
+    margin-left: 50px;
+}
+#ge{
+    display: inline-block;
+    height: 1px;
+    width: 80px;
+    border-bottom: 1px dashed black;
+}
+#nav-left ul li a{
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+#nav-left ul li{
+    list-style: none;
+    height: 30px;
+    margin-top: 5px;
+}
+#nav-left ul li:hover{
+    background: #99ccff;
+}
+#nav-left ul li:hover a{
+    color: blue;
+}
+.lf ul span b{
+    font-size: 20px;
+}
+      /*Ä£Ì¬´°*/
+#modal-1{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#cmodal-1{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+}
+#modal-1-1 fieldset:hover{
+    background: #eeeeee;
+}
+#cmodal-1-1 fieldset:hover{
+    background: #eeeeee;
+}
+#modal-1-1{
+    z-index: 998;
+    width: 60%;
+    height: 400px;;
+    background: #d0eeff;
+    vertical-align: middle;
+    margin: 0 auto;
+    padding: 20px;
+    overflow-y: scroll;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
+}
+#cmodal-1-1{
+    z-index: 998;
+    width: 60%;
+    height: 400px;;
+    background: #d0eeff;
+    vertical-align: middle;
+    margin: 0 auto;
+    padding: 20px;
+    overflow-y: scroll;
+    box-shadow: 0 0 5px 1px rgba(0,0,0,0.3);
+}
+#modal-1-1 input{
+    z-index: 999;
+}
+#modal-1-1 form fieldset label{
+    display: inline-block;
+    width: 80px;
+}
+#cmodal-1-1 form fieldset label{
+    display: inline-block;
+    width: 80px;
+}
+.modal-btn{
+    border: 1px solid #1155bb;
+    background: #aadffd;
+    width: 80px;
+    height: 30px;
+    margin: 3px;
+    float: right;
+}
+.modal-btn:hover{
+    background: lightblue;
+}
+#modal-head{
+    width: 60%;
+    height: 1px;;
+    background: lightblue;
+    vertical-align: middle;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: -10px;
+    cursor: all-scroll;
+}
+#cmodal-head{
+    width: 60%;
+    height: 1px;;
+    background: lightblue;
+    vertical-align: middle;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: -10px;
+    cursor: all-scroll;
+}
+#modal-head p{
+    display: inline-block;
+    margin-left: 40%;
+    margin-top: -10px;
+    font-size: 24px;
+}
+#cmodal-head p{
+    display: inline-block;
+    margin-left: 40%;
+    margin-top: -10px;
+    font-size: 24px;
+}
+#cha{
+    display: inline-block;
+    width: 23px;
+    height: 15px;
+    margin-top: -10px;
+    margin-right: 5px;
+    float: right;
+    background: url("../../IMG/common1.gif") no-repeat -1px -330px;
+    cursor: pointer;
+}
+#ccha{
+    display: inline-block;
+    width: 23px;
+    height: 15px;
+    margin-top: -10px;
+    margin-right: 5px;
+    float: right;
+    background: url("../../IMG/common1.gif") no-repeat -1px -330px;
+    cursor: pointer;
+}
+#cha:hover{
+    background: url("../../IMG/common1.gif") no-repeat -31px -330px;
+}
+#ccha:hover{
+    background: url("../../IMG/common1.gif") no-repeat -31px -330px;
+}
+.dailog{
+    z-index: -999;
+    opacity: 0;
+    position: absolute;
+    top: 5%;
+    bottom: 10%;
+    width: 60%;
+    height: 400px;
+    margin-left: 20%;
+}
+@keyframes dropdown {
+    0%{
+        top: 7%;
+        bottom: 13%;
+        opacity: 0;
+    }
+    100%{
+        top: 10%;
+        bottom: 10%;
+        opacity: 1;
+    }
+}
+@keyframes dropup {
+    0%{
+        top: 10%;
+        bottom: 10%;
+        opacity: 1;
+    }
+    100%{
+        top: 7%;
+        bottom: 13%;
+        opacity: 0;
+    }
+}
+
+                       /*·ÖÒ³*/
+.pagination{
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 350px;
+    border-radius: 4px;
+    width: 600px;
+}
+.pagination > li {
+    display: inline;
+}
+.pagination > li > a,
+.pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    font-size: 18px;
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+    z-index: 3;
+    color: #23527c;
+    background-color: #eee;
+    border-color: #ddd;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    /*z-index: 2;*/
+    color: #fff;
+    cursor: default;
+    background-color: #337ab7;
+    border-color: #337ab7;
+}
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
+}
+
+#yeshu{
+    z-index: 994;
+    width: 53px;
+    height: 39px;
+    border: none;
+    position: absolute;
+    left: 510px;
+    opacity: 0;
+}
+.bi{
+    color: red;
+}

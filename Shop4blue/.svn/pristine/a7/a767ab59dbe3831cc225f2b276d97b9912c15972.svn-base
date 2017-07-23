@@ -1,0 +1,74 @@
+package com.shop.controller.backstage;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/user")
+public class User4BackController {
+	@RequestMapping("/member")
+	public String  member(){
+		return "backstage/user/member";
+	}
+    @RequestMapping("/membermanage")
+	public String membermanage(){
+		return "backstage/user/membermanage";
+	}
+    @RequestMapping("/membermanageadd")
+    //return "backstage/user/membermanageedit";
+	public String membermanageadd(){
+		return "backstage/user/membermanageadd";
+	}
+    @RequestMapping("/membermanageedit")
+	public String membermanageedit(){
+		return "backstage/user/membermanageedit";
+	}
+    @RequestMapping("/membermanagefind")
+	public String membermanagefind(){
+		return "backstage/user/membermanagefind";
+	}
+    @RequestMapping("/comment")
+	public String comment(){
+		return "backstage/user/comment";
+	}
+    @RequestMapping("/commentedit")
+	public String commentedit(){
+		return "backstage/user/commentedit";
+	}
+    @RequestMapping("/consult")
+	public String consult(){
+		return "backstage/user/consult";
+	}
+    @RequestMapping("/consultedit")
+	public String consultedit(){
+		return "backstage/user/consultedit";
+	}
+    @RequestMapping("/consultreply")
+	public String consultreply(){
+		return "backstage/user/consultreply";
+	}
+    @RequestMapping("/levelofmember")
+	public String levelofmember(){
+		return "backstage/user/levelofmember";
+	}
+    @RequestMapping("/levelofmemberedit")
+	public String levelofmemberedit(){
+		return "backstage/user/levelofmemberedit";
+	}
+    @RequestMapping("/levelofmemberadd")
+	public String levelofmemberadd(){
+		return "backstage/user/levelofmemberadd";
+	}
+    @RequestMapping("/memberregister")
+	public String memberregister(){
+		return "backstage/user/memberregister";
+	}
+    @RequestMapping("/memberregisteredit")
+	public String memberregisteredit(){
+		return "backstage/user/memberregisteredit";
+	}
+    @RequestMapping("/memberregisteradd")
+	public String memberregisteradd(){
+		return "backstage/user/memberregisteradd";
+	}
+}

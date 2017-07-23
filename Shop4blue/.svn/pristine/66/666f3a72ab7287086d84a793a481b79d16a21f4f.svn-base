@@ -1,0 +1,212 @@
+package com.shop.controller.backorder;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxDeliveryCenter;
+import com.shop.entity.XxDeliveryTemplate;
+import com.shop.entity.XxOrder;
+import com.shop.entity.XxOrderItem;
+import com.shop.entity.XxOrderLog;
+import com.shop.entity.XxPayment;
+import com.shop.entity.XxRefunds;
+import com.shop.entity.XxReturns;
+import com.shop.entity.XxShipping;
+import com.shop.service.backorder.Order4ManageService;
+import com.shop.service.backstage.UtilsService;
+
+import cn.itcast.utils.Page;
+
+@Controller
+@RequestMapping("/ordermanage")
+public class Order4ManagerController {
+	@Autowired
+	Order4ManageService orderManagerService;
+	@Autowired
+	UtilsService utilsSerbice;
+	
+	
+	
+	@RequestMapping("/list")
+	public String list(Integer page,Integer size,Model model){
+		if(page==null){
+			page=1;
+		}
+		if(size==null){
+			size=5;
+		}
+		Page<XxOrder> pages = new Page<>();
+		pages.setPage(page);
+		pages.setSize(size);
+		// 总数   分页用
+		int sum = orderManagerService.totalNum();
+		pages.setTotal(sum);
+		List<XxOrder> list = orderManagerService.selectAll((page-1)*size,size);
+		pages.setRows(list);
+		
+		model.addAttribute("page", pages);
+		
+		return "backstage/order/ordermanage";
+	}
+	
+	@RequestMapping("/delete")
+	@ResponseBody
+	public Page<XxOrder> delete(String str,Page<XxOrder> pages){
+		utilsSerbice.deleteByUpdate(str, XxOrder.class, "id");
+		int page = pages.getPage();
+		int size = pages.getSize();
+		List<XxOrder> list = orderManagerService.selectAll((page-1)*size,size);
+		pages.setRows(list);
+		return pages;
+	}
+	
+	/**
+	 * 订单管理的查看
+	 * @param model
+	 * @param id 订单id
+	 * @return
+	 */
+	@RequestMapping("tolook")
+	public String tolook(Model model,Long id){
+		
+		// 1 订单信息 order
+		// 2 商品信息 orderItem
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		// 给订单价格,重量,数量 赋值
+		BigDecimal orderMoney=new BigDecimal("0");
+		int weight=0;
+		int quantity=0;
+		for(XxOrderItem oi : orderItem){
+			orderMoney=orderMoney.add(oi.getPrice().multiply(new BigDecimal(oi.getQuantity())));
+			weight+=oi.getWeight()!=null?oi.getWeight():0;
+			quantity+=oi.getQuantity()!=null?oi.getQuantity():0;
+		}
+		// 是否有这折扣！
+		/*if(order.getPromotionDiscount()!=null){
+			orderMoney=orderMoney.multiply(order.getPromotionDiscount());
+		}*/
+		// 订单价格+运费
+		orderMoney=orderMoney.add(order.getFreight());
+		System.err.println("=============="+order.getPromotion());
+		order.setWeight(weight);
+		order.setQuantity(quantity);
+		order.setOrderMoney(orderMoney);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		
+		// 3 查询收款信息
+		List<XxPayment> payments = orderManagerService.findPaymentByOrderId(id);
+		model.addAttribute("payments", payments);
+		
+		// 4 查询发货信息
+		XxShipping shipping = orderManagerService.findShippingByOrderId(id);
+		model.addAttribute("shipping", shipping);
+		
+		// 5 查询退款信息
+		XxRefunds refunds = orderManagerService.findRefundsByOrderId(id);
+		model.addAttribute("refunds", refunds);
+		
+		// 6 查询退货信息
+		XxReturns returns = orderManagerService.findReturnsByOrderId(id);
+		model.addAttribute("returns", returns);
+		
+		// 7 查询订单日志
+		List<XxOrderLog> orderLogs = orderManagerService.findOrderLogByOrderId(id);
+		model.addAttribute("orderLogs", orderLogs);
+		
+		return "backstage/order/ordermanageedit";
+	}
+	
+	@RequestMapping("orderprint")
+	public String printOrder(Long id,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		model.addAttribute("localdate", new Date());
+		double totalMoney=0;
+		for(XxOrderItem m : orderItem){
+			totalMoney+=m.getPrice().doubleValue()*m.getQuantity();
+		}
+		model.addAttribute("totalMoney",totalMoney);
+		return "backstage/order/printorder";
+	}
+	
+	@RequestMapping("shoplistprint")
+	public String printShoplist(Long id,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		model.addAttribute("localdate", new Date());
+		double totalMoney=0;
+		for(XxOrderItem m : orderItem){
+			totalMoney+=m.getPrice().doubleValue()*m.getQuantity();
+		}
+		model.addAttribute("totalMoney",totalMoney);
+		return "backstage/order/printshoplist";
+	}
+	
+	@RequestMapping("deliverprint")
+	public String printDeliver(Long id,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		List<XxOrderItem> orderItem = orderManagerService.selectByOrderId(id);
+		model.addAttribute("order", order);
+		model.addAttribute("orderItem", orderItem);
+		model.addAttribute("localdate", new Date());
+		double totalMoney=0;
+		for(XxOrderItem m : orderItem){
+			totalMoney+=m.getPrice().doubleValue()*m.getQuantity();
+		}
+		model.addAttribute("totalMoney",totalMoney);
+		return "backstage/order/printdeliver";
+	}
+	
+	@RequestMapping("kuaidiprint")
+	public String printKuaidi(Long id,Long deliveryTemplateId,Long deliveryCenterId,Model model){
+		XxOrder order = orderManagerService.selectById(id);
+		System.err.println(order.getId()+","+order.getAreaName());
+		List<XxDeliveryTemplate> template = orderManagerService.selectAllTemplate();
+		List<XxDeliveryCenter> center = orderManagerService.selectAllCenter();
+		// 判断id是否为空，空则选择默认 非空则查询该id对应的数据
+		XxDeliveryTemplate deliveryTemplate = null;
+		if(deliveryTemplateId==null){
+			for(XxDeliveryTemplate d:template){
+				System.err.println(d.getName()+","+d.getContent());
+				if(d.getIsDefault()==true){
+					deliveryTemplate=d;
+				}
+			}
+		}else{
+			deliveryTemplate = orderManagerService.selectTemplateById(deliveryTemplateId);
+		}
+		XxDeliveryCenter deliveryCenter = null;
+		if(deliveryCenterId==null){
+			for(XxDeliveryCenter d:center){
+				if(d.getIsDefault()==true){
+					deliveryCenter=d;
+				}
+			}
+		}else{
+			deliveryCenter = orderManagerService.selectCenterById(deliveryCenterId);
+		}
+		
+		model.addAttribute("order", order);
+		model.addAttribute("deliveryTemplate", deliveryTemplate);
+		model.addAttribute("template", template);
+		model.addAttribute("deliveryCenter", deliveryCenter);
+		model.addAttribute("center", center);
+		return "backstage/order/printkuaidi";
+	}
+	
+	
+
+}

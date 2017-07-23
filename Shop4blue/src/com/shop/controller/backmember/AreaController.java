@@ -1,0 +1,42 @@
+package com.shop.controller.backmember;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shop.entity.XxArea;
+import com.shop.service.backstage.AreaService;
+
+@Controller
+@RequestMapping("/area")
+public class AreaController {
+	@Autowired
+	AreaService areaService;
+	
+	@RequestMapping("/area")
+	public @ResponseBody
+	Map<Long, String> area(Long parentId) {
+		List<XxArea> areas = new ArrayList<>();
+		XxArea parent = areaService.find(parentId);
+		
+		if (parent != null) {
+			System.out.println(parent.getName());
+			areas = new ArrayList<XxArea>(parent.getChildren());
+		} else {
+			areas = areaService.findRoots();
+		}
+		Map<Long, String> options = new HashMap<Long, String>();
+		for (XxArea area : areas) {
+			options.put(area.getId(), area.getName());
+		}
+		return options;
+	}
+
+	
+}

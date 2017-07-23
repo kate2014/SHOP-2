@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.dao.XxShippingMethodMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.entity.XxShippingMethod" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="continue_price" property="continuePrice" jdbcType="DECIMAL" />
+    <result column="continue_weight" property="continueWeight" jdbcType="INTEGER" />
+    <result column="first_price" property="firstPrice" jdbcType="DECIMAL" />
+    <result column="first_weight" property="firstWeight" jdbcType="INTEGER" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="default_delivery_corp" property="defaultDeliveryCorp" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.shop.entity.XxShippingMethod" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_date, modify_date, orders, continue_price, continue_weight, first_price, 
+    first_weight, icon, name, default_delivery_corp
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.shop.entity.XxShippingMethodExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from xx_shipping_method
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.entity.XxShippingMethodExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from xx_shipping_method
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from xx_shipping_method
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from xx_shipping_method
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.shop.entity.XxShippingMethodExample" >
+    delete from xx_shipping_method
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.shop.entity.XxShippingMethod" >
+    insert into xx_shipping_method (id, create_date, modify_date, 
+      orders, continue_price, continue_weight, 
+      first_price, first_weight, icon, 
+      name, default_delivery_corp, description
+      )
+    values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{orders,jdbcType=INTEGER}, #{continuePrice,jdbcType=DECIMAL}, #{continueWeight,jdbcType=INTEGER}, 
+      #{firstPrice,jdbcType=DECIMAL}, #{firstWeight,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{defaultDeliveryCorp,jdbcType=BIGINT}, #{description,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.entity.XxShippingMethod" >
+    insert into xx_shipping_method
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="modifyDate != null" >
+        modify_date,
+      </if>
+      <if test="orders != null" >
+        orders,
+      </if>
+      <if test="continuePrice != null" >
+        continue_price,
+      </if>
+      <if test="continueWeight != null" >
+        continue_weight,
+      </if>
+      <if test="firstPrice != null" >
+        first_price,
+      </if>
+      <if test="firstWeight != null" >
+        first_weight,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="defaultDeliveryCorp != null" >
+        default_delivery_corp,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orders != null" >
+        #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="continuePrice != null" >
+        #{continuePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="continueWeight != null" >
+        #{continueWeight,jdbcType=INTEGER},
+      </if>
+      <if test="firstPrice != null" >
+        #{firstPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="firstWeight != null" >
+        #{firstWeight,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultDeliveryCorp != null" >
+        #{defaultDeliveryCorp,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.shop.entity.XxShippingMethodExample" resultType="java.lang.Integer" >
+    select count(*) from xx_shipping_method
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update xx_shipping_method
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyDate != null" >
+        modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orders != null" >
+        orders = #{record.orders,jdbcType=INTEGER},
+      </if>
+      <if test="record.continuePrice != null" >
+        continue_price = #{record.continuePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.continueWeight != null" >
+        continue_weight = #{record.continueWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.firstPrice != null" >
+        first_price = #{record.firstPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.firstWeight != null" >
+        first_weight = #{record.firstWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.defaultDeliveryCorp != null" >
+        default_delivery_corp = #{record.defaultDeliveryCorp,jdbcType=BIGINT},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update xx_shipping_method
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      orders = #{record.orders,jdbcType=INTEGER},
+      continue_price = #{record.continuePrice,jdbcType=DECIMAL},
+      continue_weight = #{record.continueWeight,jdbcType=INTEGER},
+      first_price = #{record.firstPrice,jdbcType=DECIMAL},
+      first_weight = #{record.firstWeight,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      default_delivery_corp = #{record.defaultDeliveryCorp,jdbcType=BIGINT},
+      description = #{record.description,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update xx_shipping_method
+    set id = #{record.id,jdbcType=BIGINT},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      modify_date = #{record.modifyDate,jdbcType=TIMESTAMP},
+      orders = #{record.orders,jdbcType=INTEGER},
+      continue_price = #{record.continuePrice,jdbcType=DECIMAL},
+      continue_weight = #{record.continueWeight,jdbcType=INTEGER},
+      first_price = #{record.firstPrice,jdbcType=DECIMAL},
+      first_weight = #{record.firstWeight,jdbcType=INTEGER},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      default_delivery_corp = #{record.defaultDeliveryCorp,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.entity.XxShippingMethod" >
+    update xx_shipping_method
+    <set >
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null" >
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orders != null" >
+        orders = #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="continuePrice != null" >
+        continue_price = #{continuePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="continueWeight != null" >
+        continue_weight = #{continueWeight,jdbcType=INTEGER},
+      </if>
+      <if test="firstPrice != null" >
+        first_price = #{firstPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="firstWeight != null" >
+        first_weight = #{firstWeight,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultDeliveryCorp != null" >
+        default_delivery_corp = #{defaultDeliveryCorp,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.shop.entity.XxShippingMethod" >
+    update xx_shipping_method
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      orders = #{orders,jdbcType=INTEGER},
+      continue_price = #{continuePrice,jdbcType=DECIMAL},
+      continue_weight = #{continueWeight,jdbcType=INTEGER},
+      first_price = #{firstPrice,jdbcType=DECIMAL},
+      first_weight = #{firstWeight,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      default_delivery_corp = #{defaultDeliveryCorp,jdbcType=BIGINT},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.entity.XxShippingMethod" >
+    update xx_shipping_method
+    set create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      orders = #{orders,jdbcType=INTEGER},
+      continue_price = #{continuePrice,jdbcType=DECIMAL},
+      continue_weight = #{continueWeight,jdbcType=INTEGER},
+      first_price = #{firstPrice,jdbcType=DECIMAL},
+      first_weight = #{firstWeight,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      default_delivery_corp = #{defaultDeliveryCorp,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

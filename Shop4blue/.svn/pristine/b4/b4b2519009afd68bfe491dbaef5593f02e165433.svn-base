@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/cssnormalize-min.css"/>
+    <link rel="stylesheet" href="../css/css02.css"/>
+    <script src="../js/js01.js"></script>
+</head>
+<body>
+<div id="nav">
+        <span>
+            <a href="">首页</a> >> <a href="">添加快递单模板</a>
+        </span>
+</div>
+<form action="">
+    <fieldset>
+        <lable><span id="xing">*</span>名称：</lable>
+        <input type="text" required/>
+    </fieldset>
+    <fieldset>
+        <lable class="zi">操作：</lable>
+        <input type="button" value="添加标签" class="btn-1"/>
+        <input type="button" value="删除标签" class="btn-1"/>
+    </fieldset>
+    <fieldset>
+        <lable class="zi">内容：</lable>
+        <input type="text" id="inp-container"/>
+    </fieldset>
+    <fieldset>
+        <lable class="zi">背景图：</lable>
+        <div id="meng">
+
+            <a href="javascript:;" class="a-upload">
+                选择文件
+                <input type="file" name="" id=""/>
+            </a>
+        </div>
+    </fieldset>
+    <fieldset>
+        <lable class="zi">宽度：</lable>
+        <input type="text"/>
+    </fieldset>
+    <fieldset>
+        <lable class="zi">重量：</lable>
+        <input type="text"/>
+    </fieldset>
+    <input type="submit" value="提交" class="btn-down"/>
+    <input type="reset" value="重置" class="btn-down"/>
+</form>
+</body>
+</html>

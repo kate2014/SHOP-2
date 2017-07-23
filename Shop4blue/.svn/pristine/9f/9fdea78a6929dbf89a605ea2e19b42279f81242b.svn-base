@@ -1,0 +1,14 @@
+package com.shop.service.backstage;
+
+import org.springframework.stereotype.Service;
+
+
+/**
+ * 评论管理Service
+ * @author Administrator
+ *
+ */
+@Service
+public class CommentServiceImpl implements CommentService {
+
+}

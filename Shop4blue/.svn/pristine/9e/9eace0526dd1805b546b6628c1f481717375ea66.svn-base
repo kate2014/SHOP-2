@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../css/css01.css"/>
+</head>
+<body>
+<div id="nav-left">
+    <div id="left-dingdan" class="lf">
+        <ul>
+            <span><b>会员管理</b></span>
+            <br/>
+            <span id="ge"></span>
+            <li>
+                <a href="会员管理.html" target="会员">会员管理</a>
+            </li>
+            <li>
+                <a href="会员等级.html" target="会员">会员等级</a>
+            </li>
+            <li>
+                <a href="会员注册项.html" target="会员">会员注册项</a>
+            </li>
+            <li>
+                <a href="评论管理.html" target="会员">评论管理</a>
+            </li>
+            <li>
+                <a href="咨询管理.html" target="会员">咨询管理</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--内容-->
+<div id="container">
+    <iframe src="会员管理.html" frameborder="0" name="会员"
+            width="100%" height="100%">
+
+    </iframe>
+</div>
+</body>
+</html>

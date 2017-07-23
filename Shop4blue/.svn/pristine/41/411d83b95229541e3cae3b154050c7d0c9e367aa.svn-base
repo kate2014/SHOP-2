@@ -1,0 +1,40 @@
+package com.shop.service.backstage;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shop.dao.UtilsMapper;
+
+@Service
+public class UtilsServiceImpl implements UtilsService {
+	
+	@Autowired
+	UtilsMapper utilsMapper;
+
+	@Override
+	public <T> void deleteByIds(Long[] ids, Class<T> clazz, String cid) {
+		String s = clazz.getSimpleName();
+		StringBuilder sb=new StringBuilder();
+		sb.append(s.charAt(0));
+		for(int i=1;i<s.length();i++){
+			if(s.charAt(i)>='A'&&s.charAt(i)<='Z'){
+				sb.append("_");
+			}
+			sb.append(s.charAt(i));
+		}
+		System.out.println(sb.toString());
+		for(Long id : ids){
+			Map<String,Object> map = new HashMap<>();
+			map.put("cid", cid);
+			map.put("pid", id);
+			map.put("name", sb.toString());
+			utilsMapper.deleteById(map);
+		}
+	}
+	
+	
+
+}
